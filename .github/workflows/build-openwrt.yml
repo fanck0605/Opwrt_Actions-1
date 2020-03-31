@@ -61,16 +61,16 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-    - name: Mods
-      run: |
-        cd openwrt
-        cd package/lean/
-        rm -rf luci-theme-opentomcat
-        git clone -b 18.06 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git
-        rm -rf  luci-app-frpc
-        git clone -b 18.06 https://github.com/kuoruan/luci-app-frpc.git
-        rm -rf  luci-app-frps
-        git clone -b 18.06 https://github.com/lwz322/luci-app-frps.git
+   # - name: Mods
+   #  run: |
+   #    cd openwrt
+   #     cd package/lean/
+   #     rm -rf luci-theme-opentomcat
+   #     git clone -b 18.06 https://github.com/Leo-Jo-My/luci-theme-opentomcat.git
+   #     rm -rf  luci-app-frpc
+   #     git clone -b 18.06 https://github.com/kuoruan/luci-app-frpc.git
+   #     rm -rf  luci-app-frps
+   #     git clone -b 18.06 https://github.com/lwz322/luci-app-frps.git
         
     - name: Load custom configuration
       run: |
