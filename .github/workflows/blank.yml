@@ -2,23 +2,24 @@
 
 name: create_release
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
-name: Create Release
+    branches:
+      - master
+    paths:
+      - '.github/workflows/blank.yml'
+  schedule:
+    - cron: '10 08 * * *'
 
 jobs:
   build:
-    name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@master
+        with:
+          ref: master
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@latest
@@ -33,3 +34,6 @@ jobs:
             - Second Change
           draft: false
           prerelease: false
+          
+          
+          
