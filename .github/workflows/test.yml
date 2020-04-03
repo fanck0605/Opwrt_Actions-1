@@ -23,8 +23,8 @@ jobs:
         id: create_release
         uses: actions/create-release@latest
         env:
-          TOKEN: ${{ secrets.Super }}
- #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.repo_release }}
+ #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
