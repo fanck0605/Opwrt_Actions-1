@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: create_release_test
+name: create_release
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         id: create_release
         uses: actions/create-release@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.SuperSecret }}
+          GITHUB_TOKEN: ${{ secrets.test }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
