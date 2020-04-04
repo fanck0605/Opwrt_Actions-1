@@ -1,30 +1,46 @@
-on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+name: test create release
 
-name: Create Release
+on:
+  release:
+    types: published
+  push:
+    branches:
+      - master
+    paths:
+      - './openwrt-x86-64.yml'
+  schedule:
+    - cron: 0 8 * * 5
+  watch:
+    types: started
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  CONFIG_FILE: x86.config
+  DIY_SH: diy.sh
+  SSH_ACTIONS: false
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_COWTRANSFER: false
+  TZ: Asia/Shanghai
 
 jobs:
   build:
-    name: Create Release
     runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          token: ${{ secrets.RELEASES_TOKEN }}
-   #       GITHUB_TOKEN: ${{ secrets.repo_sec }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false
+    - name: Checkout
+      uses: actions/checkout@master
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest 
+      env:
+        token: ${{ secrets.RELEASES_TOKEN }}
+#     GITHUB_TOKEN: ${{ secrets.SuperSecret }} 
+      with:
+       tag_name: ${{ steps.organize.outputs.Release_tag }}
+       release_name: 自动发布 ${{ steps.organize.outputs.Release_tag }}
+       draft: false
+       prerelease: false  
