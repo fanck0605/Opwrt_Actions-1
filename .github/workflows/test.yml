@@ -4,9 +4,9 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean_slim.yml'
-  schedule:
-    - cron: '10 08 * * *'
+      - '.github/workflows/test.yml'
+#  schedule:
+#    - cron: '10 08 * * *'
 
 jobs:
 
