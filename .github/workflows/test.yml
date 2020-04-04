@@ -7,9 +7,9 @@ on:
     branches:
       - master
     paths:
-      - './openwrt-x86-64.yml'
-  schedule:
-    - cron: 0 8 * * 5
+      - './testyml'
+#  schedule:
+#    - cron: 0 8 * * 5
 #  watch:
 #    types: started
 
