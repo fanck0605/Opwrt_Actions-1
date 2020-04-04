@@ -17,7 +17,8 @@ jobs:
         id: create_release
         uses: actions/create-release@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.repo_sec }}
+          token: ${{ secrets.RELEASES_TOKEN }}
+   #       GITHUB_TOKEN: ${{ secrets.repo_sec }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
