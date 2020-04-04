@@ -1,19 +1,26 @@
-name: test creat release
-
+name: test create release
 on:
-  release:
-    types: published
   push:
     branches:
       - master
-    tags: v1
- jobs:
-   build:
-    name: Create Release
+    paths:
+      - '.github/workflows/r2s_lean_slim.yml'
+  schedule:
+    - cron: '10 08 * * *'
+
+jobs:
+
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+
+      - name: Checkout
         uses: actions/checkout@master
+        with:
+          ref: master
+      
       - name: Create Release
         id: create_release
         uses: actions/create-release@latest
