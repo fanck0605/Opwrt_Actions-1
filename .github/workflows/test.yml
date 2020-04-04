@@ -1,11 +1,3 @@
-name: test creat release
-
-on:
-  release:
-    types: published
-  push:
-    branches:
-      - master
 on:
   push:
     # Sequence of patterns matched against refs/tags
