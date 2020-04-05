@@ -85,7 +85,6 @@ jobs:
         cd package/lean/
         cd ../../
         git apply ../r2s/enable_autocore.diff
-        #git apply ../../fix_cpufreq.diff
         sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
         sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
         sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
