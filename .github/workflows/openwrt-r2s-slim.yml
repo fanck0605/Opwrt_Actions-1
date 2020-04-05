@@ -25,7 +25,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   CONFIG_FILE: r2s.config
-  DIY_SH: diy.sh
+  DIY_SH: r2s_diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -83,10 +83,6 @@ jobs:
         git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
         git checkout upstream/master -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
-        sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
-        sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
-        sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
-        sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
         ../$DIY_SH
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
