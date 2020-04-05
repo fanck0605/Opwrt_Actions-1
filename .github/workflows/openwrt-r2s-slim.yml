@@ -82,9 +82,7 @@ jobs:
         git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
         git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
         git checkout upstream/master -- feeds.conf.default
-        cd package/lean/
-        cd ../../
-        git apply ../r2s/enable_autocore.diff
+        git apply ../../r2s/enable_autocore.diff
         sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
         sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
         sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
