@@ -76,7 +76,6 @@ jobs:
         cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed  
         cat ../$CONFIG_FILE >> ../r2s/base_rk3328.seed
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
-#          echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
         cd friendlywrt
         git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
         git remote add upstream $REPO_URL && git fetch upstream
