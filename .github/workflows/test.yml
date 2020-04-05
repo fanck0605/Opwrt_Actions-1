@@ -20,18 +20,18 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: master
-      
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false
+
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        name: ${{ env.DATE }} 测试自动发布  | 
+        allowUpdates: true
+        tag: x64稳定版
+        commit: master
+        token: ${{ secrets.RELEASES_TOKEN }}
+        body: |
+          测试内容
+          测试内容2
+        ${{ env.useVersionInfo }}
+        artifacts: ${{ env.FIRMWARE }}/*
