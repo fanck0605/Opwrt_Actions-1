@@ -32,4 +32,4 @@ jobs:
            测试内容
            测试内容2
            ${{ env.useVersionInfo }}
-        artifacts: ${{ env.FIRMWARE }}/*
+          artifacts: ${{ env.FIRMWARE }}/*
