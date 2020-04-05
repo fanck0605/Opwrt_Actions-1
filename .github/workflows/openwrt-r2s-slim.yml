@@ -68,8 +68,7 @@ jobs:
     - name: Patch Kernel
        run: |
         . ../r2s/patch_kernel_5.4.sh
-          
-
+        
     - name: Mods
        run: |
         cd friendlywrt-rk3328
