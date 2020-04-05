@@ -66,11 +66,11 @@ jobs:
         cd friendlywrt/ && git fetch --unshallow
 
     - name: Patch Kernel
-       run: |
+      run: |
         . ../r2s/patch_kernel_5.4.sh
         
     - name: Mods
-       run: |
+      run: |
         cd friendlywrt-rk3328
         . ../r2s/remove_unused_config.sh
         cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed  
