@@ -83,7 +83,7 @@ jobs:
         git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
         git checkout upstream/master -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
-        . ../$DIY_SH
+        . ../../$DIY_SH
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S"
