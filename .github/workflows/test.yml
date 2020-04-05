@@ -20,18 +20,16 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: master
-
-
-    - name: Create release
-      uses: ncipollo/release-action@v1
-      with:
-        name: ${{ env.DATE }} 测试自动发布  | 
-        allowUpdates: true
-        tag: x64稳定版
-        commit: master
-        token: ${{ secrets.RELEASES_TOKEN }}
-        body: |
-          测试内容
-          测试内容2
-        ${{ env.useVersionInfo }}
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.DATE }} 测试自动发布  | 
+          allowUpdates: true
+          tag: x64稳定版
+          commit: master
+          token: ${{ secrets.RELEASES_TOKEN }}
+          body: |
+           测试内容
+           测试内容2
+           ${{ env.useVersionInfo }}
         artifacts: ${{ env.FIRMWARE }}/*
