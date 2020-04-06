@@ -138,8 +138,7 @@ jobs:
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
-          当前使用版本:
-          （编译前的最后一次源码更新记录,源码来自https://github.com/coolsnowwolf/lede ）
+          源码信息:
           ${{ env.useVersionInfo }}
         artifacts: ${{ env.FIRMWARE }}/*
 
