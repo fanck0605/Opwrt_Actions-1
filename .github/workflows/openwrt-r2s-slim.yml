@@ -57,6 +57,8 @@ jobs:
         git clone https://github.com/friendlyarm/repo
         sudo cp repo/repo /usr/bin/
 
+        repo sync -c --no-clone-bundle -j8
+        
     - name: Init Source
       run: |
         mkdir friendlywrt-rk3328
@@ -64,7 +66,7 @@ jobs:
         repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
         repo sync -c --no-tags --no-clone-bundle -j8
         cd friendlywrt/ && git fetch --unshallow
-
+         
     - name: Patch Kernel
       run: |
         . r2s/patch_kernel_5.4.sh
@@ -83,7 +85,24 @@ jobs:
         git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
         git checkout upstream/master -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
-        . ../../$DIY_SH
+        #. ../../$DIY_SH
+        #修改版本号
+        sed -i 's/OpenWrt/Bin AutoBuild $(date "+%Y.%m.%d") @ OpenWrt/g' package/lean/default-settings/files/zzz-default-settings
+        sed -i 's/R20.3.19/& Mod by Quintus/g' package/lean/default-settings/files/zzz-default-settings
+        echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
+        #移除不用软件包    
+        rm -rf package/lean/luci-app-dockerman
+        rm -rf package/lean/luci-theme-opentomcat
+        rm -rf package/lean/luci-app-frps
+        rm -rf package/lean/luci-app-frpc
+        git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/lean/luci-theme-opentomcat
+        git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frpc
+        git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
+        git clone https://github.com/lisaac/luci-app-dockerman.git package/luci-app-dockerman
+        sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
+        sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
+        sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
+        sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S"
