@@ -1,10 +1,4 @@
 #!/bin/bash
-#=================================================
-# Description: DIY script
-# Lisence: MIT
-# Author: P3TERX
-# Blog: https://p3terx.com
-#=================================================
 #修改版本号
 sed -i 's/OpenWrt/Bin AutoBuild $(date "+%Y.%m.%d") @ OpenWrt/g' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/R20.3.19/& Mod by Quintus/g' package/lean/default-settings/files/zzz-default-settings
