@@ -18,8 +18,8 @@ on:
       - '.config'
   schedule:
     - cron: 0 8 * * 5
-  watch:
-    types: started
+  #watch:
+  #  types: started
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -68,7 +68,11 @@ jobs:
     - name: Patch Kernel
       run: |
         . r2s/patch_kernel_5.4.sh
-        
+    
+    - name: SSH connection to Actions
+      uses: P3TERX/debugger-action@master
+      if: env.SSH_ACTIONS == 'true'
+            
     - name: Mods
       run: |
         cd friendlywrt-rk3328
