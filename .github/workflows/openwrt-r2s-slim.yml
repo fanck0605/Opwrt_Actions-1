@@ -26,7 +26,7 @@ env:
   REPO_BRANCH: master
   CONFIG_FILE: r2s.config
   DIY_SH: r2s_diy.sh
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
@@ -68,11 +68,7 @@ jobs:
     - name: Patch Kernel
       run: |
         . r2s/patch_kernel_5.4.sh
-    
-    - name: SSH connection to Actions
-      uses: P3TERX/debugger-action@master
-      if: env.SSH_ACTIONS == 'true'
-            
+        
     - name: Mods
       run: |
         cd friendlywrt-rk3328
@@ -107,8 +103,8 @@ jobs:
         sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
-        echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S"
-
+        echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+            
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
