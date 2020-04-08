@@ -106,6 +106,7 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
+        cp friendlywrt-rk3328/friendlywrt/.config ./friendlywrt-rk3328/out/
         cd friendlywrt-rk3328/out
         gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
