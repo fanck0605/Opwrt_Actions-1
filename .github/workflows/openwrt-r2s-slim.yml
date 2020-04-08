@@ -84,23 +84,6 @@ jobs:
         git checkout upstream/master -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
         #. ../../$DIY_SH
-        #修改版本号
-        sed -i 's/OpenWrt/Bin AutoBuild $(date "+%Y.%m.%d") @ OpenWrt/g' package/lean/default-settings/files/zzz-default-settings
-        sed -i 's/R20.3.19/& Mod by Quintus/g' package/lean/default-settings/files/zzz-default-settings
-        echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
-        #移除不用软件包    
-        rm -rf package/lean/luci-app-dockerman
-        rm -rf package/lean/luci-theme-opentomcat
-        rm -rf package/lean/luci-app-frps
-        rm -rf package/lean/luci-app-frpc
-        git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/lean/luci-theme-opentomcat
-        git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frpc
-        git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
-        git clone https://github.com/lisaac/luci-app-dockerman.git package/luci-app-dockerman
-        sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
-        sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
-        sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
-        sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
@@ -124,7 +107,7 @@ jobs:
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd friendlywrt-rk3328/out
-        gzip *.img
+        #gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
         Release_tag="NanoPi-R2S-Lean-slim-${{ env.DATE }}-slim"
@@ -141,7 +124,7 @@ jobs:
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           R2S精简版，不支持IPv6，仅包含SSRP
-          当前使用版本:（编译前的最后一次源码更新记录,源码来自https://github.com/coolsnowwolf/lede ）
+          当前版本:
           ${{ env.useVersionInfo }}
         artifacts: ${{ env.FIRMWARE }}/*
 
