@@ -98,16 +98,16 @@ jobs:
         sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
         ./build.sh nanopi_r2s.mk
 
-    - name: Zip Files
-      run: |
-        gzip friendlywrt-rk3328/out/*.img
+    #- name: Zip Files
+    #  run: |
+    #    gzip friendlywrt-rk3328/out/*.img
 
     - name: Organize files
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd friendlywrt-rk3328/out
-        #gzip *.img
+        gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
         Release_tag="NanoPi-R2S-Lean-slim-${{ env.DATE }}-slim"
