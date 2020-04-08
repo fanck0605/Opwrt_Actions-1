@@ -1,18 +1,13 @@
 #!/bin/sh
 
 cd /mnt/mmcblk0p2
-rm -rf artifact R2S*.zip FriendlyWrt*img*
+rm -rf FriendlyWrt*img*
 wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/R2S精简版/FriendlyWrt_$(date +%Y%m%d)_NanoPi-R2S_arm64_sd.img.gz
-
-if [ -f /mnt/mmcblk0p2/R2S*.gz ]; then
+if [ -f /mnt/mmcblk0p2/Friend*.img.gz ]; then
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
 else
 	echo -e '\e[91m今天的固件还没更新，尝试下载昨天的固件\e[0m'
-	#wget https://github.com/klever1988/nanopi-openwrt/releases/download/R2S-Minimal-$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)/R2S-Minimal-$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)-ROM.zip
-
 	wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/R2S精简版/FriendlyWrt_$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y%m%d)_NanoPi-R2S_arm64_sd.img.gz
-	
-
 	if [ -f /mnt/mmcblk0p2/Friend*.img.gz ]; then
 		echo -e '\e[92m昨天的固件已下载，准备解压\e[0m'
 	else
@@ -21,7 +16,7 @@ else
 	fi
 fi
 if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
-	pv /mnt/mmcblk0p2/artifact/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
+	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
 fi
 mkdir /mnt/img
@@ -43,6 +38,6 @@ if [ -f /tmp/FriendlyWrtupdate.img.zst ]; then
 	echo 1 > /proc/sys/kernel/sysrq
 	echo u > /proc/sysrq-trigger || umount /
 	pv /tmp/FriendlyWrtupdate.img.zst | zstdcat | dd of=/dev/mmcblk0 conv=fsync
-	echo -e '\e[92m刷机完毕，正在重启...\e[0m'	
+	echo -e '\e[92m刷机完毕，正在重启...稍等片刻后重新登录\e[0m'	
 	echo b > /proc/sysrq-trigger
 fi
