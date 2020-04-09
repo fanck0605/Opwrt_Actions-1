@@ -35,19 +35,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        body: |
-          Openwrt release 测试
-          ${{ env.useVersionInfo }}
-        draft: false
-        prerelease: false
+
           
 #    - name: Upload Release Asset
 #      uses: svenstaro/upload-release-action@v1-release
@@ -59,19 +47,17 @@ jobs:
 #        overwrite: true
 #        file_glob: true 
         
-#    - name: Create release
-#      id: create_release
-#      uses: ncipollo/release-action@v1.6.1
-#      with:
-#        name: ${{ env.DATE }}  | 自动编译
-#        allowUpdates: false
-#        tag: x64精简版
-#        commit: master
-#        replacesArtifacts: true
-#        token: ${{ secrets.RELEASES_TOKEN }}
-#        body: |
-#          Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
-#          源码信息:
+    - name: Create release
+      id: create_release
+      uses: ncipollo/release-action@v1.6.1
+      with:
+        name: ${{ github.ref }}  | 测试 test
+        allowUpdates: true
+        tag: ${{ github.ref }}
+        commit: master
+        token: ${{ secrets.RELEASES_TOKEN }}
+        body: |
+          Openwrt release 测试
 #          ${{ env.useVersionInfo }}
 #        artifacts: ${{ env.FIRMWARE }}/*
 
