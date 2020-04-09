@@ -44,8 +44,7 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
         body: |
-          Openwrt x64精简版，仅支持vmware esxi环境
-          源码信息:
+          Openwrt release 测试
           ${{ env.useVersionInfo }}
         draft: false
         prerelease: false
