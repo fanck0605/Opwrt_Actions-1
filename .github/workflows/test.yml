@@ -6,10 +6,8 @@
 name: test
 
 on:
-  release: test
-    types: published
-  push:
-    branches:
+    push:
+     branches:
       - master
 #    paths:
 #      - '.config'
