@@ -132,9 +132,10 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       with:
         name: ${{ env.DATE }}  | 自动编译
-        allowUpdates: true
+        allowUpdates: false
         tag: x64精简版
         commit: master
+        replacesArtifacts: false
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
