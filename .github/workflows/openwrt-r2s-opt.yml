@@ -137,19 +137,19 @@ jobs:
 
     - name: Create Release
       id: create_release
-      uses: actions/create-release@latest 
+      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }} 
+        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
       with:
-       tag_name: ${{ github.ref }}
-       release_name: ${{ env.DATE }}  | 自动编译
-       body: |
-          Openwrt R2S应用定制版，包含SSRP、OPENVPN、Zerotier、Transimission、Diskman及SMB/CIFS mount
+        tag_name: ${{ github.ref }}
+        release_name: ${{ env.DATE }}
+        body: |
+          Openwrt R2S定制版
           源码信息:
           ${{ env.useVersionInfo }}
-       draft: false
-       prerelease: false
-
+        draft: false
+        prerelease: false
+          
     - name: Upload Release Asset
       uses: svenstaro/upload-release-action@v1-release
       with:
