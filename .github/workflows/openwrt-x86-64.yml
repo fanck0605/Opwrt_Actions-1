@@ -114,34 +114,48 @@ jobs:
         echo "::set-output name=status::success"
         Release_tag="x86-64bit-Lean-slim-${{ env.DATE }}-slim"
         echo "##[set-output name=Release_tag;]$Release_tag"
-    
-#    - name: Create Release
-#      id: create_release
-#      uses: actions/create-release@latest 
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-#        # This token is provided by Actions, you do not need to create your own token
-#      with:
-#       tag_name: ${{ steps.organize.outputs.Release_tag }}
-#       release_name: 自动发布 ${{ steps.organize.outputs.Release_tag }}
-#       draft: false
-#       prerelease: false  
 
-    - name: Create release
+    - name: Create Release
       id: create_release
-      uses: ncipollo/release-action@v1.6.1
+      uses: actions/create-release@latest 
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }} 
       with:
-        name: ${{ env.DATE }}  | 自动编译
-        allowUpdates: false
-        tag: x64精简版
-        commit: master
-        replacesArtifacts: false
-        token: ${{ secrets.RELEASES_TOKEN }}
-        body: |
+       tag_name: x64精简版
+       #tag_name: ${{ steps.organize.outputs.Release_tag }}
+       release_name: ${{ env.DATE }}  | 自动编译
+       body: |
           Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
           源码信息:
           ${{ env.useVersionInfo }}
-        artifacts: ${{ env.FIRMWARE }}/*
+       draft: false
+       prerelease: false
+
+    - name: Upload Release Asset
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.RELEASES_TOKEN }}
+        file: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
+        tag_name: x64精简版
+        #tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true   
+        
+#    - name: Create release
+#      id: create_release
+#      uses: ncipollo/release-action@v1.6.1
+#      with:
+#        name: ${{ env.DATE }}  | 自动编译
+#        allowUpdates: false
+#        tag: x64精简版
+#        commit: master
+#        replacesArtifacts: true
+#        token: ${{ secrets.RELEASES_TOKEN }}
+#        body: |
+#          Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
+#          源码信息:
+#          ${{ env.useVersionInfo }}
+#        artifacts: ${{ env.FIRMWARE }}/*
 
 #    - name: Upload Release Asset
 #      id: upload-release-asset
