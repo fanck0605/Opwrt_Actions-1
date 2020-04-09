@@ -108,21 +108,47 @@ jobs:
         Release_tag="NanoPi-R2S-Lean-slim-${{ env.DATE }}-slim"
         echo "##[set-output name=Release_tag;]$Release_tag"
         
-    - name: Create release
+#    - name: Create release
+#      id: create_release
+#      uses: ncipollo/release-action@v1.6.1
+#      with:
+#        name: ${{ env.DATE }}  | 自动编译
+#        allowUpdates: 
+#        tag: R2S精简版
+#        commit: master
+#        replacesArtifacts: false
+#        token: ${{ secrets.RELEASES_TOKEN }}
+#        body: |
+#          R2S精简版，不支持IPv6，仅包含SSRP
+#          当前版本:
+#          ${{ env.useVersionInfo }}
+#        artifacts: ${{ env.FIRMWARE }}/*
+
+    - name: Create Release
       id: create_release
-      uses: ncipollo/release-action@v1.6.1
+      uses: actions/create-release@latest 
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }} 
       with:
-        name: ${{ env.DATE }}  | 自动编译
-        allowUpdates: 
-        tag: R2S精简版
-        commit: master
-        replacesArtifacts: false
-        token: ${{ secrets.RELEASES_TOKEN }}
-        body: |
+       tag_name: R2S精简版
+       #tag_name: ${{ steps.organize.outputs.Release_tag }}
+       release_name: ${{ env.DATE }}  | 自动编译
+       body: |
           R2S精简版，不支持IPv6，仅包含SSRP
-          当前版本:
+          源码信息:
           ${{ env.useVersionInfo }}
-        artifacts: ${{ env.FIRMWARE }}/*
+       draft: false
+       prerelease: false
+
+    - name: Upload Release Asset
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.RELEASES_TOKEN }}
+        file: ${{ env.FIRMWARE }}/*img.gz
+        tag_name: R2S精简版
+        #tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true   
 
 #    - name: Upload Release Asset
 #      id: upload-release-asset
