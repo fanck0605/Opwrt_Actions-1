@@ -42,7 +42,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: ${{ env.DATE }}
+        release_name: ${{ github.ref }}
         body: |
           Openwrt x64精简版，仅支持vmware esxi环境
           源码信息:
