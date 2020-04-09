@@ -3,20 +3,20 @@
 # Lisence: MIT
 #=================================================
 
-name: Build x86-64bit OpenWrt
+name: test
 
 on:
-  release:
+  release: test
     types: published
   push:
     branches:
       - master
-    paths:
-      - '.config'
-  schedule:
-    - cron: 15 17 * * *
-  watch:
-    types: started
+#    paths:
+#      - '.config'
+#  schedule:
+#    - cron: 15 17 * * *
+#  watch:
+#    types: started
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
