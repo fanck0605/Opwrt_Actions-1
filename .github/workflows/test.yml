@@ -1,0 +1,90 @@
+#=================================================
+# Description: Build OpenWrt using GitHub Actions
+# Lisence: MIT
+#=================================================
+
+name: Build x86-64bit OpenWrt
+
+on:
+  release:
+    types: published
+  push:
+    branches:
+      - master
+    paths:
+      - '.config'
+  schedule:
+    - cron: 15 17 * * *
+  watch:
+    types: started
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  CONFIG_FILE: x86.config
+  DIY_SH: x86_diy.sh
+  SSH_ACTIONS: false
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ env.DATE }}
+        body: |
+          Openwrt x64精简版，仅支持vmware esxi环境
+          源码信息:
+          ${{ env.useVersionInfo }}
+        draft: false
+        prerelease: false
+          
+#    - name: Upload Release Asset
+#      uses: svenstaro/upload-release-action@v1-release
+#      with:
+#        repo_token: ${{ secrets.RELEASES_TOKEN }}
+#        file: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
+#        #tag_name: x64精简版
+#        tag: ${{ github.ref }}
+#        overwrite: true
+#        file_glob: true 
+        
+#    - name: Create release
+#      id: create_release
+#      uses: ncipollo/release-action@v1.6.1
+#      with:
+#        name: ${{ env.DATE }}  | 自动编译
+#        allowUpdates: false
+#        tag: x64精简版
+#        commit: master
+#        replacesArtifacts: true
+#        token: ${{ secrets.RELEASES_TOKEN }}
+#        body: |
+#          Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
+#          源码信息:
+#          ${{ env.useVersionInfo }}
+#        artifacts: ${{ env.FIRMWARE }}/*
+
+#    - name: Upload Release Asset
+#      id: upload-release-asset
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+#      with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ${{ env.FIRMWARE }}/openwrt-x86-64-combined-squashfs.img.gz
+#          asset_name: ${{ steps.organize.outputs.Release_tag }}-combined-squashfs.img.gz
+#          asset_content_type: application/gzip
