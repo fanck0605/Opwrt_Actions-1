@@ -113,9 +113,10 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       with:
         name: ${{ env.DATE }}  | 自动编译
-        allowUpdates: true
+        allowUpdates: 
         tag: R2S精简版
         commit: master
+        replacesArtifacts: false
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           R2S精简版，不支持IPv6，仅包含SSRP
