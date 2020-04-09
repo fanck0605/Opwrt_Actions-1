@@ -1,9 +1,6 @@
 #=================================================
-# https://github.com/P3TERX/Actions-OpenWrt
 # Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
-# Author: P3TERX
-# Blog: https://p3terx.com
 #=================================================
 
 name: Build x86-64bit OpenWrt
@@ -29,7 +26,6 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
   TZ: Asia/Shanghai
 
 jobs:
@@ -125,7 +121,7 @@ jobs:
        #tag_name: ${{ steps.organize.outputs.Release_tag }}
        release_name: ${{ env.DATE }}  | 自动编译
        body: |
-          Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
+          Openwrt x64精简版，仅支持vmware esxi环境
           源码信息:
           ${{ env.useVersionInfo }}
        draft: false
@@ -167,9 +163,3 @@ jobs:
 #          asset_path: ${{ env.FIRMWARE }}/openwrt-x86-64-combined-squashfs.img.gz
 #          asset_name: ${{ steps.organize.outputs.Release_tag }}-combined-squashfs.img.gz
 #          asset_content_type: application/gzip
-
-    - name: Upload firmware to cowtransfer
-      if: env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -sL https://git.io/cowtransfer | sh
-        ./cowtransfer-uploader -s -p 8 ${FIRMWARE}
