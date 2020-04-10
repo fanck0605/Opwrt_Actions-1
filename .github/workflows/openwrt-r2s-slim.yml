@@ -105,7 +105,7 @@ jobs:
         gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        Release_tag="NanoPi-R2S-Lean-slim-${{ env.DATE }}-slim"
+        Release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-slim"
         echo "##[set-output name=Release_tag;]$Release_tag"
         
 #    - name: Create release
