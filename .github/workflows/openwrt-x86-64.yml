@@ -111,14 +111,20 @@ jobs:
         Release_tag="x86-64bit-Lean-slim-${{ env.DATE }}-slim"
         echo "##[set-output name=Release_tag;]$Release_tag"
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: OpenWrt_firmware
+        path: ${{ env.FIRMWARE }}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ env.DATE }}
+        tag_name: ${{ steps.organize.outputs.Release_tag }}
+        release_name: x64版自动编译 ${{ steps.organize.outputs.Release_tag }}
         body: |
           Openwrt x64精简版，仅支持vmware esxi环境
           源码信息:
