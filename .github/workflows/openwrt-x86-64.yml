@@ -147,8 +147,8 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       with:
         name: ${{ env.DATE }}  | 自动编译
-        allowUpdates: false
-        tag: ${{ steps.organize.outputs.Release_tag }}
+        allowUpdates: true
+        tag: ${{ env.DATE }}
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
