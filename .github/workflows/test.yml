@@ -51,13 +51,13 @@ jobs:
       id: create_release
       uses: ncipollo/release-action@v1.6.1
       with:
-        name: ${{ github.ref }}  | 测试 test
+        name: ${{ github.ref }}  | 测试 test2
         allowUpdates: true
         tag: ${{ github.ref }}
         commit: master
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
-          Openwrt release 测试
+          Openwrt release 测试 2
 #          ${{ env.useVersionInfo }}
 #        artifacts: ${{ env.FIRMWARE }}/*
 
