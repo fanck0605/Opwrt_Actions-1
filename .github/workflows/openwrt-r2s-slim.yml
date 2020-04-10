@@ -66,7 +66,8 @@ jobs:
     - name: Patch Kernel
       run: |
         . r2s/patch_kernel_5.4.sh
-        
+        sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+
     - name: Mods
       run: |
         cd friendlywrt-rk3328
@@ -74,12 +75,19 @@ jobs:
         cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
         cat ../$CONFIG_FILE >> ../r2s/base_rk3328.seed
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
-        git clone https://github.com/coolsnowwolf/lede
         cd friendlywrt
-        cp -r ../lede/package/lean package/
-        sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-        sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+        git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+        git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
+        git checkout upstream/dev-lean-lede -b tmp
+        git mv README.md README && git commit -m 'undo rename readme for rebasing'
+        git checkout origin/master-v19.07.1
+        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
+        git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
+        sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
+        git checkout upstream/dev-lean-lede -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
+        mv ../../r2s/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+        mv ../../r2s/autoupdate-slim.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
         . ../../$DIY_SH
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
@@ -112,52 +120,50 @@ jobs:
         Release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-slim"
         echo "##[set-output name=Release_tag;]$Release_tag"
         
-#    - name: Create release
-#      id: create_release
-#      uses: ncipollo/release-action@v1.6.1
-#      with:
-#        name: ${{ env.DATE }}  | 自动编译
-#        allowUpdates: 
-#        tag: R2S精简版
-#        commit: master
-#        replacesArtifacts: false
-#        token: ${{ secrets.RELEASES_TOKEN }}
-#        body: |
-#          R2S精简版，不支持IPv6，仅包含SSRP
-#          当前版本:
-#          ${{ env.useVersionInfo }}
-#        artifacts: ${{ env.FIRMWARE }}/*
-
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      
     - name: Upload artifact
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt_R2S_slim_firmware
         path: ${{ env.FIRMWARE }}
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-      with:
-        tag_name: ${{ steps.organize.outputs.Release_tag }}
-        release_name: R2S 精简版${{ steps.organize.outputs.Release_tag }}
-        body: |
-          Openwrt R2S 精简版
-          源码信息:
-          ${{ env.useVersionInfo }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
+      
+    - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v1-release
+      if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         repo_token: ${{ secrets.RELEASES_TOKEN }}
-        file: ${{ env.FIRMWARE }}/*img.gz
-        #tag_name: R2S精简版
-        tag: ${{ steps.organize.outputs.Release_tag }}
+        file: ${{ env.FIRMWARE }}/*
+        tag: ${{steps.date.outputs.date}}
         overwrite: true
         file_glob: true
+      
+#   - name: Create Release
+#      id: create_release
+#      uses: actions/create-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+#      with:
+#        tag_name: ${{ steps.organize.outputs.Release_tag }}
+#        release_name: R2S 精简版${{ steps.organize.outputs.Release_tag }}
+#        body: |
+#          Openwrt R2S 精简版
+#          源码信息:
+#          ${{ env.useVersionInfo }}
+#        draft: false
+#        prerelease: false
+#
+#    - name: Upload Release Asset
+#      uses: svenstaro/upload-release-action@v1-release
+#      with:
+#        repo_token: ${{ secrets.RELEASES_TOKEN }}
+#        file: ${{ env.FIRMWARE }}/*img.gz
+#        #tag_name: R2S精简版
+#        tag: ${{ steps.organize.outputs.Release_tag }}
+#        overwrite: true
+#        file_glob: true
 
 #    - name: Upload Release Asset
 #      id: upload-release-asset
