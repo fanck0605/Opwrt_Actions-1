@@ -124,21 +124,26 @@ jobs:
 #          ${{ env.useVersionInfo }}
 #        artifacts: ${{ env.FIRMWARE }}/*
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: OpenWrt_R2S_slim_firmware
+        path: ${{ env.FIRMWARE }}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ env.DATE }}
+        tag_name: ${{ steps.organize.outputs.Release_tag }}
+        release_name: R2S 精简版${{ steps.organize.outputs.Release_tag }}
         body: |
           Openwrt R2S 精简版
           源码信息:
           ${{ env.useVersionInfo }}
         draft: false
         prerelease: false
-          
 
     - name: Upload Release Asset
       uses: svenstaro/upload-release-action@v1-release
@@ -146,9 +151,9 @@ jobs:
         repo_token: ${{ secrets.RELEASES_TOKEN }}
         file: ${{ env.FIRMWARE }}/*img.gz
         #tag_name: R2S精简版
-        tag: ${{ github.ref }}
+        tag: ${{ steps.organize.outputs.Release_tag }}
         overwrite: true
-        file_glob: true   
+        file_glob: true
 
 #    - name: Upload Release Asset
 #      id: upload-release-asset
