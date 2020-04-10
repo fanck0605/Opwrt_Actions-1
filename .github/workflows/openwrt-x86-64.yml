@@ -138,7 +138,7 @@ jobs:
         repo_token: ${{ secrets.RELEASES_TOKEN }}
         file: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
         #tag_name: x64精简版
-        tag: ${{ github.ref }}
+        tag: ${{ steps.organize.outputs.Release_tag }}
         overwrite: true
         file_glob: true 
         
