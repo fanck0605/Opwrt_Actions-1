@@ -56,7 +56,7 @@ jobs:
         cd openwrt
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
-        echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+        echo "::set-env name=DATE::$(date "+%Y-%m-%d")"
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -108,8 +108,8 @@ jobs:
         rm -rf packages        
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        Release_tag="x86-64bit-Lean-slim-${{ env.DATE }}-slim"
-        echo "##[set-output name=Release_tag;]$Release_tag"
+        release_tag="x86-64bit-Lean-${{ env.DATE }}-slim"
+        echo "##[set-output name=Release_tag;]$release_tag"
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
@@ -121,15 +121,14 @@ jobs:
       id: create_release
       uses: ncipollo/release-action@v1.6.1
       with:
-        name: ${{ env.DATE }}  | 自动编译
+        name: 自动编译  ${{ steps.organize.outputs.release_tag }}
         allowUpdates: true
-        tag: ${{ github.ref }}
+        tag: ${{ env.DATE }}
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
-          Openwrt x64精简版，仅支持vmware esxi环境
-          源码信息:
+          Openwrt x64精简版
           ${{ env.useVersionInfo }}
         artifact: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
     
