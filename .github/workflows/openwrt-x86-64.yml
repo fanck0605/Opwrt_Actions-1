@@ -116,31 +116,6 @@ jobs:
       with:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
-#
-#    - name: Create Release
-#      id: create_release
-#      uses: actions/create-release@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-#      with:
-#        tag_name: ${{ steps.organize.outputs.Release_tag }}
-#        release_name: x64版自动编译 ${{ steps.organize.outputs.Release_tag }}
-#        body: |
-#          Openwrt x64精简版，仅支持vmware esxi环境
-#          源码信息:
-#          ${{ env.useVersionInfo }}
-#        draft: false
-#        prerelease: false
-#          
-#    - name: Upload Release Asset
-#      uses: svenstaro/upload-release-action@v1-release
-#      with:
-#        repo_token: ${{ secrets.RELEASES_TOKEN }}
-#        file: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
-#        #tag_name: x64精简版
-#        tag: ${{ steps.organize.outputs.Release_tag }}
-#        overwrite: true
-#        file_glob: true 
         
     - name: Create release
       id: create_release
@@ -148,7 +123,7 @@ jobs:
       with:
         name: ${{ env.DATE }}  | 自动编译
         allowUpdates: true
-        tag: ${{ env.DATE }}
+        tag: ${{ github.ref }}
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
@@ -157,14 +132,28 @@ jobs:
           源码信息:
           ${{ env.useVersionInfo }}
         artifacts: ${{ env.FIRMWARE }}/*
+    
+#    - name: Create Release
+#      id: create_release
+#      uses: actions/create-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+#      with:
+#        tag_name: ${{ github.ref }}
+#        release_name: ${{ env.DATE }}
+#        body: |
+#          Openwrt x64精简版，仅支持vmware esxi环境
+#          源码信息:
+#          ${{ env.useVersionInfo }}
+#        draft: false
+#        prerelease: false
 
 #    - name: Upload Release Asset
-#      id: upload-release-asset
-#      uses: actions/upload-release-asset@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+#      uses: svenstaro/upload-release-action@v1-release
 #      with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: ${{ env.FIRMWARE }}/openwrt-x86-64-combined-squashfs.img.gz
-#          asset_name: ${{ steps.organize.outputs.Release_tag }}-combined-squashfs.img.gz
-#          asset_content_type: application/gzip
+#        repo_token: ${{ secrets.RELEASES_TOKEN }}
+#        file: ${{ env.FIRMWARE }}/* # https://www.npmjs.com/package/glob
+#        tag: ${{ github.ref }}
+#        overwrite: true
+#        file_glob: true
+
