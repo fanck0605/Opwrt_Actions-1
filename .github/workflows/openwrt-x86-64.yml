@@ -116,47 +116,47 @@ jobs:
       with:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
-
-    - name: Create Release
+#
+#    - name: Create Release
+#      id: create_release
+#      uses: actions/create-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+#      with:
+#        tag_name: ${{ steps.organize.outputs.Release_tag }}
+#        release_name: x64版自动编译 ${{ steps.organize.outputs.Release_tag }}
+#        body: |
+#          Openwrt x64精简版，仅支持vmware esxi环境
+#          源码信息:
+#          ${{ env.useVersionInfo }}
+#        draft: false
+#        prerelease: false
+#          
+#    - name: Upload Release Asset
+#      uses: svenstaro/upload-release-action@v1-release
+#      with:
+#        repo_token: ${{ secrets.RELEASES_TOKEN }}
+#        file: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
+#        #tag_name: x64精简版
+#        tag: ${{ steps.organize.outputs.Release_tag }}
+#        overwrite: true
+#        file_glob: true 
+        
+    - name: Create release
       id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+      uses: ncipollo/release-action@v1.6.1
       with:
-        tag_name: ${{ steps.organize.outputs.Release_tag }}
-        release_name: x64版自动编译 ${{ steps.organize.outputs.Release_tag }}
+        name: ${{ env.DATE }}  | 自动编译
+        allowUpdates: false
+        tag: ${{ steps.organize.outputs.Release_tag }}
+        commit: master
+        replacesArtifacts: true
+        token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           Openwrt x64精简版，仅支持vmware esxi环境
           源码信息:
           ${{ env.useVersionInfo }}
-        draft: false
-        prerelease: false
-          
-    - name: Upload Release Asset
-      uses: svenstaro/upload-release-action@v1-release
-      with:
-        repo_token: ${{ secrets.RELEASES_TOKEN }}
-        file: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
-        #tag_name: x64精简版
-        tag: ${{ steps.organize.outputs.Release_tag }}
-        overwrite: true
-        file_glob: true 
-        
-#    - name: Create release
-#      id: create_release
-#      uses: ncipollo/release-action@v1.6.1
-#      with:
-#        name: ${{ env.DATE }}  | 自动编译
-#        allowUpdates: false
-#        tag: x64精简版
-#        commit: master
-#        replacesArtifacts: true
-#        token: ${{ secrets.RELEASES_TOKEN }}
-#        body: |
-#          Openwrt x64精简版，仅支持vmware esxi环境，不支持IPv6\USB\及任何无线设备
-#          源码信息:
-#          ${{ env.useVersionInfo }}
-#        artifacts: ${{ env.FIRMWARE }}/*
+        artifacts: ${{ env.FIRMWARE }}/*
 
 #    - name: Upload Release Asset
 #      id: upload-release-asset
