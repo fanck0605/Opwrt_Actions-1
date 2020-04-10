@@ -126,7 +126,7 @@ jobs:
         name: ${{ env.DATE }}  | R2S定制版 自动编译
         allowUpdates: true
         replacesArtifacts: true
-        tag: ${{ steps.organize.outputs.Release_tag }}
+        tag: ${{ env.DATE }}
         commit: master
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
