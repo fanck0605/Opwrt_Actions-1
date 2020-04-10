@@ -170,9 +170,3 @@ jobs:
 #          asset_path: ${{ env.FIRMWARE }}/*.img.gz
 #          asset_name: ${{ steps.organize.outputs.Release_tag }}-arm64_sd.img.gz
 #          asset_content_type: application/gzip
-
-    - name: Upload firmware to cowtransfer
-      if: env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -sL https://git.io/cowtransfer | sh
-        ./cowtransfer-uploader -s -p 8 ${FIRMWARE}
