@@ -6,9 +6,7 @@ OpenWrt源码来自Lean，每天自动编译最新源码。
 https://github.com/ardanzhu/Opwrt_Actions/releases
 
 ## 说明
-管理ip：192.168.1.1
-Username:root
-password:password
+默认管理ip：192.168.1.1 Username:root password:password
 
 X86只编译适配ESXi vm的64bit版本，并无去广告及解锁音乐等应用，仅支持IPv4，不支持IPv6及USB、wifi等设备。
 支持的luci app只包括ssrp、ttyd、zerotier、ddns(支持cloudflare)
