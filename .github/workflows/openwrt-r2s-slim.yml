@@ -100,8 +100,13 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cp friendlywrt-rk3328/friendlywrt/.config ./friendlywrt-rk3328/out/
-        cd friendlywrt-rk3328/out
+        rm -rf ./artifact/
+        mkdir -p ./artifact/
+        mv friendlywrt-rk3328/out/*img* ./artifact/
+        cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
+        #cp friendlywrt-rk3328/friendlywrt/.config ./friendlywrt-rk3328/out/
+        #cd friendlywrt-rk3328/out
+        cd ./artifact/
         gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
