@@ -126,11 +126,11 @@ jobs:
         name: ${{ env.DATE }}  | R2S定制版 自动编译
         allowUpdates: true
         replacesArtifacts: true
-        tag: ${{ env.DATE }}
+        tag: ${{ github.ref }}
         commit: master
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
-          R2S定制版，包含SSRP、OPENVPN、Zerotier、Transimission、Diskman
+          R2S定制版，包含SSRP、OPENVPN、Zerotier、Transimission、Diskman、Docker
           当前版本:
           ${{ env.useVersionInfo }}
         artifacts: ${{ env.FIRMWARE }}/*.gz
