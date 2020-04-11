@@ -135,29 +135,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.useVersionDate }}
-        artifact: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
-    
-#    - name: Create Release
-#      id: create_release
-#      uses: actions/create-release@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-#      with:
-#        tag_name: ${{ github.ref }}
-#        release_name: ${{ env.DATE }}
-#        body: |
-#          Openwrt x64精简版，仅支持vmware esxi环境
-#          源码信息:
-#          ${{ env.useVersionInfo }}
-#        draft: false
-#        prerelease: false
-
-#    - name: Upload Release Asset
-#      uses: svenstaro/upload-release-action@v1-release
-#      with:
-#        repo_token: ${{ secrets.RELEASES_TOKEN }}
-#        file: ${{ env.FIRMWARE }}/* # https://www.npmjs.com/package/glob
-#        tag: ${{ github.ref }}
-#        overwrite: true
-#        file_glob: true
-
+        artifacts: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
