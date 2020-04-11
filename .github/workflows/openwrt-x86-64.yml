@@ -60,6 +60,7 @@ jobs:
         echo "::set-env name=useVersionDate::$useVersionDate"       
         #echo "::set-env name=DATE::$(date "+%Y-%m-%d")"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+        echo "::set-env name=date2::$(date "+%Y-%m-%d")"
 
 
     - name: Update feeds
@@ -127,7 +128,7 @@ jobs:
       with:
         name: 自动编译|x64 定制版 ${{ env.DATE }}
         allowUpdates: true
-        tag: ${{ env.useVersionDate }}
+        tag: ${{ env.date2 }}
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
