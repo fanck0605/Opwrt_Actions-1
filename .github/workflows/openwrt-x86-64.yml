@@ -56,7 +56,8 @@ jobs:
         cd openwrt
         #useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         useVersionDate=$(git show -s --date=short --format="date:%cd")
-        echo "::set-env name=useVersionInfo::$useVersionInfo"
+        #echo "::set-env name=useVersionInfo::$useVersionInfo"
+        echo "::set-env name=useVersionInfo::$useVersionDate"       
         echo "::set-env name=DATE::$(date "+%Y-%m-%d")"
 
     - name: Update feeds
