@@ -111,7 +111,7 @@ jobs:
 
     - name: Organize files
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         rm -rf ./artifact/
         mkdir -p ./artifact/
@@ -124,7 +124,7 @@ jobs:
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
         release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-slim"
-        echo "##[set-output name=Release_tag;]$release_tag"
+        echo "##[set-output name=release_tag;]$release_tag"
         
     - name: Get current date
       id: date
@@ -132,6 +132,7 @@ jobs:
       
     - name: Upload artifact
       uses: actions/upload-artifact@master
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       with:
         name: OpenWrt_R2S_slim_firmware
         path: ${{ env.FIRMWARE }}
@@ -139,6 +140,7 @@ jobs:
     - name: Create release
       id: create_release
       uses: ncipollo/release-action@v1.6.1
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         name: 自动编译|R2S 精简版 ${{ env.DATE }}
         allowUpdates: true
