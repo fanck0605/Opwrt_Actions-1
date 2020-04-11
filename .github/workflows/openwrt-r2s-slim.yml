@@ -126,9 +126,9 @@ jobs:
         release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-slim"
         echo "##[set-output name=release_tag;]$release_tag"
         
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d')"
+    #- name: Get current date
+    #  id: date
+    #  run: echo "::set-output name=date::$(date +'%Y%m%d')"
       
     - name: Upload artifact
       uses: actions/upload-artifact@master
