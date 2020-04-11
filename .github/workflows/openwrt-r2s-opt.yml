@@ -133,7 +133,7 @@ jobs:
       id: create_release
       uses: ncipollo/release-action@v1.6.1
       with:
-        name: Openwrt R2S 定制版 ${{ env.DATE }} | 自动编译  ${{ steps.organize.outputs.release_tag }}
+        name: Openwrt R2S 定制版 ${{ env.DATE }} | 自动编译
         allowUpdates: true
         tag: ${{ env.DATE }}
         commit: master
