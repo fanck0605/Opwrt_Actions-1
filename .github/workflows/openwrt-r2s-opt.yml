@@ -27,6 +27,7 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: true
   UPLOAD_COWTRANSFER: false
   TZ: Asia/Shanghai
 
@@ -74,12 +75,19 @@ jobs:
         cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
         cat ../$CONFIG_FILE >> ../r2s/base_rk3328.seed
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
-        git clone https://github.com/coolsnowwolf/lede
         cd friendlywrt
-        cp -r ../lede/package/lean package/
-        sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-        sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+        git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+        git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
+        git checkout upstream/dev-lean-lede -b tmp
+        git mv README.md README && git commit -m 'undo rename readme for rebasing'
+        git checkout origin/master-v19.07.1
+        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
+        git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
+        sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
+        git checkout upstream/dev-lean-lede -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
+        mv ../../r2s/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+        mv ../../r2s/autoupdate-slim.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
         . ../../$DIY_SH
         useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         echo "::set-env name=useVersionInfo::$useVersionInfo"
@@ -108,8 +116,8 @@ jobs:
         gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        Release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-opt"
-        echo "##[set-output name=Release_tag;]$Release_tag"
+        release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-opt"
+        echo "##[set-output name=release_tag;]$release_tag"
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
@@ -117,22 +125,25 @@ jobs:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
 
+#    - name: Get current date
+#      id: date
+#      run: echo "::set-output name=date::$(date +'%Y%m%d')"
         
     - name: Create release
       id: create_release
       uses: ncipollo/release-action@v1.6.1
       with:
-        name: ${{ env.DATE }}  | R2S定制版 自动编译
+        name: Openwrt R2S 定制版 ${{ env.DATE }} | 自动编译  ${{ steps.organize.outputs.release_tag }}
         allowUpdates: true
-        replacesArtifacts: true
-        tag: ${{ github.ref }}
+        tag: ${{ env.DATE }}
         commit: master
+        replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
-          R2S定制版，包含SSRP、OPENVPN、Zerotier、Transimission、Diskman、Docker
-          当前版本:
+          ${{ steps.organize.outputs.release_tag }}
           ${{ env.useVersionInfo }}
-        artifacts: ${{ env.FIRMWARE }}/*.gz
+        artifact: ${{ env.FIRMWARE }}/*img.gz
+    
 
 #    - name: Upload Release Asset
 #      id: upload-release-asset
