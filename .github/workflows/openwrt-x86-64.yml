@@ -58,7 +58,9 @@ jobs:
         useVersionDate=$(git show -s --date=short --format="date:%cd")
         #echo "::set-env name=useVersionInfo::$useVersionInfo"
         echo "::set-env name=useVersionDate::$useVersionDate"       
-        echo "::set-env name=DATE::$(date "+%Y-%m-%d")"
+        #echo "::set-env name=DATE::$(date "+%Y-%m-%d")"
+        echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -123,9 +125,9 @@ jobs:
       id: create_release
       uses: ncipollo/release-action@v1.6.1
       with:
-        name: Openwrt x64 定制版 ${{ env.DATE }} | 自动编译
+        name: 自动编译|x64 定制版 ${{ env.DATE }}
         allowUpdates: true
-        tag: ${{ env.DATE }}
+        tag: ${{ env.useVersionDate }}
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
