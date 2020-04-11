@@ -2,7 +2,7 @@
 
 cd /mnt/mmcblk0p2
 rm -rf FriendlyWrt*img*
-wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/R2S精简版/FriendlyWrt_$(date +%Y%m%d)_NanoPi-R2S_arm64_sd.img.gz
+wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date +%Y%m%d)/FriendlyWrt_$(date +%Y%m%d)_NanoPi-R2S_arm64_sd.img.gz
 if [ -f /mnt/mmcblk0p2/Friend*.img.gz ]; then
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
 else
