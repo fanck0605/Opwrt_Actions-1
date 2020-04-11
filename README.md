@@ -2,16 +2,16 @@
 OpenWrt源码来自Lean，每天自动编译最新源码。
 自动编译参考[P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
 
-## 下载地址：
+## 下载及说明：
 https://github.com/ardanzhu/Opwrt_Actions/releases
+默认管理地址：192.168.1.1 用户名:root 密码:password
 
-## 说明
-默认管理ip：192.168.1.1 Username:root password:password
-
-X86只编译适配ESXi vm的64bit版本，并无去广告及解锁音乐等应用，仅支持IPv4，不支持IPv6及USB、wifi等设备。
+## X86 OpenWrt 精简版
+只编译适配ESXi vm的64bit版本，并无去广告及解锁音乐等应用，仅支持IPv4，不支持IPv6及USB、wifi等设备。
 支持的luci app只包括ssrp、ttyd、zerotier、ddns(支持cloudflare)
 
-NanoPi R2S版本参考Klever1988的版本精简定制编译，支持在线更新（感谢gary lau的更新脚本）
+## NanoPi R2S OpenWrt
+参考Klever1988的版本精简定制编译，支持在线更新（感谢gary lau的更新脚本）
 
 R2S slim版支持USB及ipv6，luci app仅包括ssrp、cifs-mount等与x64精简版一致，在线更新:
 ```
