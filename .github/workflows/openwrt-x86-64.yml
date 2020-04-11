@@ -121,7 +121,7 @@ jobs:
       id: create_release
       uses: ncipollo/release-action@v1.6.1
       with:
-        name: Openwrt x64精简版 ${{ env.DATE }}| 自动编译
+        name: Openwrt x64 定制版 ${{ env.DATE }} | 自动编译
         allowUpdates: true
         tag: ${{ env.DATE }}
         commit: master
