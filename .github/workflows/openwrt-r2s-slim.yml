@@ -134,7 +134,6 @@ jobs:
         zip ./artifact/R2S-slim-$(date +%Y-%m-%d).zip friendlywrt-rk3328/out/*.img
         cp friendlywrt-rk3328/out/config.seed ./artifact/
         cd ./artifact/
-        zip R2S-slim-$(date +%Y-%m-%d).zip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
         release_tag="NanoPi-R2S-${{ env.DATE1 }}-slim"
@@ -166,4 +165,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.VersionDate }}
-        artifact: ${{ env.FIRMWARE }}
+        artifacts: ${{ env.FIRMWARE }}
