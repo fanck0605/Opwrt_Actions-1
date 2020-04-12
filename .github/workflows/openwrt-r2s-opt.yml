@@ -119,23 +119,25 @@ jobs:
         cd friendlywrt-rk3328
         sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
         ./build.sh nanopi_r2s.mk
-
+    - name: Save config.seed
+      run: |
+        cd friendlywrt-rk3328/friendlywrt
+        ./scripts/diffconfig.sh > ../out/config.seed
+        
     - name: Organize files
       id: organize
       #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         rm -rf ./artifact/
         mkdir -p ./artifact/
-        mv friendlywrt-rk3328/out/*img* ./artifact/
-        cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
-        #cp friendlywrt-rk3328/friendlywrt/.config ./friendlywrt-rk3328/out/
-        #cd friendlywrt-rk3328/out
+        zip ./artifact/R2S-opt-$(date +%Y-%m-%d).zip friendlywrt-rk3328/out/*.img
+        cp friendlywrt-rk3328/out/config.seed ./artifact/
         cd ./artifact/
-        gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        release_tag="NanoPi-R2S-Lean-${{ env.DATE1 }}-slim"
+        release_tag="NanoPi-R2S-${{ env.DATE1 }}-opt"
         echo "##[set-output name=release_tag;]$release_tag"
+        
         
     #- name: Get current date
     #  id: date
@@ -145,7 +147,7 @@ jobs:
       uses: actions/upload-artifact@master
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       with:
-        name: OpenWrt_R2S_slim_firmware
+        name: OpenWrt_R2S_opt_firmware
         path: ${{ env.FIRMWARE }}
 
     - name: Create release
@@ -153,7 +155,7 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: 自动编译|R2S 精简版 ${{ env.DATE1 }}
+        name: 自动编译|R2S 定制版 ${{ env.DATE1 }}
         allowUpdates: true
         tag: ${{ env.DATE2 }}-opt
         commit: master
@@ -163,4 +165,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.VersionDate }}
-        artifact: ${{ env.FIRMWARE }}/*img.gz
+        artifact: ${{ env.FIRMWARE }}
