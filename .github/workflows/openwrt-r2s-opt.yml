@@ -5,7 +5,7 @@
 # For NanoPi R2S opt
 #=================================================
 
-name: Build R2S OpenWrt slim
+name: Build R2S OpenWrt Opt
 
 on:
   release:
