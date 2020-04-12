@@ -9,8 +9,8 @@ on:
 #  release:
 #    types: published
   push:
-    branches:
-      - master
+#    branches:
+#      - master
     paths:
       - '.github/workflows/openwrt-x86-64.yml'
   schedule:
