@@ -8,13 +8,13 @@
 name: Build R2S OpenWrt Opt
 
 on:
-  release:
-    types: published
-  push:
-    branches:
-      - master
-    paths:
-      - '.config'
+#  release:
+#     types: published
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - '.config'
   schedule:
     - cron: 00 18 * * *
   watch:
