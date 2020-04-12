@@ -120,6 +120,11 @@ jobs:
         sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
         ./build.sh nanopi_r2s.mk
 
+    - name: Save config.seed
+      run: |
+        cd friendlywrt-rk3328/friendlywrt
+        ./scripts/diffconfig.sh > ../out/config.seed
+          
     - name: Organize files
       id: organize
       #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
@@ -127,14 +132,12 @@ jobs:
         rm -rf ./artifact/
         mkdir -p ./artifact/
         mv friendlywrt-rk3328/out/*img* ./artifact/
-        cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
-        #cp friendlywrt-rk3328/friendlywrt/.config ./friendlywrt-rk3328/out/
-        #cd friendlywrt-rk3328/out
+        cp friendlywrt-rk3328/out/config.seed ./artifact/
         cd ./artifact/
-        gzip *.img
+        zip R2S-slim-$(date +%Y-%m-%d).zip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        release_tag="NanoPi-R2S-Lean-${{ env.DATE1 }}-slim"
+        release_tag="NanoPi-R2S-${{ env.DATE1 }}-slim"
         echo "##[set-output name=release_tag;]$release_tag"
         
     #- name: Get current date
@@ -163,4 +166,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.VersionDate }}
-        artifact: ${{ env.FIRMWARE }}/*img.gz
+        artifact: ${{ env.FIRMWARE }}
