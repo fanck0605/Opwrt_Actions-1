@@ -165,4 +165,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.VersionDate }}
-        artifact: ${{ env.FIRMWARE }}
+        artifacts: ${{ env.FIRMWARE }}
