@@ -25,7 +25,8 @@ env:
   DIY_SH: x86_diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
+  UPLOAD_FIRMWARE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -107,7 +108,6 @@ jobs:
 
     - name: Organize files
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages        
@@ -118,6 +118,7 @@ jobs:
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       with:
         name: OpenWrt_x64_firmware
         path: ${{ env.FIRMWARE }}
@@ -125,6 +126,7 @@ jobs:
     - name: Create release
       id: create_release
       uses: ncipollo/release-action@v1.6.1
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         name: 自动编译|x64 定制版 ${{ env.DATE }}
         allowUpdates: true
