@@ -2,6 +2,7 @@
 # Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
 # Author: Mod from P3TERX
+# For NanoPi R2S slim
 #=================================================
 
 name: Build R2S OpenWrt slim
