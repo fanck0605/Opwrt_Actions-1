@@ -8,13 +8,13 @@
 name: Build R2S OpenWrt slim
 
 on:
-  release:
-    types: published
+#  release:
+#    types: published
   push:
     branches:
       - master
     paths:
-      - '.config'
+      - '.github/workflows/openwrt-r2s-slim.yml'
   schedule:
     - cron: 00 18 * * *
   watch:
