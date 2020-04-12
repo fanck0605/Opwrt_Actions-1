@@ -10,11 +10,11 @@ name: Build R2S OpenWrt Opt
 on:
 #  release:
 #     types: published
-#  push:
-#    branches:
-#      - master
-#    paths:
-#      - '.config'
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/openwrt-r2s-opt.yml'
   schedule:
     - cron: 00 18 * * *
   watch:
