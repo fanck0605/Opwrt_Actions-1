@@ -6,13 +6,13 @@
 name: Build x86-64bit OpenWrt
 
 on:
-  release:
-    types: published
+#  release:
+#    types: published
   push:
     branches:
       - master
     paths:
-      - '.config'
+      - '.github/workflows/openwrt-x86-64.yml'
   schedule:
     - cron: 15 17 * * *
   watch:
