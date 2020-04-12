@@ -2,9 +2,10 @@
 # Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
 # Author: Mod from P3TERX
+# For NanoPi R2S opt
 #=================================================
 
-name: Build R2S OpenWrt opt
+name: Build R2S OpenWrt slim
 
 on:
   release:
@@ -15,7 +16,7 @@ on:
     paths:
       - '.config'
   schedule:
-    - cron: 10 18 * * *
+    - cron: 00 18 * * *
   watch:
     types: started
 
@@ -27,8 +28,8 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
   UPLOAD_COWTRANSFER: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -46,7 +47,7 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d
         sudo apt-get update
-        sudo apt-get -y --no-install-recommends install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf python3
+        sudo apt-get -y --no-install-recommends install build-essential asciidoc binutils bison bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf python3
         curl https://raw.githubusercontent.com/friendlyarm/build-env-on-ubuntu-bionic/master/install.sh  | sed '/#/d' | sed 's/\\//g' | sed 's/exit 0//g' | sed 's/sudo apt -y install//g' | sed 's/sudo apt-get -y install//g' | sed 's/:i386//g' | xargs sudo apt-get -y --no-install-recommends install
         sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk
 
@@ -69,34 +70,43 @@ jobs:
         . r2s/patch_kernel_5.4.sh
         sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
-    - name: Mods
+    - name: Load config
       run: |
         cd friendlywrt-rk3328
         . ../r2s/remove_unused_config.sh
         cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
-        cat ../$CONFIG_FILE >> ../r2s/base_rk3328.seed
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
-        cd friendlywrt
+        cat ../$CONFIG_FILE >> configs/config_rk3328
+    
+    - name: Merge 
+      run: |
+        cd friendlywrt-rk3328/friendlywrt
         git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-        git remote add upstream $REPO_URL && git fetch upstream
-        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
+        git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
+        git checkout upstream/dev-lean-lede -b tmp
+        git mv README.md README && git commit -m 'undo rename readme for rebasing'
+        git checkout origin/master-v19.07.1
+        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
+        git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
         sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
-        git checkout upstream/master -- feeds.conf.default     
+        git checkout upstream/dev-lean-lede -- feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
+
+   
+   - name: Mod
+      run: |
+        cd friendlywrt-rk3328/friendlywrt
         mv ../../r2s/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
-        mv ../../r2s/autoupdate-slim.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
+        #mv ../../r2s/autoupdate-slim.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
         . ../../$DIY_SH
-        #useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
-        useVersionDate=$(git show -s --date=short --format="date:%cd")
-        #echo "::set-env name=useVersionInfo::$useVersionInfo"
-        echo "::set-env name=useVersionDate::$useVersionDate"
-        echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-        echo "::set-env name=date2::$(date "+%Y-%m-%d")"
+        VersionDate=$(git show -s --date=short --format="date:%cd")
+        echo "::set-env name=VersionDate::$VersionDate"
+        echo "::set-env name=DATE1::$(date "+%Y-%m-%d %H:%M:%S")"
+        echo "::set-env name=DATE2::$(date "+%Y-%m-%d")"
             
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
-
 
     - name: Update Feeds
       run: |
@@ -109,7 +119,7 @@ jobs:
         cd friendlywrt-rk3328
         sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
         ./build.sh nanopi_r2s.mk
-        
+
     - name: Organize files
       id: organize
       #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
@@ -117,38 +127,40 @@ jobs:
         rm -rf ./artifact/
         mkdir -p ./artifact/
         mv friendlywrt-rk3328/out/*img* ./artifact/
+        cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
         #cp friendlywrt-rk3328/friendlywrt/.config ./friendlywrt-rk3328/out/
         #cd friendlywrt-rk3328/out
         cd ./artifact/
         gzip *.img
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        release_tag="NanoPi-R2S-Lean-${{ env.DATE }}-opt"
+        release_tag="NanoPi-R2S-Lean-${{ env.DATE1 }}-slim"
         echo "##[set-output name=release_tag;]$release_tag"
-
+        
+    #- name: Get current date
+    #  id: date
+    #  run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      
     - name: Upload artifact
       uses: actions/upload-artifact@master
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       with:
-        name: OpenWrt_firmware
+        name: OpenWrt_R2S_slim_firmware
         path: ${{ env.FIRMWARE }}
 
-#    - name: Get current date
-#      id: date
-#      run: echo "::set-output name=date::$(date +'%Y%m%d')"
-        
     - name: Create release
       id: create_release
       uses: ncipollo/release-action@v1.6.1
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: 自动编译|R2S 定制版 ${{ env.DATE }}
+        name: 自动编译|R2S 精简版 ${{ env.DATE1 }}
         allowUpdates: true
-        tag: ${{ env.date2 }}-opt
+        tag: ${{ env.DATE2 }}-opt
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
-          ${{ env.useVersionDate }}
+          ${{ env.VersionDate }}
         artifact: ${{ env.FIRMWARE }}/*img.gz
