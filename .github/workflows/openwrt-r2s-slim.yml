@@ -84,7 +84,7 @@ jobs:
         git checkout upstream/master -- feeds.conf.default     
         git apply ../../r2s/enable_autocore.diff
         mv ../../r2s/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
-        mv ../../r2s/autoupdate-slim.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
+        #mv ../../r2s/autoupdate-slim.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
         . ../../$DIY_SH
         #useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         useVersionDate=$(git show -s --date=short --format="date:%cd")
