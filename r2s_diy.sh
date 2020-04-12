@@ -1,7 +1,6 @@
 #!/bin/bash
 #修改版本号
 sed -i 's/OpenWrt/AutoBuild $(date "+%Y.%m.%d") @ OpenWrt/g' package/lean/default-settings/files/zzz-default-settings
-#sed -i 's/R20.4.8/& Mod by Quintus/g' package/lean/default-settings/files/zzz-default-settings
 echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
 #更新软件包    
 rm -rf package/lean/luci-theme-opentomcat
