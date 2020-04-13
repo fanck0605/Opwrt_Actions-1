@@ -8,7 +8,7 @@ if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
 	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
 else
-        mv */FriendWrt*.img.gz ./
+        mv */Frien*.img.gz ./
 	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
 fi
