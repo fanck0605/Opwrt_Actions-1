@@ -157,14 +157,13 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: R2S定制版最新编译时间:${{ env.DATE }}
+        name: R2S最新编译时间:${{ env.DATE }}
         allowUpdates: true
         tag: R2S
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
-          ${{ steps.organize.outputs.release_tag }}
-          源码更新日期：
-          ${{ env.VersionDate }}
+          最新编译版本: ${{ steps.organize.outputs.release_tag }}
+          源码更新日期: ${{ env.VersionDate }}
         artifacts: ${{ env.FIRMWARE }}/*.zip,*.seed
