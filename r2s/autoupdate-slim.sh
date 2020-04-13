@@ -15,10 +15,14 @@ else
 		exit 1
 	fi
 fi
-unzip R2S*.zip
-rm R2S*.zip
-if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
-	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
+#unzip R2S*.zip
+#rm R2S*.zip
+#if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img ]; then
+#	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
+	echo -e '\e[92m准备解压镜像文件\e[0m'
+#fi
+if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img ]; then
+	pv /mnt/mmcblk0p2/R2S*.zip | unzip > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
 fi
 mkdir /mnt/img
