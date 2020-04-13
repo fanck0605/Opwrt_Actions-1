@@ -3,19 +3,21 @@
 
 cd /mnt/mmcblk0p2
 rm -rf FriendlyWrt*img*
-wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date +%Y%m%d)/FriendlyWrt_$(date +%Y%m%d)_NanoPi-R2S_arm64_sd.img.gz
-if [ -f /mnt/mmcblk0p2/Friend*.img.gz ]; then
+wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date +%Y-%m-%d)-opt/R2S-opt-$(date +%Y-%m-%d).zip
+if [ -f /mnt/mmcblk0p2/R2S*.zip ]; then
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
 else
 	echo -e '\e[91m今天的固件还没更新，尝试下载昨天的固件\e[0m'
-	wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date +%Y%m%d)/FriendlyWrt_$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y%m%d)_NanoPi-R2S_arm64_sd.img.gz
-	if [ -f /mnt/mmcblk0p2/Friend*.img.gz ]; then
+	wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)-opt/R2S-opt-$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d).zip
+	if [ -f /mnt/mmcblk0p2/R2S*.zip ]; then
 		echo -e '\e[92m昨天的固件已下载，准备解压\e[0m'
 	else
 		echo -e '\e[91m没找到最新的固件，脚本退出\e[0m'
 		exit 1
 	fi
 fi
+unzip R2S*.zip
+rm R2S*.zip
 if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
 	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
