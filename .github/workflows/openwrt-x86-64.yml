@@ -138,4 +138,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.useVersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz
+        artifacts: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz,${{ env.FIRMWARE }}/config*
