@@ -33,11 +33,11 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.s
 - [Klever1988](https://github.com/klever1988/nanopi-openwrt)
 - [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
-## License
+#### License
 [MIT]
 
 
-## 系统界面截图：
+#### 系统界面部分截图：
 ![diskman](pic/diskman.jpg)
 ![dockerman](pic/docker.jpg)
 ![transmission](pic/transmission.jpg)
