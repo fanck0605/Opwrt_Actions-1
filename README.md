@@ -11,16 +11,20 @@
 3. 下载见[R2S定制](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
 4. 精简版支持SSRP、diskman、samba4、frpc/frps、ttyd，去掉全部广告拦截及openvpn，详细见[r2s.config]( ./r2s.config)
 5. 定制版在精简版基础上增加广告拦截、docker、openvpn、transmission、openvpn等，详细见:[r2s_opt.config]( ./r2s_opt.config)
-6. 感谢gary lau的在线更新脚本，可保持配置在线更新，并支持互刷
+6. 感谢gary lau的在线更新脚本，可保持配置在线更新，并支持互刷，通过web管理页面的TTYD或SSH到R2S后执行如下命令
 <br> 精简版保持配置在线更新:
 ```
-wget -qO- https://raw.githubusercontent.com/ardanzhu/Opwrt_Actions/master/r2s/autoupdate-slim.sh | sh
+wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/autoupdate-slim.sh | sh
 ```
 <br> 定制版保持配置在线更新:
 ```
-wget -qO- https://raw.githubusercontent.com/ardanzhu/Opwrt_Actions/master/r2s/autoupdate-opt.sh | sh
+wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/autoupdate-opt.sh | sh
 ```
 7. 不保持配置的刷机方法：
+通过web管理页的文件传输，把R2S*.zip(无需解压)上传到R2S的/tmp/upload文件夹，再通过web管理页面的TTYD或SSH到R2S后执行如下命令：
+```
+wget -q0- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.sh | sh
+```
 
 ## 感谢
 - [OpenWrt](https://github.com/openwrt/openwrt)
