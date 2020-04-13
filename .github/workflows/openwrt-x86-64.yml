@@ -14,7 +14,7 @@ on:
     paths:
       - '.github/workflows/openwrt-x86-64.yml'
   schedule:
-    - cron: 15 17 * * *
+    - cron: 16 17 * * *
   watch:
     types: started
 
@@ -55,13 +55,10 @@ jobs:
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
-        #useVersionInfo=$(git show -s --date=short --format="Author: %an<br/>date: %cd<br/>commit: %s<br/>commit hash: %H")
         useVersionDate=$(git show -s --date=short --format="date:%cd")
-        #echo "::set-env name=useVersionInfo::$useVersionInfo"
         echo "::set-env name=useVersionDate::$useVersionDate"       
-        #echo "::set-env name=DATE::$(date "+%Y-%m-%d")"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-        echo "::set-env name=date2::$(date "+%Y-%m-%d")"
+        #echo "::set-env name=date2::$(date "+%Y-%m-%d")"
 
 
     - name: Update feeds
@@ -110,10 +107,11 @@ jobs:
       id: organize
       run: |
         cd openwrt/bin/targets/*/*
-        rm -rf packages        
+        rm -rf packages
+        zip x86-slim-$(date +%Y-%m-%d).zip *combined-squashfs.img.gz
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        release_tag="x86-64bit-Lean-${{ env.DATE }}-slim"
+        release_tag="Openwrt-x86-64bit-lean-${{ env.DATE }}-slim"
         echo "##[set-output name=Release_tag;]$release_tag"
 
     - name: Upload artifact
@@ -128,14 +126,14 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: 自动编译|x64 定制版 ${{ env.DATE }}
+        name: x64 精简版|最新编译时间: ${{ env.DATE }}
         allowUpdates: true
-        tag: ${{ env.date2 }}
+        tag: x64-slim
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           ${{ steps.organize.outputs.release_tag }}
-          源码更新日期：
+          最新源码更新时间：
           ${{ env.useVersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*combined-squashfs.img.gz,${{ env.FIRMWARE }}/config*
+        artifacts: ${{ env.FIRMWARE }}/x86*.zip,${{ env.FIRMWARE }}/config*
