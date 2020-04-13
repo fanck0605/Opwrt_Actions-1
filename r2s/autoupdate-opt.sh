@@ -1,14 +1,13 @@
 #!/bin/sh
 
-
 cd /mnt/mmcblk0p2
-rm -rf FriendlyWrt*img*
-wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date +%Y-%m-%d)-opt/R2S-opt-$(date +%Y-%m-%d).zip
+rm -rf FriendlyWrt*img* R2S*
+wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/R2S/R2S-opt-$(date +%Y-%m-%d).zip
 if [ -f /mnt/mmcblk0p2/R2S*.zip ]; then
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
 else
 	echo -e '\e[91m今天的固件还没更新，尝试下载昨天的固件\e[0m'
-	wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)-opt/R2S-opt-$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d).zip
+	wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/R2S/R2S-opt-$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d).zip
 	if [ -f /mnt/mmcblk0p2/R2S*.zip ]; then
 		echo -e '\e[92m昨天的固件已下载，准备解压\e[0m'
 	else
@@ -22,6 +21,7 @@ if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
 	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
 fi
+rm -rf /mnt/img
 mkdir /mnt/img
 losetup -o 100663296 /dev/loop0 /mnt/mmcblk0p2/FriendlyWrt.img
 mount /dev/loop0 /mnt/img
