@@ -2,8 +2,8 @@
 cd /mnt/mmcblk0p2
 rm -rf artifact R2S*.zip FriendlyWrt*img*
 mv /tmp/upload/R2S*.zip ./
-unzip R2S*.zip
-rm R2S*.zip
+unzip ./R2S*.zip
+rm ./R2S*.zip
 mv */*.img.gz ./
 if [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
 	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
