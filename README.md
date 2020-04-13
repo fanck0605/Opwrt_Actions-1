@@ -25,7 +25,15 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/autoupdate-op
 ```
 wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.sh | sh
 ```
+8. 保持常用配置刷机方法：
+通过web管理页的文件传输，把R2S*.zip(无需解压)上传到R2S的/tmp/upload文件夹，再通过web管理页面的TTYD或SSH到R2S后执行如下命令：
+```
+wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/keep_update.sh | sh
+```
 
+8. 保持常用配置刷机方法：
+8. 保持常用配置刷机方法：
+8. 保持常用配置刷机方法：
 ### 感谢
 - [OpenWrt](https://github.com/openwrt/openwrt)
 - [OpenWrt](https://github.com/openwrt/openwrt)
