@@ -1,28 +1,26 @@
-## 自动编译说明
-1. 参考[Klever1988](https://github.com/klever1988/nanopi-openwrt)自动编译R2S固件
-2. 参考[P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
-
-
 ## Openwrt x86精简版：
-1. x86 64bit 精简版，默认管理地址:192.168.1.1 用户名:root 密码:password
+1. 参考[P3TERX](https://github.com/P3TERX/Actions-OpenWrt)的自动编译，使用[Lean]（https://github.com/coolsnowwolf/lede）最新源码
+2. x86 64bit 精简版，默认管理地址:192.168.1.1 用户名:root 密码:password
 2. 精简版比较适合vm下使用，仅支持常见软路由功能。
 3. 与另一自动编译项目的精简版固件一致 :https://github.com/ardanzhu/lede-openwrt-ci
-
+4. 下载见[OpenWrt x86](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/x64-slim)
 
 ## NanoPi R2S说明
-
-1. 精简版支持SSRP、diskman、samba4、frpc/frps、ttyd，去掉全部广告拦截及openvpn，详细见[r2s.config]( ./r2s.config)
-<br> 在线更新:
+1. 完全跟随[Klever1988](https://github.com/klever1988/nanopi-openwrt)的方式编译R2S固件
+2. 默认管理地址:192.168.2.1  用户名:root  密码:password 
+3. 下载见[R2S定制](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
+4. 精简版支持SSRP、diskman、samba4、frpc/frps、ttyd，去掉全部广告拦截及openvpn，详细见[r2s.config]( ./r2s.config)
+5. 定制版在精简版基础上增加广告拦截、docker、openvpn、transmission、openvpn等，详细见:[r2s_opt.config]( ./r2s_opt.config)
+6. 感谢gary lau的在线更新脚本，可保持配置在线更新，并支持互刷
+<br> 精简版保持配置在线更新:
 ```
 wget -qO- https://raw.githubusercontent.com/ardanzhu/Opwrt_Actions/master/r2s/autoupdate-slim.sh | sh
 ```
-2. 定制版在精简版基础上增加广告拦截、docker、openvpn、transmission、openvpn等，详细见:[r2s_opt.config]( ./r2s_opt.config)
-<br> 在线更新:
+<br> 定制版保持配置在线更新:
 ```
 wget -qO- https://raw.githubusercontent.com/ardanzhu/Opwrt_Actions/master/r2s/autoupdate-opt.sh | sh
 ```
-3. 感谢gary lau的在线更新脚本
-
+7. 不保持配置的刷机方法：
 
 ## 感谢
 - [OpenWrt](https://github.com/openwrt/openwrt)
