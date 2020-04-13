@@ -126,7 +126,7 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: x64 精简版|最新编译时间: ${{ env.DATE }}
+        name: x64精简版最新编译时间:${{ env.DATE }}
         allowUpdates: true
         tag: x64-slim
         commit: master
