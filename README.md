@@ -6,7 +6,7 @@
 4. 下载见[OpenWrt x86](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/x64-slim)
 
 ### NanoPi R2S说明
-1. 完全跟进[Klever1988](https://github.com/klever1988/nanopi-openwrt)的方式编译R2S固件，只按使用习惯筛选应用再分成一瘦一肥两版本，Web管理主题改成清爽的opentomcat
+1. 完全跟进[Klever1988](https://github.com/klever1988/nanopi-openwrt)的方式编译R2S固件，按个人使用重新筛选应用分成两版本，Web管理主题改成清爽的opentomcat
 2. 默认管理地址:192.168.2.1  用户名:root  密码:password
 3. 下载见[R2S定制](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
 4. 精简版支持SSRP、Passwall、diskman、samba4、frpc/frps、ttyd，去掉全部广告拦截及openvpn，详细见[r2s.config]( ./r2s.config)
