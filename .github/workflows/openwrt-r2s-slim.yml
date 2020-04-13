@@ -10,11 +10,11 @@ name: Build R2S OpenWrt slim
 on:
 #  release:
 #    types: published
-  push:
+#  push:
 #    branches:
 #      - master
-    paths:
-      - '.github/workflows/openwrt-r2s-slim.yml'
+#    paths:
+#      - '.github/workflows/openwrt-r2s-slim.yml'
   schedule:
     - cron: 00 18 * * *
   watch:
@@ -163,7 +163,6 @@ jobs:
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
-          ${{ steps.organize.outputs.release_tag }}
-          源码最近更新时间：
-          ${{ env.VersionDate }}
+          最新编译版本: ${{ steps.organize.outputs.release_tag }}
+          源码最近更新时间: ${{ env.VersionDate }}
         artifacts: ${{ env.FIRMWARE }}/*.zip,*.seed
