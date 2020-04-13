@@ -8,11 +8,11 @@ name: Build x86-64bit OpenWrt
 on:
 #  release:
 #    types: published
-  push:
+# push:
 #    branches:
 #      - master
-    paths:
-      - '.github/workflows/openwrt-x86-64.yml'
+#    paths:
+#      - '.github/workflows/openwrt-x86-64.yml'
   schedule:
     - cron: 16 17 * * *
   watch:
