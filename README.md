@@ -6,7 +6,7 @@
 4. 下载见[OpenWrt x86](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/x64-slim)
 
 ### NanoPi R2S说明
-1. 完全跟随[Klever1988](https://github.com/klever1988/nanopi-openwrt)的方式编译R2S固件，只按使用习惯分成两个版本。
+1. 完全跟进[Klever1988](https://github.com/klever1988/nanopi-openwrt)的方式编译R2S固件，只按使用习惯筛选应用再分成一瘦一肥两版本。
 2. 默认管理地址:192.168.2.1  用户名:root  密码:password 
 3. 下载见[R2S定制](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
 4. 精简版支持SSRP、diskman、samba4、frpc/frps、ttyd，去掉全部广告拦截及openvpn，详细见[r2s.config]( ./r2s.config)
@@ -20,7 +20,6 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/autoupdate-sl
 ```
 wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/autoupdate-opt.sh | sh
 ```
-``
 7. 不保持配置的刷机方法：
 通过web管理页的文件传输，把R2S*.zip(无需解压)上传到R2S的/tmp/upload文件夹，再通过web管理页面的TTYD或SSH到R2S后执行如下命令：
 ```
