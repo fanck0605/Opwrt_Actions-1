@@ -100,8 +100,7 @@ jobs:
         . ../../$DIY_SH
         VersionDate=$(git show -s --date=short --format="date:%cd")
         echo "::set-env name=VersionDate::$VersionDate"
-        echo "::set-env name=DATE1::$(date "+%Y-%m-%d %H:%M:%S")"
-        echo "::set-env name=DATE2::$(date "+%Y-%m-%d")"
+        echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
             
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
@@ -138,7 +137,7 @@ jobs:
         rm *.img.gz
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
-        release_tag="NanoPi-R2S-${{ env.DATE1 }}-slim"
+        release_tag="NanoPi-R2S-${{ env.DATE }}-slim"
         echo "##[set-output name=release_tag;]$release_tag"
         
     #- name: Get current date
@@ -157,14 +156,14 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: 自动编译|R2S 精简版 ${{ env.DATE1 }}
+        name: R2S精简版最新编译时间:${{ env.DATE }}
         allowUpdates: true
-        tag: ${{ env.DATE2 }}-slim
+        tag: R2S-slim
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           ${{ steps.organize.outputs.release_tag }}
-          源码更新日期：
+          源码最近更新时间：
           ${{ env.VersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*
+        artifacts: ${{ env.FIRMWARE }}/*.zip,config.*
