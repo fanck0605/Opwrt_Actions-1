@@ -130,7 +130,7 @@ jobs:
         rm -rf ./artifact/
         mkdir -p ./artifact/
         mv friendlywrt-rk3328/out/*img* ./artifact/
-        cp friendlywrt-rk3328/out/config.seed ./artifact/
+        cp friendlywrt-rk3328/out/config.seed ./artifact/config-opt.seed
         cd ./artifact/
         gzip *.img
         zip R2S-slim-$(date +%Y-%m-%d).zip *.img.gz
@@ -159,7 +159,7 @@ jobs:
       with:
         name: R2S定制版最新编译时间:${{ env.DATE }}
         allowUpdates: true
-        tag: R2S-opt
+        tag: R2S
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
@@ -167,4 +167,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码更新日期：
           ${{ env.VersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*.zip,config.*
+        artifacts: ${{ env.FIRMWARE }}/*.zip,*.seed
