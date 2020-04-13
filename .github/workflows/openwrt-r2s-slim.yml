@@ -130,7 +130,7 @@ jobs:
         rm -rf ./artifact/
         mkdir -p ./artifact/
         mv friendlywrt-rk3328/out/*img* ./artifact/
-        cp friendlywrt-rk3328/out/config.seed ./artifact/
+        cp friendlywrt-rk3328/out/config.seed ./artifact/config-slim.seed
         cd ./artifact/
         gzip *.img
         zip R2S-slim-$(date +%Y-%m-%d).zip *.img.gz
@@ -156,9 +156,9 @@ jobs:
       uses: ncipollo/release-action@v1.6.1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        name: R2S精简版最新编译时间:${{ env.DATE }}
+        name: R2S最新编译时间:${{ env.DATE }}
         allowUpdates: true
-        tag: R2S-slim
+        tag: R2S
         commit: master
         replacesArtifacts: true
         token: ${{ secrets.RELEASES_TOKEN }}
@@ -166,4 +166,4 @@ jobs:
           ${{ steps.organize.outputs.release_tag }}
           源码最近更新时间：
           ${{ env.VersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*.zip,config.*
+        artifacts: ${{ env.FIRMWARE }}/*.zip,*.seed
