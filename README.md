@@ -30,10 +30,6 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.s
 ```
 wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/keep_update.sh | sh
 ```
-
-8. 保持常用配置刷机方法：
-8. 保持常用配置刷机方法：
-8. 保持常用配置刷机方法：
 ### 感谢
 - [OpenWrt](https://github.com/openwrt/openwrt)
 - [OpenWrt](https://github.com/openwrt/openwrt)
