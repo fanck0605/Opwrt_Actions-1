@@ -31,10 +31,9 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.s
 wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/keep_update.sh | sh
 ```
 ### 感谢
-- [OpenWrt](https://github.com/openwrt/openwrt)
-- [OpenWrt](https://github.com/openwrt/openwrt)
-- [P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
+- [Lean]（https://github.com/coolsnowwolf/lede）
 - [Klever1988](https://github.com/klever1988/nanopi-openwrt)
+- [P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
 - [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
 #### License
