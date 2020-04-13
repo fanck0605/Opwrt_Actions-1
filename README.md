@@ -23,7 +23,7 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/autoupdate-op
 7. 不保持配置的刷机方法：
 通过web管理页的文件传输，把R2S*.zip(无需解压)上传到R2S的/tmp/upload文件夹，再通过web管理页面的TTYD或SSH到R2S后执行如下命令：
 ```
-wget -q0- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.sh | sh
+wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.sh | sh
 ```
 
 ## 感谢
