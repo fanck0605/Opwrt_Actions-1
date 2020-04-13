@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd /mnt/mmcblk0p2
-rm -rf FriendlyWrt*img*
+rm -rf FriendlyWrt*img* R2S*
 wget https://github.com/ardanzhu/Opwrt_Actions/releases/download/R2S-slim/R2S-slim-$(date +%Y-%m-%d).zip
 if [ -f /mnt/mmcblk0p2/R2S*.zip ]; then
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
