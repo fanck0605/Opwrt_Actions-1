@@ -30,6 +30,11 @@ wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/freshupdate.s
 ```
 wget -qO- https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/keep_update.sh | sh
 ```
+!!!注意：从其它版本的固件刷机，请先安装好依赖：
+```
+opkg update
+opkg install zstd
+```
 ### 感谢
 - [Lean]（https://github.com/coolsnowwolf/lede）
 - [Klever1988](https://github.com/klever1988/nanopi-openwrt)
