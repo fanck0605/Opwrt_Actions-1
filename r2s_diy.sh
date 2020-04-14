@@ -13,6 +13,7 @@ git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frp
 git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
 git clone https://github.com/lisaac/luci-app-dockerman.git package/lean/luci-app-dockerman
 git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-diskman
+git clone https://github.com/songchenwen/nanopi-r2s/tree/master/luci-app-r2sflasher package/lean/luci-app-r2sflasher
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
 sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
 sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
