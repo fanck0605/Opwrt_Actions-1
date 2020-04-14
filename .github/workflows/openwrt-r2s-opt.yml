@@ -165,4 +165,4 @@ jobs:
         body: |
           最新编译版本: ${{ steps.organize.outputs.release_tag }}
           源码更新日期: ${{ env.VersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*.zip,*.seed
+        artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/*.seed
