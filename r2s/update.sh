@@ -20,7 +20,7 @@ while [ $rom -eq 0 ]
 		echo
 		echo " 7. 退出"
 		echo
-		read -p "$(echo -e "请选择 [\e[95m1-6\e[0m]:")" rom
+		read -p "$(echo -e "请选择 [\e[95m1-7\e[0m]:")" rom
 		case $rom in
 		1)
 			rom=1;;		
@@ -41,8 +41,7 @@ while [ $rom -eq 0 ]
 			echo
 			echo -e '\e[91m输入错误，请重新输入\e[0m'
 			;;
-		7)      rom=7
-		        exit 1
+		7)      exit 1
 			;;
 		esac
 	done
