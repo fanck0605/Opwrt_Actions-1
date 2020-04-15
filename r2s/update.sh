@@ -42,7 +42,7 @@ while [ $rom -eq 0 ]
 			rom=0
 			echo
 			echo -e '\e[91m输入错误，请重新输入\e[0m'
-			sleep 5s
+			sleep 2s
 			;;
 		esac
 	done
