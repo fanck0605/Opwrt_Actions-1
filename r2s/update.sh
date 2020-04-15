@@ -35,13 +35,13 @@ while [ $rom -eq 0 ]
 		6)
 			rom=6
 			read -p "$(echo -e "\e[92m请输入固件下载地址\e[0m:")" address
-			;;	
+			;;
+		7)      exit 1
+			;;
 		*)
 			rom=0
 			echo
 			echo -e '\e[91m输入错误，请重新输入\e[0m'
-			;;
-		7)      exit 1
 			;;
 		esac
 	done
