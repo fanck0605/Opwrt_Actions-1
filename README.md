@@ -33,6 +33,7 @@ wget -q https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/update.sh && sh
 #### 系统界面部分截图：
 ![freshupdate](pic/freshupdate.jpg)
 ![onlineupdate](pic/R2S_autoupdate.jpg)
+![r2sflasher](pic/R2Sflasher.jpg)
 ![diskman](pic/diskman.jpg)
 ![dockerman](pic/docker.jpg)
 ![transmission](pic/transmission.jpg)
