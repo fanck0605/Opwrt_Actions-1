@@ -62,10 +62,11 @@ jobs:
 
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: |
+        sed -i 's/\"#src-git\"/\"src-git\"/g' ./feeds.conf.default
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
 
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
         
     - name: Load custom configuration
       run: |
