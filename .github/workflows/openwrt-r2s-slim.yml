@@ -89,6 +89,7 @@ jobs:
         git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
         sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
         git checkout upstream/dev-lean-lede -- feeds.conf.default
+        sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
 
    
