@@ -15,6 +15,15 @@ git clone https://github.com/lisaac/luci-app-dockerman.git package/lean/luci-app
 git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-diskman
 #git clone https://github.com/songchenwen/nanopi-r2s/tree/master/luci-app-r2sflasher package/lean/luci-app-r2sflasher
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
+
+sed -i '/uci commit luci/a\uci commit firewall' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit luci/a\uci set firewall.@zone[1].forward=REJECT' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit luci/a\uci set firewall.@zone[1].input=REJECT' package/lean/default-settings/files/zzz-default-settings
+
+sed -i '/uci commit luci/a\uci commit dropbear' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit luci/a\uci set dropbear.@dropbear[0].Interface='lan'' package/lean/default-settings/files/zzz-default-settings
+
+
 sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
 sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
