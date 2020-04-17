@@ -80,19 +80,16 @@ jobs:
     - name: Merge 
       run: |
         cd friendlywrt-rk3328/friendlywrt
+        cd friendlywrt
         git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-        git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
-        git checkout upstream/dev-lean-lede -b tmp
-        git mv README.md README && git commit -m 'undo rename readme for rebasing'
-        git checkout origin/master-v19.07.1
-        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
+        git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
+        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
         git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
         #sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
-        git checkout upstream/dev-lean-lede -- feeds.conf.default
-        sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
+        git checkout upstream/master -- feeds.conf.default
+        sed -i 's/\"#src-git\"/\"src-git\"/g' feeds.conf.default
+        #sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
         sed -i '$a\src-git r2sflasher https://github.com/songchenwen/nanopi-r2s' feeds.conf.default
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
         git apply ../../r2s/enable_autocore.diff
 
    
