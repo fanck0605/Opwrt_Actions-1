@@ -105,11 +105,11 @@ jobs:
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
 
-    - name: Update Feeds
-      run: |
-        cd friendlywrt-rk3328/friendlywrt
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
+#    - name: Update Feeds
+#      run: |
+#        cd friendlywrt-rk3328/friendlywrt
+#        ./scripts/feeds update -a
+#        ./scripts/feeds install -a
 
     - name: Build FriendlyWrt
       run: |
