@@ -67,7 +67,6 @@ jobs:
     - name: Patch Kernel
       run: |
         . r2s/patch_kernel_5.4.sh
-        sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
     - name: Load config
       run: |
@@ -77,18 +76,18 @@ jobs:
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
         cat ../$CONFIG_FILE >> configs/config_rk3328
     
+        
     - name: Merge 
       run: |
-        cd friendlywrt-rk3328/friendlywrt
-        git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-        git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
-        git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
-        git checkout upstream/master -- feeds.conf.default
-        sed -i 's/\"#src-git\"/\"src-git\"/g' feeds.conf.default
+        cd friendlywrt-rk3328
+        git clone https://github.com/coolsnowwolf/lede
+        cd friendlywrt
+        cp -r ../lede/package/lean package/
+        sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+        sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
         sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
         sed -i '$a\src-git r2sflasher https://github.com/songchenwen/nanopi-r2s' feeds.conf.default
-        git apply ../../r2s/enable_autocore.diff
+        git apply ../../r2s/enable_autocore.diff        
 
    
     - name: Mod
@@ -105,19 +104,19 @@ jobs:
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
 
-    - name: Update Feeds
-      run: |
-        cd friendlywrt-rk3328/friendlywrt
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
+#    - name: Update Feeds
+#      run: |
+#        cd friendlywrt-rk3328/friendlywrt
+#        ./scripts/feeds update -a
+#        ./scripts/feeds install -a
 
-    - name: Download package
-      id: package
-      run: |
-        cd friendlywrt-rk3328/friendlywrt
-        make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+#    - name: Download package
+#      id: package
+#     run: |
+#        cd friendlywrt-rk3328/friendlywrt
+#        make download -j8
+#        find dl -size -1024c -exec ls -l {} \;
+#        find dl -size -1024c -exec rm -f {} \;
 
     - name: Build FriendlyWrt
       run: |
