@@ -87,7 +87,7 @@ jobs:
         #sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
         git checkout upstream/master -- feeds.conf.default
         sed -i 's/\"#src-git\"/\"src-git\"/g' feeds.conf.default
-        #sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
+        sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
         sed -i '$a\src-git r2sflasher https://github.com/songchenwen/nanopi-r2s' feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
    
