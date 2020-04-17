@@ -25,7 +25,7 @@ env:
   REPO_BRANCH: master
   CONFIG_FILE: r2s.config
   DIY_SH: r2s_diy.sh
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_RELEASE: true
@@ -103,15 +103,17 @@ jobs:
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
       
+
+    - name: Update Feeds
+      run: |
+        cd friendlywrt-rk3328/friendlywrt
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
     - name: Install UPX
       run: |
         ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
-#    - name: Update Feeds
-#      run: |
-#        cd friendlywrt-rk3328/friendlywrt
-#        ./scripts/feeds update -a
-#        ./scripts/feeds install -a
-
+        
     - name: Build FriendlyWrt
       run: |
         cd friendlywrt-rk3328
