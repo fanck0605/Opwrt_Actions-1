@@ -98,15 +98,14 @@ jobs:
         VersionDate=$(git show -s --date=short --format="date:%cd")
         echo "::set-env name=VersionDate::$VersionDate"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-            
-    - name: Install UPX
-      run: |
-        ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
     
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
-
+      
+    - name: Install UPX
+      run: |
+        ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
 #    - name: Update Feeds
 #      run: |
 #        cd friendlywrt-rk3328/friendlywrt
