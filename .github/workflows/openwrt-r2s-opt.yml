@@ -17,8 +17,8 @@ on:
 #      - '.github/workflows/openwrt-r2s-opt.yml'
   schedule:
     - cron: 00 21 * * *
-  #watch:
-  #  types: started
+  watch:
+    types: started
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
