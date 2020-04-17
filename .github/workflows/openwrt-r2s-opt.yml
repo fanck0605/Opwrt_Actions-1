@@ -102,8 +102,13 @@ jobs:
             
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
-      if: env.SSH_ACTIONS == 'true'
+      if: env.SSH_ACTIONS == 'true'     
       
+      
+    - name: Update Target.mk
+      run: |
+        cd friendlywrt-rk3328/friendlywrt/include
+        sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
 
           
     - name: Update Feeds
