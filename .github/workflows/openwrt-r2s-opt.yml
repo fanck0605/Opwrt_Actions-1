@@ -103,7 +103,11 @@ jobs:
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
-
+      
+    - name: Install UPX
+      run: |
+        ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
+          
 #    - name: Update Feeds
 #      run: |
 #        cd friendlywrt-rk3328/friendlywrt
