@@ -28,7 +28,6 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
-  UPLOAD_COWTRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
@@ -108,24 +107,7 @@ jobs:
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'     
-      
-      
-#    - name: Update Target.mk
-#      run: |
-#        cd friendlywrt-rk3328/friendlywrt/include
-#        sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
-
-          
-#    - name: Update Feeds
-#      run: |
-#        cd friendlywrt-rk3328/friendlywrt
-#        ./scripts/feeds update -a
-#        ./scripts/feeds install -a
-
-#    - name: Install UPX
-#      run: |
-#        ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
-#        
+         
     - name: Build FriendlyWrt
       run: |
         cd friendlywrt-rk3328
