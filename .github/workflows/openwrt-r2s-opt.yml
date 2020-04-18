@@ -85,11 +85,7 @@ jobs:
         git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
         rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
         git checkout upstream/master -- feeds.conf.default
-        sed -i 's/\"#src-git\"/\"src-git\"/g' ./feeds.conf.default
-        #sed -i '5s/#src-git/src-git/g' feeds.conf.default
-        #sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-        #sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-        sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
+        sed -i '5s/#src-git/src-git/g' feeds.conf.default
         sed -i '$a\src-git scw https://github.com/songchenwen/nanopi-r2s' feeds.conf.default
         git apply ../../r2s/enable_autocore.diff
 
