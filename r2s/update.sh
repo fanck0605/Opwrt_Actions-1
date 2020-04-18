@@ -1,7 +1,10 @@
 #!/bin/sh
-rom=0; 	#rom值若为0，则会出现可选菜单，也可手动改为1-6，将不会出现选项
+
+rom=0; 	#rom值若为0，则会出现可选菜单，也可手动改为1-7，将不会出现选项
 backup=0; 	#backup值若为0，则会出现可选菜单，也可手动改为1-2，将不会出现选项
 mode=0; 	#mode值若为0，则会出现可选菜单，也可手动改为1-2，将不会出现选项
+checknet=0; 	#checknet值若为0，则会出现可选菜单，也可手动改为1-2，将不会出现选项
+suffix=1; 	#判定升级文件名后缀，无需改动，保持1即可
 while [ $rom -eq 0 ]
 	do
 		echo
@@ -14,13 +17,15 @@ while [ $rom -eq 0 ]
 		echo
 		echo " 4. 升级R2S-opt（ardanzhu编译）"
 		echo
-		echo " 5. 本地升级（固件以ZIP格式放在/tmp/upload目录）"
+		echo " 5. 本地升级（固件以R2S*.zip或Friendly*.img.gz格式放在/tmp/upload目录，优先判定zip格式）"
 		echo
-		echo " 6. 输入固件下载地址"
+		echo " 6. 输入zip格式固件下载地址"
 		echo
-		echo " 7. 退出"
+		echo " 7. 输入img.gz格式固件下载地址"
 		echo
-		read -p "$(echo -e "请选择 [\e[95m1-7\e[0m]:")" rom
+		echo " 8. 退出"
+		echo
+		read -p "$(echo -e "请选择 [\e[95m1-8\e[0m]:")" rom
 		case $rom in
 		1)
 			rom=1;;		
@@ -31,18 +36,22 @@ while [ $rom -eq 0 ]
 		4)
 			rom=4;;
 		5)
-			rom=5;;	
+			rom=5;;
 		6)
 			rom=6
 			read -p "$(echo -e "\e[92m请输入固件下载地址\e[0m:")" address
-			;;
-		7)      exit 1
+			;;	
+		7)
+			rom=7
+			read -p "$(echo -e "\e[92m请输入固件下载地址\e[0m:")" address
+			;;	
+		8)
+			exit 1
 			;;
 		*)
 			rom=0
 			echo
 			echo -e '\e[91m输入错误，请重新输入\e[0m'
-			sleep 0.5s
 			;;
 		esac
 	done
@@ -65,6 +74,30 @@ while [ $backup -eq 0 ]
 			backup=2;;
 		*)
 			backup=0
+			echo
+			echo -e '\e[91m输入错误，请重新输入\e[0m'
+			;;
+		esac
+	done
+
+while [ $checknet -eq 0 ]
+	do
+		echo
+		echo "...........欢迎使用 R2S 一键升级脚本.........."
+		echo " 1. 写入防掉线脚本（开机自动运行）"
+		echo
+		echo " 2. 不写入"
+		echo
+		echo
+		read -p "$(echo -e "请选择 [\e[95m1-2\e[0m]，默认为1:")" checknet
+		[[ -z $checknet ]] && mode="1"
+		case $checknet in
+		1)
+			checknet=1;;
+		2)
+			checknet=2;;
+		*)
+			checknet=0
 			echo
 			echo -e '\e[91m输入错误，请重新输入\e[0m'
 			;;
@@ -95,6 +128,12 @@ while [ $mode -eq 0 ]
 		esac
 	done
 
+if [  ! -d /mnt/mmcblk0p2 ] ; then #部分固件没有挂载/dev/mmcblk0p2分区，增加一个简单检测
+	mkdir /mnt/mmcblk0p2
+	mount /dev/mmcblk0p2 /mnt/mmcblk0p2
+fi
+chmod +x update.sh
+cp -f update.sh /mnt/mmcblk0p2/; #对update文件的简单处理，使网络运行的脚本可以直接写入更新后的固件中，下次直接输入update.sh即可使用
 cd /mnt/mmcblk0p2
 echo '检查依赖文件...'
 if ! type "unzip" > /dev/null; then
@@ -127,7 +166,7 @@ if [ $mode -eq 1 ]; then
 		opkg install /www/pigz_2.4-1_aarch64_cortex-a53.ipk
 		else
 			rm pigz_2.4-1_aarch64_cortex-a53.ipk
-			wget https://github.com/lsl330/AutoBuild-Nanopi-R2S/releases/download/pigz/pigz_2.4-1_aarch64_cortex-a53.ipk
+			wget https://github.com/lsl330/R2S-SCRIPTS/raw/master/pigz_2.4-1_aarch64_cortex-a53.ipk
 			opkg install pigz_2.4-1_aarch64_cortex-a53.ipk
 			cp pigz_2.4-1_aarch64_cortex-a53.ipk /www
 		fi
@@ -214,12 +253,15 @@ if [ $rom -eq 4 ]; then	#下载R2S-opt固件
 fi
 
 if [ $rom -eq 5 ]; then	#上传本地rom
-	if [ -f /tmp/upload/R2S*.zip ]; then  #检测upload目录是否有升级文件
+	if [ -f /tmp/upload/R2S*.zip ]; then  #检测upload目录是否有zip升级文件
 		echo -e '\e[92m找到本地固件，准备解压\e[0m'
 		mv /tmp/upload/R2S*.zip /mnt/mmcblk0p2/
+	elif [ -f /tmp/upload/Friendly*.img.gz ]; then	 #检测upload目录是否有img.gz升级文件
+		suffix=2
+		mv /tmp/upload/Friendly*.zip /mnt/mmcblk0p2/FriendlyWrt-ROM.img.gz
 	elif [ -f /mnt/mmcblk0p2/R2S*.zip ]; then  #检测upload目录是否有升级文件
 		echo -e '\e[92m找到本地固件，准备解压\e[0m'
-		else
+	else
 		echo -e '\e[91m没找到本地固件，脚本退出\e[0m'
 		exit 1
 	fi
@@ -235,33 +277,52 @@ if [ $rom -eq 6 ]; then	#指定下载地址
 	fi
 fi
 
-unzip R2S*.zip
-rm R2S*.zip
+if [ $rom -eq 7 ]; then	#指定下载地址
+	wget $address -O /mnt/mmcblk0p2/FriendlyWrt-ROM.img.gz
+	if [ -f /mnt/mmcblk0p2/FriendlyWrt-ROM.img.gz ]; then
+		suffix=2
+		echo -e '\e[92m固件已下载，准备解压\e[0m'
+	else
+		echo -e '\e[91m指定位置没找到固件，脚本退出\e[0m'
+		exit 1
+	fi
+fi
+
+if [ $suffix -eq 1 ]; then	#zip格式固件，进行解压
+	unzip R2S*.zip
+	rm R2S*.zip
+fi
 
 if [ -f /mnt/mmcblk0p2/artifact/FriendlyWrt*.img.gz ]; then  #统一解压固件路径
 	pv /mnt/mmcblk0p2/artifact/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
-	elif [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
-		pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
-		echo -e '\e[92m准备解压镜像文件\e[0m'
+elif [ -f /mnt/mmcblk0p2/FriendlyWrt*.img.gz ]; then
+	pv /mnt/mmcblk0p2/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
+	echo -e '\e[92m准备解压镜像文件\e[0m'
 fi
-rm -rf /mnt/img
 mkdir /mnt/img
 losetup -o 100663296 /dev/loop0 /mnt/mmcblk0p2/FriendlyWrt.img
 mount /dev/loop0 /mnt/img
 echo -e '\e[92m解压已完成，准备编辑镜像文件，写入备份信息\e[0m'
 cd /mnt/img
-if [ -f /tmp/upload/update ]; then
-	cp	/tmp/upload/update /mnt/img/bin/
+if [ -f /tmp/upload/update.sh ]; then
+	cp	/tmp/upload/update.sh /mnt/img/bin/
 	echo -e '\e[92m写入升级脚本\e[0m'
-elif [ -f /bin/update ]; then
-	cp	/bin/update /mnt/img/bin/
+elif [ -f /mnt/mmcblk0p2/update.sh ]; then
+	cp	/mnt/mmcblk0p2/update.sh /mnt/img/bin/
+	echo -e '\e[92m写入升级脚本\e[0m'
+elif [ -f /bin/update.sh ]; then
+	cp	/bin/update.sh /mnt/img/bin/
 	echo -e '\e[92m写入升级脚本\e[0m'
 fi
-if [ -f /tmp/upload/checkwan ]; then
-	cp	/tmp/upload/checkwan /mnt/img/bin/
-elif [ -f /bin/checkwan ]; then
-	cp	/bin/checkwan /mnt/img/bin/
+if [ $checknet -eq 1 ]; then   #写入防掉线脚本（开机启动）
+	wget -nv https://github.com/lsl330/R2S-SCRIPTS/raw/master/checkwan.sh -O /mnt/img/bin/checkwan.sh
+	chmod +x /mnt/img/bin/checkwan.sh
+	wget -nv https://github.com/lsl330/R2S-SCRIPTS/raw/master/check  -O /etc/init.d/check
+	chmod 777 /etc/init.d/check
+	ln -s /etc/init.d/check /etc/rc.d/S95check
+	cp	/etc/init.d/check /mnt/img/etc/init.d/check
+	cp -d /etc/rc.d/S95check /mnt/img/etc/rc.d/S95check
 fi
 if [ -f /www/pigz_2.4-1_aarch64_cortex-a53.ipk ]; then
 	cp /www/pigz_2.4-1_aarch64_cortex-a53.ipk /mnt/img/www/
