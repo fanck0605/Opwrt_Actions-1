@@ -5,18 +5,18 @@
 # For NanoPi R2S opt
 #=================================================
 
-name: Build R2S OpenWrt opt
+name: Build R2S OpenWrt Opt
 
 on:
 #  release:
-#    types: published
-#  push:
+#     types: published
+  push:
 #    branches:
 #      - master
-#    paths:
-#      - '.github/workflows/openwrt-r2s-opt.yml'
+    paths:
+      - '.github/workflows/openwrt-r2s-opt.yml'
   schedule:
-    - cron: 30 20 * * *
+    - cron: 30 21 * * *
   watch:
     types: started
 
@@ -35,7 +35,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
-
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -60,14 +59,12 @@ jobs:
         rm -rf friendlywrt-rk3328
         mkdir friendlywrt-rk3328
         cd friendlywrt-rk3328
-        repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
-        repo sync -c --no-clone-bundle
-        #cd friendlywrt/ && git fetch --unshallow
+        repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1        repo sync -c --no-tags --no-clone-bundle -j8
+        cd friendlywrt/ && git fetch --unshallow
          
     - name: Patch Kernel
       run: |
         . r2s/patch_kernel_5.4.sh
-        sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
     - name: Load config
       run: |
@@ -76,7 +73,8 @@ jobs:
         cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
         cat ../$CONFIG_FILE >> configs/config_rk3328
-    
+        
+        
     - name: Merge 
       run: |
         cd friendlywrt-rk3328/friendlywrt
@@ -92,9 +90,8 @@ jobs:
         #sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
         sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
         sed -i '$a\src-git scw https://github.com/songchenwen/nanopi-r2s' feeds.conf.default
-        git apply ../../r2s/enable_autocore.diff        
- 
-   
+        git apply ../../r2s/enable_autocore.diff
+
     - name: Mod
       run: |
         cd friendlywrt-rk3328/friendlywrt
@@ -104,42 +101,38 @@ jobs:
         VersionDate=$(git show -s --date=short --format="date:%cd")
         echo "::set-env name=VersionDate::$VersionDate"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-    
+            
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
-      if: env.SSH_ACTIONS == 'true'
-              
+      if: env.SSH_ACTIONS == 'true'     
+         
     - name: Build FriendlyWrt
       run: |
         cd friendlywrt-rk3328
         sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
         ./build.sh nanopi_r2s.mk
-
+        
     - name: Save config.seed
       run: |
         cd friendlywrt-rk3328/friendlywrt
         ./scripts/diffconfig.sh > ../out/config.seed
-          
+        
     - name: Organize files
       id: organize
       #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         rm -rf ./artifact/
         mkdir -p ./artifact/
-        gzip friendlywrt-rk3328/out/*.img
         mv friendlywrt-rk3328/out/*img* ./artifact/
         cp friendlywrt-rk3328/out/config.seed ./artifact/config-opt.seed
         cd ./artifact/
+        gzip *.img
         zip R2S-opt-$(date +%Y-%m-%d).zip *.img.gz
-        #rm *.img.gz
+        rm *.img.gz
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
         release_tag="NanoPi-R2S-${{ env.DATE }}-opt"
         echo "##[set-output name=release_tag;]$release_tag"
-        
-    #- name: Get current date
-    #  id: date
-    #  run: echo "::set-output name=date::$(date +'%Y%m%d')"
       
     - name: Upload artifact
       uses: actions/upload-artifact@master
@@ -161,5 +154,5 @@ jobs:
         token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           最新编译版本: ${{ steps.organize.outputs.release_tag }}
-          源码最近更新时间: ${{ env.VersionDate }}
+          源码更新日期: ${{ env.VersionDate }}
         artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/*.seed
