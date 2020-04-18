@@ -18,8 +18,8 @@
 wget -q https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/update.sh && sh ./update.sh
 ```
 
-8. 安装[songchenwen](https://github.com/songchenwen/nanopi-r2s)大佬的R2S刷机ipk后，在web页面直接升级，与通常的OpenWrt刷机方法无异 <br> 
-点击[R2S刷机IPK](https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/luci-app-r2sflasher_1.0-4_all.ipk) 
+8. 4.18之后固件已预装[songchenwen](https://github.com/songchenwen/nanopi-r2s)大佬的R2S刷机，可在web页面直接升级，与通常的OpenWrt刷机方法无异 <br> 
+[R2S刷机IPK链接](https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/luci-app-r2sflasher_1.0-4_all.ipk) 
 
 ### 感谢
 - [Lean](https://github.com/coolsnowwolf/lede)
