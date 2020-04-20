@@ -21,6 +21,7 @@ git clone https://github.com/lisaac/luci-app-dockerman.git package/lean/luci-app
 #增加应用过滤
 cd package
 git clone https://github.com/destan19/OpenAppFilter.git
+cd ..
 #set default theme
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
 #set netdata privilege
