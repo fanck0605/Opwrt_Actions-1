@@ -84,6 +84,7 @@ jobs:
         cd friendlywrt-rk3328
         git clone https://github.com/coolsnowwolf/lede
         cd friendlywrt
+        rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
         cp -r ../lede/package/lean package/
         sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
         sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
