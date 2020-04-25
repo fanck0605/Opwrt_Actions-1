@@ -112,14 +112,20 @@ jobs:
           wget -O net/netfilter/xt_FULLCONENAT.c https://raw.githubusercontent.com/Chion82/netfilter-full-cone-nat/master/xt_FULLCONENAT.c
           git apply ../../patches/001-kernel-add-full_cone_nat.patch
           
-      - name: Load config
+#      - name: Load config
+#       run: |
+#          rm -f friendlywrt-rk3328/friendlywrt/.config*
+#          cd friendlywrt-rk3328
+#          . ../r2s/remove_unused_config.sh
+#          cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
+#          cat ../r2s/base_rk3328.seed > configs/config_rk3328
+#          cat ../$CONFIG_FILE >> configs/config_rk3328       
+      - name: Custom Configure Files
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
-          cd friendlywrt-rk3328
-          . ../r2s/remove_unused_config.sh
-          cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
-          cat ../r2s/base_rk3328.seed > configs/config_rk3328
-          cat ../$CONFIG_FILE >> configs/config_rk3328
+          cp config-opt.seed friendlywrt-rk3328/configs/config_rk3328
+
+
       - name: Mod
         run: |
           cd friendlywrt-rk3328/friendlywrt
