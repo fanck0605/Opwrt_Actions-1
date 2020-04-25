@@ -33,7 +33,7 @@ sed -i '/uci commit luci/a\uci set dhcp.lan.dhcpv6=disabled' package/lean/defaul
 
 
 #其它
-sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
+#sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
 sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
 sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
 #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
