@@ -5,7 +5,7 @@
 # For NanoPi R2S org
 #=================================================
 
-name: Build R2S OpenWrt org2
+name: Build R2S OpenWrt Origin
 
 on:
 #  release:
@@ -14,7 +14,7 @@ on:
 #    branches:
 #      - master
 #    paths:
-#      - '.github/workflows/openwrt-r2s-org2.yml'
+#      - '.github/workflows/openwrt-r2s-org.yml'
   schedule:
     - cron: 30 20 * * *
   watch:
@@ -167,18 +167,18 @@ jobs:
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/out/config.seed ./artifact/config-org.seed
           cd ./artifact/
-          zip R2S-org2-$(date +%Y-%m-%d).zip *.img.gz
+          zip R2S-org-$(date +%Y-%m-%d).zip *.img.gz
           #rm *.img.gz
           echo "::set-env name=FIRMWARE::$PWD"
           echo "::set-output name=status::success"
-          release_tag="NanoPi-R2S-${{ env.DATE }}-org2"
+          release_tag="NanoPi-R2S-${{ env.DATE }}-org"
           echo "##[set-output name=release_tag;]$release_tag"
         
       - name: Upload artifact
         uses: actions/upload-artifact@master
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         with:
-          name: OpenWrt_R2S_org2_firmware
+          name: OpenWrt_R2S_org_firmware
           path: ${{ env.FIRMWARE }}
 
       - name: Create release
