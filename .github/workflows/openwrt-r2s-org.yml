@@ -60,10 +60,41 @@ jobs:
           rm -rf friendlywrt-rk3328
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
-          repo sync -c --no-clone-bundle -j8
-          #cd friendlywrt/ && git fetch --unshallow
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
+          repo sync -c --no-tags --no-clone-bundle -j8
+          cd friendlywrt/ && git fetch --unshallow
 
+      - name: Enable Fullcone NAT
+        run: |
+          cd friendlywrt-rk3328/kernel/
+          git apply ../../patches/000-kernel-add-full_cone_nat.patch
+          
+      - name: Enable 1.5G
+        run: |
+          cd friendlywrt-rk3328/kernel/
+          wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
+          git apply RK3328-enable-1512mhz-opp.patch
+  
+      - name: Patch Kernel
+        run: |
+          cd friendlywrt-rk3328
+          git clone https://github.com/openwrt/openwrt && cd openwrt/
+          rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
+          rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+          ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
+          ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
+          ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
+          ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
+          cp -a ./target/linux/generic/files/* ../kernel/
+
+          cd ../
+          wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
+          chmod +x merge_config.sh
+          grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
+          ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+   
       - name: Merge LEDE
         run: |
           cd friendlywrt-rk3328
@@ -74,7 +105,13 @@ jobs:
           sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
           ./scripts/feeds update -a		
           ./scripts/feeds install -a
-          
+
+      - name: Enable cpu autocore
+        run: |
+          cd friendlywrt-rk3328/friendlywrt/
+          git apply ../../r2s/enable_autocore.diff
+                    
+
       - name: Install Extra Packages
         run: |
           cd friendlywrt-rk3328/friendlywrt/package
@@ -91,44 +128,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328/friendlywrt/include
           sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
-
-      - name: Patch Kernel
-        run: |          
-          cd friendlywrt-rk3328
-          git clone https://github.com/openwrt/openwrt && cd openwrt/
-          #rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
-          #rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
-          ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
-          cp -a ./target/linux/generic/files/* ../kernel/
- 
-          cd ../
-          wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
-          chmod +x merge_config.sh
-          grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
-          ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          
-      - name: Enable Fullcone NAT
-        run: |
-          cd friendlywrt-rk3328/kernel/
-          wget -O net/netfilter/xt_FULLCONENAT.c https://raw.githubusercontent.com/Chion82/netfilter-full-cone-nat/master/xt_FULLCONENAT.c
-          git apply ../../patches/001-kernel-add-full_cone_nat.patch
-          
-      - name: Enable 1.5G
-        run: |
-          cd friendlywrt-rk3328/kernel/
-          wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
-          git apply RK3328-enable-1512mhz-opp.patch
-          
-      - name: Enable autocore
-        run: |
-          cd friendlywrt-rk3328/friendlywrt/
-          git apply ../../r2s/enable_autocore.diff
-          
+       
       - name: Load config
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
@@ -214,5 +214,3 @@ jobs:
             最新编译版本: ${{ steps.organize.outputs.release_tag }}
             源码最近更新时间: ${{ env.VersionDate }}
           artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/*.seed
-
-
