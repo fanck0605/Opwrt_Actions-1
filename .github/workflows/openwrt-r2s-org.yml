@@ -112,15 +112,21 @@ jobs:
           mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           
-      - name: Enable Fullcone and 1.5G autocore
+      - name: Enable Fullcone NAT
         run: |
           cd friendlywrt-rk3328/kernel/
           wget -O net/netfilter/xt_FULLCONENAT.c https://raw.githubusercontent.com/Chion82/netfilter-full-cone-nat/master/xt_FULLCONENAT.c
           git apply ../../patches/001-kernel-add-full_cone_nat.patch
+          
+      - name: Enable 1.5G
+        run: |
+          cd friendlywrt-rk3328/kernel/
           wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
           git apply RK3328-enable-1512mhz-opp.patch
-
-          cd ../friendlywrt
+          
+      - name: Enable autocore
+        run: |
+          cd friendlywrt-rk3328/friendlywrt/
           git apply ../../r2s/enable_autocore.diff
           
       - name: Load config
