@@ -24,13 +24,12 @@ sed -i '/uci commit luci/a\uci commit dropbear' package/lean/default-settings/fi
 sed -i '/uci commit luci/a\uci set dropbear.@dropbear[0].Interface='lan'' package/lean/default-settings/files/zzz-default-settings
 #关闭ipv6
 sed -i '/uci commit luci/a\uci commit network' package/lean/default-settings/files/zzz-default-settings
-sed -i '/uci commit luci/a\uci set network.lan.ipv6=0' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit luci/a\uci delete network.lan.ip6assign' package/lean/default-settings/files/zzz-default-settings
 sed -i '/uci commit luci/a\uci delete network.wan6' package/lean/default-settings/files/zzz-default-settings
-
 sed -i '/uci commit luci/a\uci commit dhcp' package/lean/default-settings/files/zzz-default-settings
-sed -i '/uci commit luci/a\uci set dhcp.lan.ra=disable' package/lean/default-settings/files/zzz-default-settings
-sed -i '/uci commit luci/a\uci set dhcp.lan.dhcpv6=disabled' package/lean/default-settings/files/zzz-default-settings
-
+sed -i '/uci commit luci/a\uci delete dhcp.lan.ra' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit luci/a\uci delete dhcp.lan.dhcpv6' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit luci/a\uci delete dhcp.lan.ndp' package/lean/default-settings/files/zzz-default-settings
 
 #其它
 #sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
