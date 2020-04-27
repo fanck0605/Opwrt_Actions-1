@@ -23,7 +23,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: r2s.config
+  CONFIG_FILE: r2s_opt.config
   DIY_SH: r2s_diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
@@ -64,17 +64,23 @@ jobs:
           repo sync -c --no-tags --no-clone-bundle -j8
           cd friendlywrt/ && git fetch --unshallow
 
-      - name: Enable Fullcone NAT
+      - name: Update kernel-rockchip
         run: |
-          cd friendlywrt-rk3328/kernel/
-          git apply ../../patches/000-kernel-add-full_cone_nat.patch
-          
-      - name: Enable 1.5G
+          cd friendlywrt-rk3328
+          rm -rf kernel
+          git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
+
+      - name: Merge Lean opwrt
         run: |
-          cd friendlywrt-rk3328/kernel/
-          wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
-          git apply RK3328-enable-1512mhz-opp.patch
-  
+          cd friendlywrt-rk3328
+          git clone https://github.com/coolsnowwolf/lede
+          cd friendlywrt
+          cp -r ../lede/package/lean package/
+          sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          ./scripts/feeds update -a		
+          ./scripts/feeds install -a
+
       - name: Patch Kernel
         run: |
           cd friendlywrt-rk3328
@@ -95,22 +101,22 @@ jobs:
           mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
    
-      - name: Merge LEDE
+
+      - name: Enable Fullcone NAT
         run: |
-          cd friendlywrt-rk3328
-          git clone https://github.com/coolsnowwolf/lede
-          cd friendlywrt
-          cp -r ../lede/package/lean package/
-          sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-          ./scripts/feeds update -a		
-          ./scripts/feeds install -a
+          cd friendlywrt-rk3328/kernel/
+          git apply ../../patches/000-kernel-add-full_cone_nat.patch
+          
+      - name: Enable 1.5G
+        run: |
+          cd friendlywrt-rk3328/kernel/
+          wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
+          git apply RK3328-enable-1512mhz-opp.patch
 
       - name: Enable cpu autocore
         run: |
           cd friendlywrt-rk3328/friendlywrt/
           git apply ../../r2s/enable_autocore.diff
-                    
 
       - name: Install Extra Packages
         run: |
@@ -118,7 +124,7 @@ jobs:
 
           git clone https://github.com/fw876/helloworld
           mv helloworld/luci-app-ssr-plus/ .
-          rm -rf helloworld/
+           
                        
           git clone https://github.com/songchenwen/nanopi-r2s
           mv nanopi-r2s/luci-app-r2sflasher/ .
