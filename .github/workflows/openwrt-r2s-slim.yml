@@ -15,6 +15,7 @@ on:
       - master
     paths:
       - '.github/workflows/openwrt-r2s-slim.yml'
+      - 'r2s.config'
   schedule:
     - cron: 30 20 * * *
   watch:
