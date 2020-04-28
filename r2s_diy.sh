@@ -2,17 +2,19 @@
 #修改版本号
 sed -i 's/OpenWrt/Quintus Build @ $(date "+%Y.%m.%d")/g' package/lean/default-settings/files/zzz-default-settings
 echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
-#更新软件包    
+#更新替换软件包    
 rm -rf package/lean/luci-theme-opentomcat
 rm -rf package/lean/luci-app-frps
 rm -rf package/lean/luci-app-frpc
 rm -rf package/lean/luci-app-dockerman
 rm -rf package/lean/luci-app-diskman
+rm -rf package/lean/luci-app-zerotier
 git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/lean/luci-theme-opentomcat
 git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frpc
 git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
 git clone https://github.com/lisaac/luci-app-dockerman.git package/lean/luci-app-dockerman
 git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-diskman
+git clone https://github.com/rufengsuixing/luci-app-zerotier.git package/lean/luci-app-zerotier
 #update frp to version 0.33.0
 sed -i '/PKG_VERSION/c\PKG_VERSION:=0.33.0' package/lean/frp/Makefile
 #更改默認主題
