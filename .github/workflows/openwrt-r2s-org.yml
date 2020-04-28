@@ -10,11 +10,11 @@ name: Build R2S OpenWrt Origin
 on:
 #  release:
 #    types: published
-#  push:
-#    branches:
-#      - master
-#    paths:
-#      - '.github/workflows/openwrt-r2s-org.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/openwrt-r2s-org.yml'
   schedule:
     - cron: 30 20 * * *
   watch:
@@ -116,8 +116,8 @@ jobs:
       - name: Enable cpu autocore
         run: |
           cd friendlywrt-rk3328/friendlywrt/
-          git apply ../../r2s/enable_autocore.diff
-
+          git apply ../../patches/001-cpu-enable_autocore.patch
+          
       - name: Install Extra Packages
         run: |
           cd friendlywrt-rk3328/friendlywrt/package
