@@ -23,7 +23,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: r2s_opt.config
+  CONFIG_FILE: r2s.config
   DIY_SH: r2s_diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
@@ -111,6 +111,7 @@ jobs:
       - name: Enable Fullcone NAT
         run: |
           cd friendlywrt-rk3328/kernel/
+          wget -O net/netfilter/xt_FULLCONENAT.c https://raw.githubusercontent.com/Chion82/netfilter-full-cone-nat/master/xt_FULLCONENAT.c
           git apply ../../patches/000-kernel-add-full_cone_nat.patch
           
       - name: Enable 1.5G
