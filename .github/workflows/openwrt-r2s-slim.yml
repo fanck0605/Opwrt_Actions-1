@@ -10,11 +10,11 @@ name: Build R2S OpenWrt slim
 on:
 #  release:
 #    types: published
-#  push:
-#    branches:
-#      - master
-#    paths:
-#      - '.github/workflows/openwrt-r2s-slim.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/openwrt-r2s-slim.yml'
   schedule:
     - cron: 30 20 * * *
   watch:
@@ -55,7 +55,8 @@ jobs:
         git clone https://github.com/friendlyarm/repo
         sudo cp repo/repo /usr/bin/
         
-    - name: Init Source
+
+    - name: Download Source
       run: |
         rm -rf friendlywrt-rk3328
         mkdir friendlywrt-rk3328
@@ -63,33 +64,84 @@ jobs:
         repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
         repo sync -c --no-tags --no-clone-bundle -j8
         cd friendlywrt/ && git fetch --unshallow
-         
+
+    - name: Update kernel-rockchip
+      run: |
+        cd friendlywrt-rk3328
+        rm -rf kernel
+        git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
+
+    - name: Merge Lean opwrt
+      run: |
+        cd friendlywrt-rk3328
+        git clone https://github.com/coolsnowwolf/lede
+        cd friendlywrt
+        cp -r ../lede/package/lean package/
+        sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+        sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+        ./scripts/feeds update -a   
+        ./scripts/feeds install -a
+
     - name: Patch Kernel
       run: |
-        . r2s/patch_kernel_5.4.sh
+        cd friendlywrt-rk3328
+        git clone https://github.com/openwrt/openwrt && cd openwrt/
+        rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
+        rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+        ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
+        ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
+        ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
+        ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
+        cp -a ./target/linux/generic/files/* ../kernel/
 
+        cd ../
+        wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
+        chmod +x merge_config.sh
+        grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
+        ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+        mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+        sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+   
+    - name: Enable Fullcone NAT
+      run: |
+        cd friendlywrt-rk3328/kernel/
+        git apply ../../patches/000-kernel-add-full_cone_nat.patch
+          
+    - name: Enable 1.5G
+      run: |
+        cd friendlywrt-rk3328/kernel/
+        wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
+        git apply RK3328-enable-1512mhz-opp.patch
+
+    - name: Enable cpu autocore
+      run: |
+        cd friendlywrt-rk3328/friendlywrt/
+        git apply ../../patches/001-cpu-enable_autocore.patch
+
+    - name: Install Extra Packages
+      run: |
+        cd friendlywrt-rk3328/friendlywrt/package
+        git clone https://github.com/fw876/helloworld
+        mv helloworld/luci-app-ssr-plus/ .   
+                       
+        git clone https://github.com/songchenwen/nanopi-r2s
+        mv nanopi-r2s/luci-app-r2sflasher/ .
+        rm -rf nanopi-r2s/
+          
+    - name: Update Target.mk
+      run: |
+        cd friendlywrt-rk3328/friendlywrt/include
+        sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
+       
     - name: Load config
       run: |
+        rm -f friendlywrt-rk3328/friendlywrt/.config*
         cd friendlywrt-rk3328
         . ../r2s/remove_unused_config.sh
         cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
         cat ../r2s/base_rk3328.seed > configs/config_rk3328
-        cat ../$CONFIG_FILE >> configs/config_rk3328
-    
-    - name: Merge 
-      run: |
-        cd friendlywrt-rk3328/friendlywrt
-        git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-        git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-        git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
-        git revert --no-edit 463b6ac0508de4788a6e41335471ced0a255e1cd
-        git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
-        rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
-        git checkout upstream/master -- feeds.conf.default
-        sed -i '5s/#src-git/src-git/g' feeds.conf.default
-        sed -i '$a\src-git scw https://github.com/songchenwen/nanopi-r2s' feeds.conf.default
-        git apply ../../r2s/enable_autocore.diff        
- 
+        cat ../$CONFIG_FILE >> configs/config_rk3328       
+
     - name: Mod
       run: |
         cd friendlywrt-rk3328/friendlywrt
@@ -99,11 +151,11 @@ jobs:
         VersionDate=$(git show -s --date=short --format="date:%cd")
         echo "::set-env name=VersionDate::$VersionDate"
         echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-    
-    - name: SSH connection to Actions
-      uses: P3TERX/debugger-action@master
-      if: env.SSH_ACTIONS == 'true'
-              
+
+    - name: Install UPX
+      run: |
+        ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
+
     - name: Build FriendlyWrt
       run: |
         cd friendlywrt-rk3328
