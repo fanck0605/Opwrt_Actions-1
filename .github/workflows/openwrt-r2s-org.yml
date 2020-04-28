@@ -69,8 +69,8 @@ jobs:
       - name: Update kernel-rockchip
         run: |
           cd friendlywrt-rk3328
-          #rm -rf kernel
-          #git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
+          rm -rf kernel
+          git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
           cd kernel
           git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
           git fetch linux
@@ -84,8 +84,8 @@ jobs:
           cp -r ../lede/package/lean package/
           sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
           sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-          ./scripts/feeds update -a		
-          ./scripts/feeds install -a
+          #./scripts/feeds update -a		
+          #./scripts/feeds install -a
 
       - name: Patch Kernel
         run: |
@@ -96,16 +96,16 @@ jobs:
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
-          ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
+          #./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
           cp -a ./target/linux/generic/files/* ../kernel/
 
-          cd ../
-          wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
-          chmod +x merge_config.sh
-          grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
-          ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          #cd ../
+          #wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
+          #chmod +x merge_config.sh
+          #grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
+          #./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          #mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          #sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
    
 
       - name: Enable Fullcone NAT
@@ -131,7 +131,7 @@ jobs:
 
           git clone https://github.com/fw876/helloworld
           mv helloworld/luci-app-ssr-plus/ .
-           
+          rm -rf helloworld 
                        
           git clone https://github.com/songchenwen/nanopi-r2s
           mv nanopi-r2s/luci-app-r2sflasher/ .
@@ -163,7 +163,7 @@ jobs:
 
       - name: Install UPX
         run: |
-          ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
+          #ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
       
       - name: Build OpenWrt
         run: |
