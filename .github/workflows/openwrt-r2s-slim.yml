@@ -73,10 +73,10 @@ jobs:
         cd friendlywrt-rk3328
         rm -rf kernel
         git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
-        cd kernel
-        git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-        git fetch linux
-        git rebase linux/linux-5.4.y
+        #cd kernel
+        #git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+        #git fetch linux
+        #git rebase linux/linux-5.4.y
 
     - name: Merge Lean opwrt
       run: |
@@ -94,17 +94,14 @@ jobs:
       run: |
         cd friendlywrt-rk3328
         git clone https://github.com/openwrt/openwrt && cd openwrt/
-        rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
-        rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+        cp -a ./target/linux/generic/files/* ../kernel/
         ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
         ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
         ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
         ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
-        cp -a ./target/linux/generic/files/* ../kernel/
 
         cd ../
-        wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
-        chmod +x merge_config.sh
+        wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
         grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
         ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
         mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
@@ -192,10 +189,6 @@ jobs:
         echo "::set-output name=status::success"
         release_tag="NanoPi-R2S-${{ env.DATE }}-slim"
         echo "##[set-output name=release_tag;]$release_tag"
-        
-    #- name: Get current date
-    #  id: date
-    #  run: echo "::set-output name=date::$(date +'%Y%m%d')"
       
     - name: Upload artifact
       uses: actions/upload-artifact@master
