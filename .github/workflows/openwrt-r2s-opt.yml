@@ -72,10 +72,10 @@ jobs:
         cd friendlywrt-rk3328
         rm -rf kernel
         git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
-        cd kernel
-        git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-        git fetch linux
-        git rebase linux/linux-5.4.y
+        #cd kernel
+        #git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+        #git fetch linux
+        #git rebase linux/linux-5.4.y
 
     - name: Merge Lean opwrt
       run: |
@@ -93,14 +93,12 @@ jobs:
       run: |
         cd friendlywrt-rk3328
         git clone https://github.com/openwrt/openwrt && cd openwrt/
-        rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
-        rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+        cp -a ./target/linux/generic/files/* ../kernel/
         ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
         ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
         ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
         ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
-        cp -a ./target/linux/generic/files/* ../kernel/
-
+    
         cd ../
         wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh
         chmod +x merge_config.sh
@@ -128,14 +126,20 @@ jobs:
 
     - name: Install Extra Packages
       run: |
-        #cd friendlywrt-rk3328/friendlywrt/package
-        #git clone https://github.com/fw876/helloworld
-        #mv helloworld/luci-app-ssr-plus/ .   
-                       
+        cd friendlywrt-rk3328
+        git clone --single-branch -b openwrt-18.06 https://github.com/project-openwrt/openwrt.git --depth=1 ctcgfw
+        mkdir -p friendlywrt/package/ctcgfw
+        cp -a ctcgfw/package/ctcgfw/filebrowser friendlywrt/package/ctcgfw/
+        cp -a ctcgfw/package/ctcgfw/luci-app-filebrowser friendlywrt/package/ctcgfw/
+        cp -a ctcgfw/package/ctcgfw/gost friendlywrt/package/gost
+        cp -a ctcgfw/package/ctcgfw/luci-app-gost friendlywrt/package/luci-app-gost
+        rm -rf ctcgfw
+        
+        cd friendlywrt/package               
         git clone https://github.com/songchenwen/nanopi-r2s
         mv nanopi-r2s/luci-app-r2sflasher/ .
         rm -rf nanopi-r2s/
-          
+                
     - name: Update Target.mk
       run: |
         cd friendlywrt-rk3328/friendlywrt/include
