@@ -66,7 +66,7 @@ jobs:
         cd friendlywrt-rk3328
         repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
         repo sync -c --no-tags --no-clone-bundle -j8
-        #cd friendlywrt/ && git fetch --unshallow
+        cd friendlywrt/ && git fetch --unshallow
 
     - name: Update kernel-rockchip
       run: |
@@ -126,14 +126,11 @@ jobs:
 
     - name: Install Extra Packages
       run: |
-        cd friendlywrt-rk3328/friendlywrt/package
-        #git clone https://github.com/fw876/helloworld
-        #mv helloworld/luci-app-ssr-plus/ .   
-                       
+        cd friendlywrt-rk3328/friendlywrt/package                       
         git clone https://github.com/songchenwen/nanopi-r2s
         mv nanopi-r2s/luci-app-r2sflasher/ .
         rm -rf nanopi-r2s/
-          
+        
     - name: Update Target.mk
       run: |
         cd friendlywrt-rk3328/friendlywrt/include
