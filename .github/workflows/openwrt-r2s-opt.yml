@@ -85,6 +85,7 @@ jobs:
         cp -r ../lede/package/lean package/
         sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
         sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+        sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
         ./scripts/feeds update -a   
         ./scripts/feeds install -a
 
@@ -127,9 +128,9 @@ jobs:
 
     - name: Install Extra Packages
       run: |
-        cd friendlywrt-rk3328/friendlywrt/package
-        git clone https://github.com/fw876/helloworld
-        mv helloworld/luci-app-ssr-plus/ .   
+        #cd friendlywrt-rk3328/friendlywrt/package
+        #git clone https://github.com/fw876/helloworld
+        #mv helloworld/luci-app-ssr-plus/ .   
                        
         git clone https://github.com/songchenwen/nanopi-r2s
         mv nanopi-r2s/luci-app-r2sflasher/ .
