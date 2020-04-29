@@ -70,8 +70,8 @@ jobs:
       - name: Update kernel-rockchip
         run: |
           cd friendlywrt-rk3328
-          rm -rf kernel
-          git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
+          #rm -rf kernel
+          #git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
           cd kernel
           git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
           git fetch linux
@@ -92,8 +92,8 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           git clone https://github.com/openwrt/openwrt && cd openwrt/
-          #rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
-          #rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+          rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
+          rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
@@ -107,7 +107,6 @@ jobs:
           #./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           #mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           #sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-   
 
       - name: Enable Fullcone NAT
         run: |
