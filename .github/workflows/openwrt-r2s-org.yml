@@ -85,8 +85,8 @@ jobs:
           cp -r ../lede/package/lean package/
           sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
           sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-          #./scripts/feeds update -a		
-          #./scripts/feeds install -a
+          ./scripts/feeds update -a		
+          ./scripts/feeds install -a
 
       - name: Patch Kernel
         run: |
