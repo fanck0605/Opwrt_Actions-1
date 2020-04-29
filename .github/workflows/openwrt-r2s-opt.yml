@@ -131,8 +131,8 @@ jobs:
         mkdir -p friendlywrt/package/ctcgfw
         cp -a ctcgfw/package/ctcgfw/filebrowser friendlywrt/package/ctcgfw/
         cp -a ctcgfw/package/ctcgfw/luci-app-filebrowser friendlywrt/package/ctcgfw/
-        cp -a ctcgfw/package/ctcgfw/gost friendlywrt/package/gost
-        cp -a ctcgfw/package/ctcgfw/luci-app-gost friendlywrt/package/luci-app-gost
+        cp -a ctcgfw/package/ctcgfw/gost friendlywrt/package/ctcgfw/gost
+        cp -a ctcgfw/package/ctcgfw/luci-app-gost friendlywrt/package/ctcgfw/luci-app-gost
         rm -rf ctcgfw
         
         cd friendlywrt/package               
