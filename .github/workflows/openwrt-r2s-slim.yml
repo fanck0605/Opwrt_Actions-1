@@ -70,9 +70,9 @@ jobs:
 
     - name: Update kernel-rockchip
       run: |
-        cd friendlywrt-rk3328
-        rm -rf kernel
-        git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
+        #cd friendlywrt-rk3328
+        #rm -rf kernel
+        #git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
         #cd kernel
         #git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
         #git fetch linux
@@ -165,7 +165,6 @@ jobs:
     - name: Build FriendlyWrt
       run: |
         cd friendlywrt-rk3328
-        sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
         ./build.sh nanopi_r2s.mk
 
     - name: Save config.seed
