@@ -64,15 +64,18 @@ jobs:
           rm -rf friendlywrt-rk3328
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
-          repo sync -c --no-tags --no-clone-bundle -j8
-          cd friendlywrt/ && git fetch --unshallow
+          #repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
+          #repo sync -c --no-tags --no-clone-bundle -j8
+          repo init -u https://github.com/fanck0605/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
+          repo sync -c --no-clone-bundle -j8
+          #cd friendlywrt/ && git fetch --unshallow
+          
 
-      - name: Update kernel-rockchip
-        run: |
-          cd friendlywrt-rk3328
-          rm -rf kernel
-          git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
+      #- name: Update kernel-rockchip
+      #  run: |
+          #cd friendlywrt-rk3328
+          #rm -rf kernel
+          #git clone --single-branch -b nanopi-r2-v5.4.y https://github.com/friendlyarm/kernel-rockchip kernel
           #cd kernel
           #git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
           #git fetch linux
