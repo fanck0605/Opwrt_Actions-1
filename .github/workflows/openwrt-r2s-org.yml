@@ -164,7 +164,7 @@ jobs:
 
       - name: Install UPX
         run: |
-          #ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
+          ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
       
       - name: Build OpenWrt
         run: |
