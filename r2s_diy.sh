@@ -17,8 +17,8 @@ git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-d
 #git clone https://github.com/rufengsuixing/luci-app-zerotier.git package/lean/luci-app-zerotier
 
 #update frp to version 0.33.0
-sed -i '/PKG_VERSION/c\PKG_VERSION:=0.33.0' package/lean/frp/Makefile
-sed -i '/PKG_HASH/c\PPKG_HASH:=9c773ab4bbd208705c795599c5e69302a379734921c90489ed8ae331c24836cb' package/lean/frp/Makefile
+#sed -i '/PKG_VERSION/c\PKG_VERSION:=0.33.0' package/lean/frp/Makefile
+#sed -i '/PKG_HASH/c\PPKG_HASH:=9c773ab4bbd208705c795599c5e69302a379734921c90489ed8ae331c24836cb' package/lean/frp/Makefile
 
 #更改默認主題
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
