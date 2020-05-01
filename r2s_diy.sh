@@ -4,30 +4,25 @@ sed -i 's/OpenWrt/Quintus Build @ $(date "+%Y.%m.%d")/g' package/lean/default-se
 echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
 #更新替换软件包    
 rm -rf package/lean/luci-theme-opentomcat
-rm -rf package/lean/luci-app-frps
 rm -rf package/lean/luci-app-frpc
 rm -rf package/lean/luci-app-dockerman
-rm -rf package/lean/luci-app-diskman
 #rm -rf package/lean/luci-app-zerotier
+#git clone https://github.com/rufengsuixing/luci-app-zerotier.git package/lean/luci-app-zerotier
 git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/lean/luci-theme-opentomcat
-git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frpc
 git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
 git clone https://github.com/lisaac/luci-app-dockerman.git package/lean/luci-app-dockerman
-git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-diskman
-#git clone https://github.com/rufengsuixing/luci-app-zerotier.git package/lean/luci-app-zerotier
-
-#update frp to version 0.33.0
-sed -i '/PKG_VERSION/c\PKG_VERSION:=0.33.0' package/lean/frp/Makefile
-sed -i '/PKG_HASH/c\PPKG_HASH:=9c773ab4bbd208705c795599c5e69302a379734921c90489ed8ae331c24836cb' package/lean/frp/Makefile
 
 #更改默認主題
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
 #關閉wan外部傳入及轉發
-sed -i '/uci commit luci/a\uci commit firewall' package/lean/default-settings/files/zzz-default-settings
-sed -i '/uci commit luci/a\uci set firewall.@zone[1].forward=REJECT' package/lean/default-settings/files/zzz-default-settings
-sed -i '/uci commit luci/a\uci set firewall.@zone[1].input=REJECT' package/lean/default-settings/files/zzz-default-settings
+#
+sed -i '/firewall/d' ../device/friendlyelec/rk3328/default-settings/install.sh
+#sed -i '/uci commit luci/a\uci commit firewall' package/lean/default-settings/files/zzz-default-settings
+#sed -i '/uci commit luci/a\uci set firewall.@zone[1].forward=REJECT' package/lean/default-settings/files/zzz-default-settings
+#sed -i '/uci commit luci/a\uci set firewall.@zone[1].input=REJECT' package/lean/default-settings/files/zzz-default-settings
 #default enable fullcone nat at firewall setting
 sed -i '/uci commit luci/a\uci set firewall.@defaults[0].fullcone=1' package/lean/default-settings/files/zzz-default-settings
+
 
 #只允許ssh在lan內部連接
 sed -i '/uci commit luci/a\uci commit dropbear' package/lean/default-settings/files/zzz-default-settings
