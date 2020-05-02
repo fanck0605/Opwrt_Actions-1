@@ -177,47 +177,47 @@ jobs:
           sudo umount /mnt/friendlywrt-tmp
           sudo losetup -d $lodev
 
-    - name: Save config.seed
-      run: |
-        cd friendlywrt-rk3328/friendlywrt
-        ./scripts/diffconfig.sh > ../out/config.seed
-          
-    - name: Organize files
-      id: organize
-      #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        rm -rf ./artifact/
-        mkdir -p ./artifact/
-        gzip friendlywrt-rk3328/out/*.img
-        mv friendlywrt-rk3328/out/*img* ./artifact/
-        cp friendlywrt-rk3328/out/config.seed ./artifact/config-slim.seed
-        cd ./artifact/
-        zip R2S-slim-$(date +%Y-%m-%d).zip *.img.gz
-        #rm *.img.gz
-        echo "::set-env name=FIRMWARE::$PWD"
-        echo "::set-output name=status::success"
-        release_tag="NanoPi-R2S-${{ env.DATE }}-slim"
-        echo "##[set-output name=release_tag;]$release_tag"
-      
-    - name: Upload artifact
-      uses: actions/upload-artifact@master
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      with:
-        name: OpenWrt_R2S_slim_firmware
-        path: ${{ env.FIRMWARE }}
+      - name: Save config.seed
+        run: |
+          cd friendlywrt-rk3328/friendlywrt
+          ./scripts/diffconfig.sh > ../out/config.seed
 
-    - name: Create release
-      id: create_release
-      uses: ncipollo/release-action@v1.6.1
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        name: R2S最新编译时间:${{ env.DATE }}
-        allowUpdates: true
-        tag: R2S
-        commit: master
-        replacesArtifacts: true
-        token: ${{ secrets.RELEASES_TOKEN }}
-        body: |
-          最新编译版本: ${{ steps.organize.outputs.release_tag }}
-          源码最近更新时间: ${{ env.VersionDate }}
-        artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/*.seed
+      - name: Organize files
+        id: organize
+        #if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+        run: |
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          gzip friendlywrt-rk3328/out/*.img
+          mv friendlywrt-rk3328/out/*img* ./artifact/
+          cp friendlywrt-rk3328/out/config.seed ./artifact/config-slim.seed
+          cd ./artifact/
+          zip R2S-slim-$(date +%Y-%m-%d).zip *.img.gz
+          #rm *.img.gz
+          echo "::set-env name=FIRMWARE::$PWD"
+          echo "::set-output name=status::success"
+          release_tag="NanoPi-R2S-${{ env.DATE }}-slim"
+          echo "##[set-output name=release_tag;]$release_tag"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@master
+        if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+        with:
+          name: OpenWrt_R2S_slim_firmware
+          path: ${{ env.FIRMWARE }}
+
+      - name: Create release
+        id: create_release
+        uses: ncipollo/release-action@v1.6.1
+        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+        with:
+          name: R2S最新编译时间:${{ env.DATE }}
+          allowUpdates: true
+          tag: R2S
+          commit: master
+          replacesArtifacts: true
+          token: ${{ secrets.RELEASES_TOKEN }}
+          body: |
+            最新编译版本: ${{ steps.organize.outputs.release_tag }}
+            源码最近更新时间: ${{ env.VersionDate }}
+          artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/*.seed
