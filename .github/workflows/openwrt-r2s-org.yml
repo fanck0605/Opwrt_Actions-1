@@ -78,12 +78,12 @@ jobs:
           sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
           sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
 
-#      - name: Update kernel-rockchip
-#        run: |
-#          cd friendlywrt-rk3328/kernel
-#          #git fetch --unshallow
-#          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
-#          git rebase upstream/linux-5.4.y
+      - name: Update kernel-rockchip
+        run: |
+          cd friendlywrt-rk3328/kernel
+          #git fetch --unshallow
+          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
+          git rebase upstream/linux-5.4.y
 
       - name: Patch Kernel
         run: |
