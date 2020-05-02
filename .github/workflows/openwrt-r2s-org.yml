@@ -182,7 +182,6 @@ jobs:
         run: |
           cd friendlywrt-rk3328/friendlywrt
           ./scripts/diffconfig.sh > ../out/config.seed
-          mv ./config config.Origin
           
       - name: Organize files
         id: organize
@@ -192,6 +191,7 @@ jobs:
           gzip friendlywrt-rk3328/out/*.img
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/out/config.seed ./artifact/config-org.seed
+          cp friendlywrt-rk3328/friendlywrt/.config ./artifact/config.Origin
           cd ./artifact/
           zip R2S-org-$(date +%Y-%m-%d).zip *.img.gz
           #rm *.img.gz
@@ -221,4 +221,4 @@ jobs:
           body: |
             最新编译版本: ${{ steps.organize.outputs.release_tag }}
             源码最近更新时间: ${{ env.VersionDate }}
-          artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config.*
+          artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config*
