@@ -16,7 +16,7 @@ on:
     paths:
       - '.github/workflows/openwrt-r2s-org.yml'
       - 'r2s_diy.sh'
-      - 'r2s.config'
+      - 'r2s_test.config'
   schedule:
     - cron: 30 20 * * *
   watch:
