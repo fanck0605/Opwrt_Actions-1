@@ -63,10 +63,8 @@ jobs:
         run: |
           rm -rf friendlywrt-rk3328
           mkdir friendlywrt-rk3328 && cd friendlywrt-rk3328
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-tags --no-clone-bundle -j8
-          cd friendlywrt/ && git fetch --unshallow
-          cd ../kernel/ && git fetch --unshallow
 
       - name: Merge Lean opwrt
         run: |
@@ -81,7 +79,6 @@ jobs:
       - name: Update kernel-rockchip
         run: |
           cd friendlywrt-rk3328/kernel
-          #git fetch --unshallow
           git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
           git rebase upstream/linux-5.4.y
 
@@ -102,7 +99,7 @@ jobs:
           grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
           ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          sed -i -r 's/# (CONFIG_.*ARM64_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
       - name: Enable Fullcone NAT
         run: |
@@ -126,12 +123,12 @@ jobs:
           cd friendlywrt-rk3328/friendlywrt/package
           svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher luci-app-r2sflasher
           svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost gost
-          svn co https://github.com/project-openwrt/openwrt/trunk/package/network/utils/iproute2 network/utils/iproute2
+          #svn co https://github.com/project-openwrt/openwrt/trunk/package/network/utils/iproute2 network/utils/iproute2
 
       - name: Update Target.mk
         run: |
           cd friendlywrt-rk3328/friendlywrt/include
-          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
+          sed -i 's/dnsmasq /dnsmasq-full kmod-tcp-bbr luci /' target.mk
 
       - name: Install UPX
         run: |
@@ -139,17 +136,16 @@ jobs:
           cp -r ../lede/tools/upx/ tools/
           cp -r ../lede/tools/ucl/ tools/
           sed -i '/# builddir dependencies/i\tools-y += ucl upx' tools/Makefile
-          sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile     
+          sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile
 
       - name: Load config
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
           cd friendlywrt-rk3328
-          . ../r2s/remove_unused_config.sh
-          #cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
-          #cat ../r2s/base_rk3328.seed > configs/config_rk3328
-          #cat ../$CONFIG_FILE >> configs/config_rk3328
-          cat ../$CONFIG_FILE > configs/config_rk3328
+          cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
+          cat ../r2s/base_rk3328.seed > configs/config_rk3328
+          cat ../$CONFIG_FILE >> configs/config_rk3328
+         
 
       - name: Modifying
         run: |
