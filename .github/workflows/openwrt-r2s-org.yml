@@ -58,7 +58,7 @@ jobs:
         run: |
           git clone https://github.com/friendlyarm/repo
           sudo cp repo/repo /usr/bin/
-        
+
       - name: Download Source
         run: |
           rm -rf friendlywrt-rk3328
@@ -109,7 +109,7 @@ jobs:
           cd friendlywrt-rk3328/kernel/
           wget -O net/netfilter/xt_FULLCONENAT.c https://raw.githubusercontent.com/Chion82/netfilter-full-cone-nat/master/xt_FULLCONENAT.c
           git apply ../../patches/000-kernel-add-full_cone_nat.patch
-          
+
       - name: Enable 1.5G
         run: |
           cd friendlywrt-rk3328/kernel/
@@ -120,7 +120,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328/friendlywrt/
           git apply ../../patches/001-cpu-enable_autocore.patch
-          
+
       - name: Install Extra Packages
         run: |
           cd friendlywrt-rk3328/friendlywrt/package
@@ -140,7 +140,7 @@ jobs:
           cp -r ../lede/tools/ucl/ tools/
           sed -i '/# builddir dependencies/i\tools-y += ucl upx' tools/Makefile
           sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile     
-       
+
       - name: Load config
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
@@ -160,12 +160,12 @@ jobs:
           VersionDate=$(git show -s --date=short --format="date:%cd")
           echo "::set-env name=VersionDate::$VersionDate"
           echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-      
+
       - name: Build OpenWrt
         run: |
           cd friendlywrt-rk3328
           ./build.sh nanopi_r2s.mk
-      
+
       - name: Fix Rootfs Owner and Group
         run: |
           sudo df -lh
@@ -178,7 +178,7 @@ jobs:
           sudo chown -R root:root /mnt/friendlywrt-tmp
           sudo umount /mnt/friendlywrt-tmp
           sudo losetup -d $lodev
-    
+
       - name: Save config.seed
         run: |
           cd friendlywrt-rk3328/friendlywrt
