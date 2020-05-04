@@ -23,7 +23,7 @@ on:
     types: started
 
 env:
-  CONFIG_FILE: r2s.config
+  CONFIG_FILE: r2s_test.config
   DIY_SH: r2s_diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false

@@ -23,7 +23,7 @@ on:
 
 env:
   REPO_BRANCH: master
-  CONFIG_FILE: r2s.config
+  CONFIG_FILE: r2s_slim.config
   DIY_SH: r2s_diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
@@ -140,7 +140,7 @@ jobs:
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
           cd friendlywrt-rk3328
-          cat ../$CONFIG_FILE > configs/config_rk3328  
+          cat ../$CONFIG_FILE > configs/config_rk3328
 
       - name: Modifying
         run: |
