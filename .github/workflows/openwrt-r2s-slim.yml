@@ -143,8 +143,6 @@ jobs:
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
           cd friendlywrt-rk3328
-#          . ../r2s/remove_unused_config.sh
-#          cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
           cat ../r2s/base_rk3328.seed > configs/config_rk3328
           cat ../$CONFIG_FILE >> configs/config_rk3328       
 
