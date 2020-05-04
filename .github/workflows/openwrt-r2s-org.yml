@@ -23,8 +23,6 @@ on:
     types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
   CONFIG_FILE: r2s.config
   DIY_SH: r2s_diy.sh
   SSH_ACTIONS: false
@@ -92,14 +90,15 @@ jobs:
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
           ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
           ./scripts/patch-kernel.sh ../kernel target/linux/octeontx/patches-5.4
+          rm target/linux/octeontx/patches-5.4/0004-PCI-add-quirk-for-Gateworks-PLX-PEX860x-switch-with-.patch
 
       - name: Merge nanopi-r2_linux_defconfig
         run: |
           cd friendlywrt-rk3328
           wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
-          ./merge_config.sh -m ../r2s/defconfig.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          ./merge_config.sh -m kernel/arch/arm64/configs/nanopi-r2_linux_defconfig ../r2s/defconfig.override
           mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-
+          
       - name: Enable Fullcone NAT
         run: |
           cd friendlywrt-rk3328/kernel/
@@ -122,7 +121,6 @@ jobs:
           cd friendlywrt-rk3328/friendlywrt/package
           svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher luci-app-r2sflasher
           svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost gost
-          #svn co https://github.com/project-openwrt/openwrt/trunk/package/network/utils/iproute2 network/utils/iproute2
 
       - name: Update Target.mk
         run: |
@@ -141,7 +139,7 @@ jobs:
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
           cd friendlywrt-rk3328
-          cat ../$CONFIG_FILE >> configs/config_rk3328
+          cat ../$CONFIG_FILE > configs/config_rk3328
          
 
       - name: Modifying
@@ -164,10 +162,10 @@ jobs:
           sudo df -lh
           lodev=$(sudo losetup -f)
           echo "found unused loop dev $lodev"
-          sudo losetup -o 100663296 $lodev friendlywrt-rk3328/out/*.img
+          sudo losetup -P $lodev friendlywrt-rk3328/out/*.img          
           sudo rm -rf /mnt/friendlywrt-tmp
           sudo mkdir -p /mnt/friendlywrt-tmp
-          sudo mount $lodev /mnt/friendlywrt-tmp
+          sudo mount ${lodev}p1 /mnt/friendlywrt-tmp
           sudo chown -R root:root /mnt/friendlywrt-tmp
           sudo umount /mnt/friendlywrt-tmp
           sudo losetup -d $lodev
@@ -185,7 +183,7 @@ jobs:
           gzip friendlywrt-rk3328/out/*.img
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/out/config.seed ./artifact/config-org.seed
-          cp friendlywrt-rk3328/friendlywrt/.config ./artifact/config.Origin
+          cp friendlywrt-rk3328/friendlywrt/.config ./artifact/full.config
           cd ./artifact/
           zip R2S-org-$(date +%Y-%m-%d).zip *.img.gz
           #rm *.img.gz
