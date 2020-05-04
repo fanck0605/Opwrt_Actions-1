@@ -183,7 +183,7 @@ jobs:
           gzip friendlywrt-rk3328/out/*.img
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/out/config.seed ./artifact/config-org.seed
-          cp friendlywrt-rk3328/friendlywrt/.config ./artifact/full.config
+          cp friendlywrt-rk3328/friendlywrt/.config ./artifact/config.full_test
           cd ./artifact/
           zip R2S-org-$(date +%Y-%m-%d).zip *.img.gz
           #rm *.img.gz
