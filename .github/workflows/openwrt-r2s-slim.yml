@@ -62,10 +62,8 @@ jobs:
         run: |
           rm -rf friendlywrt-rk3328
           mkdir friendlywrt-rk3328 && cd friendlywrt-rk3328
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-tags --no-clone-bundle -j8
-          cd friendlywrt/ && git fetch --unshallow
-          cd ../kernel/ && git fetch --unshallow
 
       - name: Merge Lean opwrt
         run: |
@@ -76,6 +74,7 @@ jobs:
           sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
           sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
           sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
+          sed -i 's/^src-git telephony/#src-git telephony/g' ./feeds.conf.default
 
 #      - name: Update kernel-rockchip
 #        run: |
@@ -101,7 +100,7 @@ jobs:
           grep -i '_NETFILTER_\|FLOW' ../r2s/.config.override > .config.override
           ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          sed -i -r 's/# (CONFIG_.*ARM64_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
       - name: Enable Fullcone NAT
         run: |
@@ -144,8 +143,8 @@ jobs:
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
           cd friendlywrt-rk3328
-          . ../r2s/remove_unused_config.sh
-          cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
+#          . ../r2s/remove_unused_config.sh
+#          cat configs/config_rk3328 | grep "TARGET" >> ../r2s/base_rk3328.seed  
           cat ../r2s/base_rk3328.seed > configs/config_rk3328
           cat ../$CONFIG_FILE >> configs/config_rk3328       
 
