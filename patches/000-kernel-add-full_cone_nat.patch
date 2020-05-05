@@ -38,15 +38,13 @@ index 91efae88e8c2..17f5c748aeac 100644
  	tristate '"NFLOG" target support'
  	default m if NETFILTER_ADVANCED=n
 diff --git a/net/netfilter/Makefile b/net/netfilter/Makefile
-index 4fc075b612fe..094b13245406 100644
+index 4fc075b61..2b588d5a5 100644
 --- a/net/netfilter/Makefile
 +++ b/net/netfilter/Makefile
-@@ -145,6 +145,7 @@ obj-$(CONFIG_NETFILTER_XT_TARGET_HMARK) += xt_HMARK.o
- obj-$(CONFIG_NETFILTER_XT_TARGET_LED) += xt_LED.o
- obj-$(CONFIG_NETFILTER_XT_TARGET_LOG) += xt_LOG.o
- obj-$(CONFIG_NETFILTER_XT_TARGET_NETMAP) += xt_NETMAP.o
+@@ -209,3 +209,6 @@ obj-$(CONFIG_IP_SET) += ipset/
+
+ # IPVS
+ obj-$(CONFIG_IP_VS) += ipvs/
++
++# Full cone NAT
 +obj-$(CONFIG_NETFILTER_XT_TARGET_FULLCONENAT) += xt_FULLCONENAT.o
- obj-$(CONFIG_NETFILTER_XT_TARGET_NFLOG) += xt_NFLOG.o
- obj-$(CONFIG_NETFILTER_XT_TARGET_NFQUEUE) += xt_NFQUEUE.o
- obj-$(CONFIG_NETFILTER_XT_TARGET_RATEEST) += xt_RATEEST.o
- 
