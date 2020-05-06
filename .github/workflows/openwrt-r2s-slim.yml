@@ -66,7 +66,7 @@ jobs:
 
       - name: Merge Lean opwrt
         run: |
-          cd friendlywrt-rk3328
+#          cd friendlywrt-rk3328
 #          git clone https://github.com/coolsnowwolf/lede
 #          cd friendlywrt
 #          cp -r ../lede/package/lean package/
@@ -74,6 +74,7 @@ jobs:
 #          sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
 #          sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
 #          sed -i 's/^src-git telephony/#src-git telephony/g' ./feeds.conf.default
+          cd friendlywrt-rk3328/friendlywrt/
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
