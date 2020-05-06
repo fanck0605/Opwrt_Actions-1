@@ -127,11 +127,11 @@ jobs:
 
       - name: Install UPX
         run: |
-#          cd friendlywrt-rk3328/friendlywrt
-#          cp -r ../lede/tools/upx/ tools/
-#          cp -r ../lede/tools/ucl/ tools/
-#          sed -i '/# builddir dependencies/i\tools-y += ucl upx' tools/Makefile
-#          sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile
+          #cd friendlywrt-rk3328/friendlywrt
+          #cp -r ../lede/tools/upx/ tools/
+          #cp -r ../lede/tools/ucl/ tools/
+          #sed -i '/# builddir dependencies/i\tools-y += ucl upx' tools/Makefile
+          #sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile
           mkdir -p friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/
           ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
 
