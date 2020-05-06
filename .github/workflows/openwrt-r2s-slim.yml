@@ -64,16 +64,8 @@ jobs:
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-tags --no-clone-bundle -j8
 
-      - name: Merge Lean opwrt
+      - name: rebase Lean opwrt
         run: |
-#          cd friendlywrt-rk3328
-#          git clone https://github.com/coolsnowwolf/lede
-#          cd friendlywrt
-#          cp -r ../lede/package/lean package/
-#          sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-#          sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-#          sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
-#          sed -i 's/^src-git telephony/#src-git telephony/g' ./feeds.conf.default
           cd friendlywrt-rk3328/friendlywrt/
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
