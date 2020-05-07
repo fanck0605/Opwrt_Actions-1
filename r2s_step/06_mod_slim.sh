@@ -1,18 +1,18 @@
 #!/bin/bash
-
+clear
 #进入friendlywrt目录
 cd friendlywrt-rk3328/friendlywrt/
 #增加防掉线脚本
 mv ../../script/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
 #刷机脚本
 mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x package/base-files/files/root/update.sh
+#修改版本号
+sed -i 's/OpenWrt/Quintus Build @ $(date "+%Y.%m.%d")/g' package/lean/default-settings/files/zzz-default-settings
+echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
 #生成时间
 VersionDate=$(git show -s --date=short --format="date:%cd")
 echo "::set-env name=VersionDate::$VersionDate"
 echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-#修改版本号
-sed -i 's/OpenWrt/Quintus Build @ $(date "+%Y.%m.%d")/g' package/lean/default-settings/files/zzz-default-settings
-echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
 #更新替换软件包
 rm -rf package/lean/luci-theme-opentomcat
 rm -rf package/lean/luci-app-frpc
@@ -26,7 +26,6 @@ git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frp
 git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-diskman
 svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher package/luci-app-r2sflasher
 svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
-
 #更改默認主題
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
 #關閉wan外部傳入及轉發
@@ -45,3 +44,4 @@ sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
 #install upx
 mkdir -p staging_dir/host/bin/
 ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
+exit 0

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clear
 #进入friendlywrt目录
 cd friendlywrt-rk3328/friendlywrt/
 #增加防掉线脚本
@@ -54,7 +54,6 @@ sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
 #install upx
 mkdir -p staging_dir/host/bin/
 ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
-
 #其它
 #sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
 #sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
@@ -62,3 +61,4 @@ ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
 #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+exit 0

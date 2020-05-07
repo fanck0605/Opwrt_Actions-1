@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 sudo df -lh
 lodev=$(sudo losetup -f)
 echo "found unused loop dev $lodev"
@@ -9,3 +10,4 @@ sudo mount ${lodev}p1 /mnt/friendlywrt-tmp
 sudo chown -R root:root /mnt/friendlywrt-tmp
 sudo umount /mnt/friendlywrt-tmp
 sudo losetup -d $lodev
+exit 0

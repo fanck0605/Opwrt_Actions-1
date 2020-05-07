@@ -43,39 +43,15 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          . r2s_step/00_init_env.sh
+          /bin/bash r2s_step/00_init_env.sh
 
       - name: Install friendlywrt source
         run: |
-          . r2s_step/01_friendlywrt.sh
+          /bin/bash r2s_step/01_friendlywrt.sh
 
       - name: rebase to openwrt
         run: |
-          #. r2s_step/02_rebase2openwrt.sh
-          cd friendlywrt-rk3328/friendlywrt/
-          git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git remote add upstream https://github.com/openwrt/openwrt.git && git fetch upstream
-          git rebase upstream/openwrt-19.07
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          git rebase --skip
-          wget https://raw.githubusercontent.com/openwrt/openwrt/openwrt-19.07/feeds.conf.default
+          /bin/bash r2s_step/02_rebase2openwrt.sh
 
       - name: Update kernel-rockchip
         run: |
@@ -95,11 +71,11 @@ jobs:
 
       - name: Patch 5.4 Kernel
         run: |
-          . r2s_step/03_kernel_patch.sh
+          /bin/bash r2s_step/03_kernel_patch.sh
 
       - name: Enable Kernel feature
         run: |
-          . r2s_step/04_fullcone_1.5g.sh
+          /bin/bash r2s_step/04_fullcone_1.5g.sh
  
 #      - name: Enable cpu autocore
 #        run: |
@@ -108,11 +84,11 @@ jobs:
           
       - name: MOD the OpenWrt
         run: |
-          . r2s_step/06_mod_opt.sh
+          /bin/bash r2s_step/06_mod_opt.sh
 
       - name: Load config
         run: |
-          . r2s_step/09_load_config.sh
+          /bin/bash r2s_step/09_load_config.sh
       
       - name: Build OpenWrt
         run: |
@@ -121,12 +97,12 @@ jobs:
       
       - name: Fix Rootfs Owner and Group
         run: |
-          . r2s_step/10_fix_rootfs.sh
+          /bin/bash r2s_step/10_fix_rootfs.sh
 
       - name: Organize files
         id: organize
         run: |
-          . r2s_step/11_organize_opt.sh
+          /bin/bash r2s_step/11_organize_opt.sh
         
       - name: Upload artifact
         uses: actions/upload-artifact@master
@@ -150,3 +126,4 @@ jobs:
             最新编译版本: ${{ steps.organize.outputs.release_tag }}
             源码最近更新时间: ${{ env.VersionDate }}
           artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config*
+          
