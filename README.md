@@ -18,7 +18,7 @@ wget -q https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/update.sh && sh
 ```
 
 8. 4.18之后固件已预装[songchenwen](https://github.com/songchenwen/nanopi-r2s)大佬的R2S刷机，可在web页面直接升级，与通常的OpenWrt刷机方法无异 <br> 
-[R2S刷机IPK链接](https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/luci-app-r2sflasher_1.0-4_all.ipk) 
+[R2S刷机IPK链接](https://github.com/ardanzhu/Opwrt_Actions/raw/master/other/luci-app-r2sflasher_1.0-4_all.ipk) 
 
 
 ### Openwrt x86精简版：
@@ -32,6 +32,8 @@ wget -q https://github.com/ardanzhu/Opwrt_Actions/raw/master/r2s/update.sh && sh
 ### 感谢
 - [Lean](https://github.com/coolsnowwolf/lede)
 - [Klever1988](https://github.com/klever1988/nanopi-openwrt)
+- [fanck0605](https://github.com/fanck0605/nanopi-r2s)
+- [QiuSimons](https://github.com/QiuSimons/R2S_OP_SSRP)
 - [P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
 - [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 

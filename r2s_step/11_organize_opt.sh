@@ -11,4 +11,5 @@ echo "::set-output name=status::success"
 release_tag="NanoPi-R2S-${{ env.DATE }}-opt"
 echo "##[set-output name=release_tag;]$release_tag"
 cd ../friendlywrt-rk3328/friendlywrt
+cp .config ../../artifact/config-opt-full
 ./scripts/diffconfig.sh > ../../artifact/config-opt.seed
