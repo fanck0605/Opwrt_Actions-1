@@ -1,0 +1,128 @@
+#=================================================
+# Description: Build OpenWrt using GitHub Actions
+# Lisence: MIT
+# Author: Mod from P3TERX
+# For NanoPi R2S org
+#=================================================
+
+name: Build R2S OpenWrt Origin
+
+on:
+#  release:
+#    types: published
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/r2s-origin.yml'
+      - 'r2s_step/06_mod_slim.sh'
+      - 'seed/testseed'
+  schedule:
+    - cron: 30 20 * * *
+  watch:
+    types: started
+
+env:
+  CONFIG_FILE: seed/test.seed
+  SSH_ACTIONS: false
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: false
+  UPLOAD_RELEASE: true
+  TZ: Asia/Shanghai
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      if: github.event.repository.owner.id == github.event.sender.id
+
+      steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          . r2s_step/00_init_env.sh
+
+      - name: Install friendlywrt source
+        run: |
+          . r2s_step/01_friendlywrt.sh
+
+      - name: rebase to openwrt
+        run: |
+          . r2s_step/02_rebase2openwrt.sh
+
+      - name: Update kernel-rockchip
+        run: |
+          cd friendlywrt-rk3328/kernel
+          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
+          git rebase upstream/linux-5.4.y
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+          git rebase --skip
+
+      - name: Patch 5.4 Kernel
+        run: |
+          . r2s_step/03_kernel_patch.sh
+
+      - name: Enable Kernel feature
+        run: |
+          . r2s_step/04_fullcone_1.5g.sh
+ 
+#      - name: Enable cpu autocore
+#        run: |
+#          cd friendlywrt-rk3328/friendlywrt/
+#          git apply ../../patches/001-cpu-enable_autocore.patch
+          
+      - name: MOD the OpenWrt
+        run: |
+          . r2s_step/06_mod_opt.sh
+
+      - name: Load config
+        run: |
+          . r2s_step/09_load_config.sh
+      
+      - name: Build OpenWrt
+        run: |
+          cd friendlywrt-rk3328
+          ./build.sh nanopi_r2s.mk
+      
+      - name: Fix Rootfs Owner and Group
+        run: |
+          . r2s_step/10_fix_rootfs.sh
+
+      - name: Organize files
+        id: organize
+        run: |
+          . r2s_step/11_organize_opt.sh
+        
+      - name: Upload artifact
+        uses: actions/upload-artifact@master
+        if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+        with:
+          name: OpenWrt_R2S_origin_firmware
+          path: ${{ env.FIRMWARE }}
+
+      - name: Create release
+        id: create_release
+        uses: ncipollo/release-action@v1.6.1
+        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+        with:
+          name: R2S最新编译时间:${{ env.DATE }}
+          allowUpdates: true
+          tag: R2S
+          commit: master
+          replacesArtifacts: true
+          token: ${{ secrets.RELEASES_TOKEN }}
+          body: |
+            最新编译版本: ${{ steps.organize.outputs.release_tag }}
+            源码最近更新时间: ${{ env.VersionDate }}
+          artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config*
