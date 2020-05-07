@@ -65,14 +65,18 @@ jobs:
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-tags --no-clone-bundle -j8
 
-      - name: Merge Lean opwrt
+      - name: rebase Lean opwrt
         run: |
-          cd friendlywrt-rk3328
-          git clone https://github.com/coolsnowwolf/lede
-          cd friendlywrt
-          cp -r ../lede/package/lean package/
-          sed -i 's/^src-git luci.*/src-git luci https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          sed -i 's/^src-git packages.*/src-git packages https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          cd friendlywrt-rk3328/friendlywrt/
+          git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+          git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
+          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
+          git revert --no-edit 23378ed9a481dc73923f5bfa81637a1a8056882d
+          git revert --no-edit 4787dbaf3cad44b374b660cc0fef9386963e6795
+          git revert --no-edit 463b6ac0508de4788a6e41335471ced0a255e1cd
+          git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
+          rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
+          git checkout upstream/master -- feeds.conf.default
           sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
           sed -i 's/^src-git telephony/#src-git telephony/g' ./feeds.conf.default
 
@@ -111,12 +115,12 @@ jobs:
           cd friendlywrt-rk3328/friendlywrt/
           git apply ../../patches/001-cpu-enable_autocore.patch
 
-      - name: patch firewall for fullconenat
-        run: |
-          cd friendlywrt-rk3328/friendlywrt/
-          git clone https://github.com/LGA1150/openwrt-fullconenat.git package/fullconenat
-          mkdir package/network/config/firewall/patches
-          wget -P package/network/config/firewall/patches/ https://github.com/LGA1150/fullconenat-fw3-patch/raw/master/fullconenat.patch
+#      - name: patch firewall for fullconenat
+#        run: |
+#          cd friendlywrt-rk3328/friendlywrt/
+#          git clone https://github.com/LGA1150/openwrt-fullconenat.git package/fullconenat
+#          mkdir package/network/config/firewall/patches
+#          wget -P package/network/config/firewall/patches/ https://github.com/LGA1150/fullconenat-fw3-patch/raw/master/fullconenat.patch
           
       - name: Install Extra Packages
         run: |
@@ -136,17 +140,20 @@ jobs:
 
       - name: Install UPX
         run: |
-          cd friendlywrt-rk3328/friendlywrt
-          cp -r ../lede/tools/upx/ tools/
-          cp -r ../lede/tools/ucl/ tools/
-          sed -i '/# builddir dependencies/i\tools-y += ucl upx' tools/Makefile
-          sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile
+          #cd friendlywrt-rk3328/friendlywrt
+          #cp -r ../lede/tools/upx/ tools/
+          #cp -r ../lede/tools/ucl/ tools/
+          #sed -i '/# builddir dependencies/i\tools-y += ucl upx' tools/Makefile
+          #sed -i '/# builddir dependencies/a\$(curdir)/upx/compile := $(curdir)/ucl/compile' tools/Makefile
+          mkdir -p friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/
+          ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
 
       - name: Merge nanopi-r2_linux_defconfig
         run: |
           cd friendlywrt-rk3328
           wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
           ./merge_config.sh -m kernel/arch/arm64/configs/nanopi-r2_linux_defconfig ../r2s/defconfig.override
+          cat .config > kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
       - name: Load config
         run: |
