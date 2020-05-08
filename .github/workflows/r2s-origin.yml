@@ -55,7 +55,6 @@ jobs:
 
       - name: Update kernel-rockchip
         run: |
-          cd friendlywrt-rk3328/kernel
           /bin/bash r2s_step/02_rebase5.4.sh
 
       - name: Patch 5.4 Kernel
