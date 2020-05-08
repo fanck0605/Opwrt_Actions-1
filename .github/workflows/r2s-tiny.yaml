@@ -53,11 +53,11 @@ jobs:
         run: |
           /bin/bash r2s_step/02_rebase2lean.sh
 
-#      - name: Update kernel-rockchip
-#        run: |
-#          cd friendlywrt-rk3328/kernel
-#          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
-#          git rebase upstream/linux-5.4.y
+      - name: Update kernel-rockchip
+        run: |
+          cd friendlywrt-rk3328/kernel
+          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
+          git rebase upstream/linux-5.4.y
 
       - name: Patch 5.4 Kernel
         run: |

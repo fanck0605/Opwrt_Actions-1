@@ -35,8 +35,10 @@ git clone https://github.com/destan19/OpenAppFilter.git
 #rm -rf lean/rclone
 #rm -rf lean/luci-app-rclone
 
-#更改默認主題
+#更改默認主題及界面語言
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
+sed -i 's/luci.main.lang=zh_cn/luci.main.lang=auto/g' package/lean/default-settings/files/zzz-default-settings
+
 #關閉wan外部傳入及轉發
 sed -i '/firewall/d' ../device/friendlyelec/rk3328/default-settings/install.sh
 #只允許ssh在lan內部連接

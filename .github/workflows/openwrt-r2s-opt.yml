@@ -8,14 +8,14 @@
 name: Build R2S OpenWrt Opt
 
 on:
-#  release:
-#     types: published
+  release:
+    types: published
   push:
     branches:
       - master
     paths:
       - '.github/workflows/openwrt-r2s-opt.yml'
-      - 'r2s_opt.config'
+      - 'opt.seed'
   schedule:
     - cron: 30 20 * * *
   watch:

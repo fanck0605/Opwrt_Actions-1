@@ -2,33 +2,32 @@
 # Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
 # Author: Mod from P3TERX
-# For NanoPi R2S slim
+# For NanoPi R2S opt
 #=================================================
 
-name: Build R2S OpenWrt Slim
+name: Build R2S OpenWrt MWAN3
 
 on:
-  release:
-    types: published
+#  release:
+#     types: published
   push:
     branches:
       - master
     paths:
-      - '.github/workflows/openwrt-r2s-slim.yml'
-      - 'slim.seed'
-      - '06_mod_slim.sh'
-  schedule:
-    - cron: 30 20 * * *
+      - '.github/workflows/openwrt-r2s-mwan3.yml'
+  #schedule:
+  #  - cron: 30 20 * * *
   watch:
     types: started
 
 env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: seed/slim.seed
+  CONFIG_FILE: seed/mwan3.seed
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: false
-  UPLOAD_RELEASE: true
+  UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
 jobs:
@@ -75,12 +74,17 @@ jobs:
           
       - name: MOD the OpenWrt
         run: |
-          /bin/bash r2s_step/06_mod_slim.sh
+          /bin/bash r2s_step/06_mod_opt.sh
 
       - name: Load config
         run: |
           /bin/bash r2s_step/09_load_config.sh
-      
+          echo '
+          CONFIG_PACKAGE_luci-app-mwan3=y
+          CONFIG_PACKAGE_luci-app-mwan3helper=y
+          CONFIG_PACKAGE_mwan3=y
+          CONFIG_PACKAGE_luci-app-syncdial=y
+          ' >> configs/config_rk3328  
       - name: Build OpenWrt
         run: |
           cd friendlywrt-rk3328
@@ -93,13 +97,27 @@ jobs:
       - name: Organize files
         id: organize
         run: |
-          /bin/bash r2s_step/11_organize_slim.sh
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          mv friendlywrt-rk3328/out/*img* ./artifact/
+          cd ./artifact/
+          gzip *.img
+          zip R2S-mwan3-$(date +%Y-%m-%d).zip *.img.gz
+          rm *.img.gz
+          echo "::set-env name=FIRMWARE::$PWD"
+          echo "::set-output name=status::success"
+          echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+          release_tag="NanoPi-R2S-${{ env.DATE }}-mwan3"
+          echo "##[set-output name=release_tag;]$release_tag"
+          cd ../friendlywrt-rk3328/friendlywrt
+          cp .config ../../artifact/config-mwan-full
+          ./scripts/diffconfig.sh > ../../artifact/config-mwan.seed
 
       - name: Upload artifact
         uses: actions/upload-artifact@master
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         with:
-          name: OpenWrt_R2S_slim_firmware
+          name: OpenWrt_R2S_mwan3_firmware
           path: ${{ env.FIRMWARE }}
 
       - name: Create release
@@ -115,5 +133,5 @@ jobs:
           token: ${{ secrets.RELEASES_TOKEN }}
           body: |
             最新编译版本: ${{ steps.organize.outputs.release_tag }}
-            源码最近更新时间: ${{ env.VersionDate }}
+            源码更新日期: ${{ env.VersionDate }}
           artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config*
