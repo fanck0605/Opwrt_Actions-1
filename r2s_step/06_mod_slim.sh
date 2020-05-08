@@ -3,7 +3,7 @@ clear
 #进入friendlywrt目录
 cd friendlywrt-rk3328/friendlywrt/
 #增加防掉线脚本
-mv ../../script/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+mv ../../script/check_wan.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
 #刷机脚本
 mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x package/base-files/files/root/update.sh
 #修改版本号

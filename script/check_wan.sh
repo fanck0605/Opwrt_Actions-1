@@ -1,10 +1,10 @@
 #!/bin/sh
-#脚本放/bin目录，再用命令运行nohup sh /bin/checkwan  1>/dev/null 2>&1 &
+#脚本放/bin目录，再用命令运行nohup sh /bin/checkwan.sh  1>/dev/null 2>&1 &
 
 echo '脚本检测开始'
 tries=0
 wan=`ifconfig |grep inet| sed -n '1p'|awk '{print $2}'|awk -F ':' '{print $2}'`
-while test "1" = "1"
+while true
 do
 # do something
 if ping -w 1 -c 1 119.29.29.29; then #ping dns通则
@@ -21,8 +21,9 @@ else
 		sleep 10
 	fi
 	if [ $tries -ge 5 ]; then #连续ping dns 5次失败，重启wan口
-		tries = 0
-		/sbin/ifup wan
+		tries=0
+		/etc/init.d/network restart
+		sleep 5
 	fi
 fi
 sleep 2
