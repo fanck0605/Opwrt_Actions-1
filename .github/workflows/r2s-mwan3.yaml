@@ -9,7 +9,7 @@ name: Build R2S OpenWrt MWAN3
 
 on:
   release:
-     types: published
+    types: published
   push:
     branches:
       - master
