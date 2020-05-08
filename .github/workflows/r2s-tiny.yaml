@@ -75,7 +75,6 @@ jobs:
       - name: MOD the OpenWrt
         run: |
           /bin/bash r2s_step/06_mod_slim.sh
-          sed -i 's/luci.main.lang=zh_cn/luci.main.lang="en"/g' package/lean/default-settings/files/zzz-default-settings
       - name: Load config
         run: |
           /bin/bash r2s_step/09_load_config.sh
