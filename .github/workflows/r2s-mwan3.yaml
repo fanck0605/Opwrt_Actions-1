@@ -21,7 +21,6 @@ on:
     types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   CONFIG_FILE: seed/opt.seed
   SSH_ACTIONS: false
