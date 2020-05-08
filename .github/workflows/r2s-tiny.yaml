@@ -14,7 +14,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s-tiny.yml'
+      - '.github/workflows/r2s-tiny.yaml'
       - 'seed/tiny.seed'
   schedule:
     - cron: 30 20 * * *
