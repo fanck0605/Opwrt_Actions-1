@@ -18,7 +18,7 @@ on:
       - 'r2s_step/06_mod_slim.sh'
       - 'seed/testseed'
   schedule:
-    - cron: 30 21 * * *
+    - cron: 35 21 * * *
   watch:
     types: started
 
@@ -67,7 +67,6 @@ jobs:
  
       - name: patch openwrt
         run: |
-          cd friendlywrt-rk3328/friendlywrt/
           /bin/bash r2s_step/05_patch.wrt.sh
 
       - name: MOD the OpenWrt
