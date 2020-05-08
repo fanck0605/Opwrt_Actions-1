@@ -2,28 +2,28 @@
 # Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
 # Author: Mod from P3TERX
-# For NanoPi R2S org
+# For NanoPi R2S slim
 #=================================================
 
-name: Build R2S OpenWrt Origin
+name: Build R2S OpenWrt tiny
 
 on:
-#  release:
-#    types: published
+  release:
+    types: published
   push:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s-origin.yml'
-      - 'r2s_step/06_mod_slim.sh'
-      - 'seed/testseed'
+      - '.github/workflows/r2s-tiny.yml'
+      - 'seed/tiny.seed'
   schedule:
-    - cron: 35 21 * * *
+    - cron: 30 20 * * *
   watch:
     types: started
 
 env:
-  CONFIG_FILE: seed/test.seed
+  REPO_BRANCH: master
+  CONFIG_FILE: seed/tiny.seed
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
@@ -49,13 +49,15 @@ jobs:
         run: |
           /bin/bash r2s_step/01_friendlywrt.sh
 
-      - name: rebase to openwrt
+      - name: rebase Lean opwrt
         run: |
-          /bin/bash r2s_step/02_rebase2openwrt.sh
+          /bin/bash r2s_step/02_rebase2lean.sh
 
-      - name: Update kernel-rockchip
-        run: |
-          /bin/bash r2s_step/02_rebase5.4.sh
+#      - name: Update kernel-rockchip
+#        run: |
+#          cd friendlywrt-rk3328/kernel
+#          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
+#          git rebase upstream/linux-5.4.y
 
       - name: Patch 5.4 Kernel
         run: |
@@ -65,13 +67,14 @@ jobs:
         run: |
           /bin/bash r2s_step/04_fullcone_1.5g.sh
  
-      - name: patch openwrt
+      - name: Enable cpu autocore
         run: |
-          /bin/bash r2s_step/05_patch_wrt.sh
-
+          cd friendlywrt-rk3328/friendlywrt/
+          git apply ../../patches/001-cpu-enable_autocore.patch
+          
       - name: MOD the OpenWrt
         run: |
-          /bin/bash r2s_step/06_mod_opt.sh
+          /bin/bash r2s_step/06_mod_slim.sh
 
       - name: Load config
         run: |
@@ -89,13 +92,13 @@ jobs:
       - name: Organize files
         id: organize
         run: |
-          /bin/bash r2s_step/11_organize_opt.sh
-        
+          /bin/bash r2s_step/11_organize_tiny.sh
+
       - name: Upload artifact
         uses: actions/upload-artifact@master
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         with:
-          name: OpenWrt_R2S_origin_firmware
+          name: OpenWrt_R2S_tiny_firmware
           path: ${{ env.FIRMWARE }}
 
       - name: Create release
@@ -103,7 +106,7 @@ jobs:
         uses: ncipollo/release-action@v1.6.1
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         with:
-          name: R2S最新编译时间:${{ env.DATE }}
+          name: 最新编译时间:${{ env.DATE }}
           allowUpdates: true
           tag: R2S
           commit: master
