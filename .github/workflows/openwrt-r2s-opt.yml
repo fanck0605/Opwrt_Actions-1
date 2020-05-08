@@ -15,7 +15,7 @@ on:
       - master
     paths:
       - '.github/workflows/openwrt-r2s-opt.yml'
-      - 'opt.seed'
+      - 'seed/opt.seed'
   schedule:
     - cron: 30 20 * * *
   watch:
