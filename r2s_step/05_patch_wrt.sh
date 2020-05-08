@@ -1,6 +1,7 @@
 #!/bin/bash
 clear
 cd friendlywrt-rk3328/friendlywrt/
+rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 #BBR_Patch
 cp ../../patches/607-tcp_bbr-adapt-cwnd-based-on-ack-aggregation-estimation.patch target/linux/generic/pending-4.14/
 
