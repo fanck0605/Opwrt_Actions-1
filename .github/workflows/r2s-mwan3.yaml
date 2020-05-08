@@ -14,7 +14,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s-mwan3.yml'
+      - '.github/workflows/r2s-mwan3.yaml'
   #schedule:
   #  - cron: 30 20 * * *
   watch:
