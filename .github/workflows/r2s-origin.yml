@@ -77,11 +77,11 @@ jobs:
         run: |
           /bin/bash r2s_step/04_fullcone_1.5g.sh
  
-#      - name: Enable cpu autocore
-#        run: |
-#          cd friendlywrt-rk3328/friendlywrt/
-#          git apply ../../patches/001-cpu-enable_autocore.patch
-          
+      - name: patch openwrt
+        run: |
+          cd friendlywrt-rk3328/friendlywrt/
+          /bin/bash r2s_step/05_patch.wrt.sh
+                    
       - name: MOD the OpenWrt
         run: |
           /bin/bash r2s_step/06_mod_opt.sh
@@ -126,4 +126,3 @@ jobs:
             最新编译版本: ${{ steps.organize.outputs.release_tag }}
             源码最近更新时间: ${{ env.VersionDate }}
           artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config*
-          
