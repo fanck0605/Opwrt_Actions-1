@@ -5,7 +5,7 @@ mkdir -p ./artifact/
 mv friendlywrt-rk3328/out/*img* ./artifact/
 cd ./artifact/
 gzip *.img
-zip R2S-opt-$(date +%Y-%m-%d).zip *.img.gz
+zip R2S-slim-$(date +%Y-%m-%d).zip *.img.gz
 rm *.img.gz
 echo "::set-env name=FIRMWARE::$PWD"
 echo "::set-output name=status::success"
