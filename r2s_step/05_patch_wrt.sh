@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+cd friendlywrt-rk3328/friendlywrt/
 #BBR_Patch
 cp ../../patches/607-tcp_bbr-adapt-cwnd-based-on-ack-aggregation-estimation.patch target/linux/generic/pending-4.14/
 
