@@ -96,7 +96,10 @@ jobs:
           # CONFIG_PACKAGE_kcptun-client is not set
           # CONFIG_PACKAGE_kcptun-server is not set
           # CONFIG_V2RAY_COMPRESS_UPX is not set
+          # CONFIG_PACKAGE_luci-app-kcptun is not set
+          # CONFIG_PACKAGE_luci-app-v2ray-server is not set
           ' >> configs/config_rk3328
+          
       - name: Build OpenWrt
         run: |
           cd friendlywrt-rk3328
