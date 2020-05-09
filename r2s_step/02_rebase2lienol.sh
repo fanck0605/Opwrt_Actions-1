@@ -10,7 +10,8 @@ git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
 rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
 git checkout upstream/dev-19.07 -- feeds.conf.default
-sed -i 's/Lienol\/openwrt-package/SuLingGG\/openwrt-package/' feeds.conf.default
 sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
 sed -i 's/^src-git telephony/#src-git telephony/g' ./feeds.conf.default
+sed -i 's/^lienol/#lienol/g' ./feeds.conf.default
+sed -i '$a\src-git SuliangGG https://github.com/SuLingGG/openwrt-package.git' ./feeds.conf.default
 exit 0
