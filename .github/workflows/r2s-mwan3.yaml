@@ -50,7 +50,7 @@ jobs:
 
       - name: rebase Lean opwrt
         run: |
-          /bin/bash r2s_step/02_rebase2lean.sh
+          /bin/bash r2s_step/02_rebase2lienol.sh
 
       - name: Update kernel-rockchip
         run: |
