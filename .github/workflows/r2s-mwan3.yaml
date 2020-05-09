@@ -48,7 +48,7 @@ jobs:
         run: |
           /bin/bash r2s_step/01_friendlywrt.sh
 
-      - name: rebase Lean opwrt
+      - name: rebase Lienol opwrt
         run: |
           /bin/bash r2s_step/02_rebase2lienol.sh
 
