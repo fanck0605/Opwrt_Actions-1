@@ -3,7 +3,9 @@ clear
 #进入friendlywrt目录
 cd friendlywrt-rk3328/friendlywrt/
 #增加防掉线脚本
-mv ../../script/check_wan.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+mv ../../script/check_inet.sh package/base-files/files/usr/bin/ && chmod +x package/base-files/files/usr/bin/check_inet.sh
+mv ../../script/check package/base-files/files/etc/init.d/ && chmod +x package/base-files/files/etc/init.d/check
+ls package/base-files/files/etc/init.d/check /package/base-files/files/etc/rc.d/S95check
 #刷机脚本
 mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x package/base-files/files/root/update.sh
 #修改版本号
@@ -43,6 +45,8 @@ sed -i '/uci commit/i\uci delete dhcp.lan.dhcpv6' package/base-files/files/root/
 sed -i '/uci commit/i\uci delete dhcp.lan.ndp' package/base-files/files/root/setup.sh
 #默认dnsmasq-full
 sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
+#增加最大连接
+sed -i 's/16384/65536/g' package/kernel/linux/files/sysctl-nf-conntrack.conf
 #install upx
 mkdir -p staging_dir/host/bin/
 ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx

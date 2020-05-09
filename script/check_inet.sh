@@ -1,9 +1,9 @@
 #!/bin/sh
-#脚本放/bin目录，再用命令运行nohup sh /bin/checkwan.sh  1>/dev/null 2>&1 &
+#脚本放/bin目录，再用命令运行nohup sh /bin/check_inet.sh  1>/dev/null 2>&1 &
 
 echo '脚本检测开始'
 tries=0
-wan=`ifconfig |grep inet| sed -n '1p'|awk '{print $2}'|awk -F ':' '{print $2}'`
+lan=`ifconfig |grep inet| sed -n '1p'|awk '{print $2}'|awk -F ':' '{print $2}'`
 while true
 do
 # do something
@@ -12,7 +12,7 @@ if ping -w 1 -c 1 119.29.29.29; then #ping dns通则
 	tries=0
 else
 	sleep 1
-	if ping -w 1 -c 1 $wan; then #若ping网关通则
+	if ping -w 1 -c 1 $lan; then #若ping网关通则
 		echo '网关正常'
 		tries=$((tries+1))
 	else #ping不通，重启防火墙

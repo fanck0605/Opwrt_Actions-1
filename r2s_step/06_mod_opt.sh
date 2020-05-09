@@ -3,7 +3,9 @@ clear
 #进入friendlywrt目录
 cd friendlywrt-rk3328/friendlywrt/
 #增加防掉线脚本
-mv ../../script/check_wan.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+mv ../../script/check_inet.sh package/base-files/files/usr/bin/ && chmod +x package/base-files/files/usr/bin/check_inet.sh
+mv ../../script/check package/base-files/files/etc/init.d/ && chmod +x package/base-files/files/etc/init.d/check
+ls package/base-files/files/etc/init.d/check /package/base-files/files/etc/rc.d/S95check
 #刷机脚本
 mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x package/base-files/files/root/update.sh
 #生成时间
@@ -56,6 +58,8 @@ sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
 #install upx
 mkdir -p staging_dir/host/bin/
 ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
+#增加最大连接
+sed -i 's/16384/65536/g' package/kernel/linux/files/sysctl-nf-conntrack.conf
 #其它
 #sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
 #sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
