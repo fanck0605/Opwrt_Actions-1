@@ -22,7 +22,7 @@ on:
 
 env:
   REPO_BRANCH: master
-  CONFIG_FILE: seed/opt.seed
+  CONFIG_FILE: seed/slim.seed
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -73,7 +73,7 @@ jobs:
           
       - name: MOD the OpenWrt
         run: |
-          /bin/bash r2s_step/06_mod_opt.sh
+          /bin/bash r2s_step/06_mod_slim.sh
 
       - name: Load config
         run: |
