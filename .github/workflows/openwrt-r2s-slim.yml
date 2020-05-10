@@ -16,7 +16,7 @@ on:
     paths:
       - '.github/workflows/openwrt-r2s-slim.yml'
       - 'seed/slim.seed'
-      - '06_mod_slim.sh'
+      - 'r2s_step/06_mod_slim.sh'
   schedule:
     - cron: 30 20 * * *
   watch:
