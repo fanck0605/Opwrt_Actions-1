@@ -32,7 +32,7 @@ git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-d
 svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher package/luci-app-r2sflasher
 svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
 svn co https://github.com/Lienol/openwrt-package/trunk/lienol/luci-app-trojan-server package/luci-app-trojan-server
-git clone https://github.com/destan19/OpenAppFilter.git
+git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #git clone https://github.com/ElonH/Rclone-OpenWrt.git
 #rm -rf lean/rclone
 #rm -rf lean/luci-app-rclone
