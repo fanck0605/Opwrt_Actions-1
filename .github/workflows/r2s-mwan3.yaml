@@ -48,9 +48,9 @@ jobs:
         run: |
           /bin/bash r2s_step/01_friendlywrt.sh
 
-      - name: rebase Lienol opwrt
+      - name: rebase lean opwrt
         run: |
-          /bin/bash r2s_step/02_rebase2lienol.sh
+          /bin/bash r2s_step/02_rebase2lean.sh
 
       - name: Update kernel-rockchip
         run: |
@@ -91,17 +91,6 @@ jobs:
           CONFIG_PACKAGE_luci-app-mwan3helper=y
           CONFIG_PACKAGE_mwan3=y
           CONFIG_PACKAGE_luci-app-syncdial=y
-          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun is not set
-          # CONFIG_PACKAGE_luci-app-ssrserver-python is not set
-          # CONFIG_PACKAGE_kcptun-client is not set
-          # CONFIG_PACKAGE_kcptun-server is not set
-          # CONFIG_V2RAY_COMPRESS_UPX is not set
-          # CONFIG_PACKAGE_luci-app-kcptun is not set
-          # CONFIG_PACKAGE_luci-app-v2ray-server is not set
-          # CONFIG_PACKAGE_luci-app-dockerman is not set
-          # CONFIG_PACKAGE_luci-lib-docker is not set
-          # CONFIG_PACKAGE_luci-lib-jsonc is not set
-          # CONFIG_PACKAGE_docker-ce is not set 
           ' >> configs/config_rk3328
           
       - name: Build OpenWrt

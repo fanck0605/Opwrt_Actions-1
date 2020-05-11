@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 clear
 rm -rf ./artifact/
 mkdir -p ./artifact/
