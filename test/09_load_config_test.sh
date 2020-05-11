@@ -12,5 +12,5 @@ cat ./nanopi-r2_linux_defconfig > ./kernel/arch/arm64/configs/nanopi-r2_linux_de
 rm -f friendlywrt/.config*
 cat configs/config_rk3328 | grep "TARGET" >> ../seed/base_rk3328.seed
 cat ../$CONFIG_FILE >> ../seed/base_rk3328.seed
-cat ../seed/base_rk3328.seed > configs/config_rk3328
+cat ../seed/base_rk3328.seed > ./configs/config_rk3328
 exit 0
