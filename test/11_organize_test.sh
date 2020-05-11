@@ -13,6 +13,6 @@ echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
 release_tag="NanoPi-R2S-${{ env.DATE }}-origin"
 echo "##[set-output name=release_tag;]$release_tag"
 cd ../$RK3328_DIR/friendlywrt
-cp .config ../../artifact/config-grigin-full
+cp .config ../../artifact/config-origin-full
 ./scripts/diffconfig.sh > ../../artifact/config-origin.seed
 exit 0
