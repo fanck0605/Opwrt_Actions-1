@@ -5,7 +5,6 @@ cd friendlywrt-rk3328/friendlywrt/
 #增加防掉线脚本
 mv ../../script/check_inet.sh package/base-files/files/usr/bin/ && chmod +x package/base-files/files/usr/bin/check_inet.sh
 mv ../../script/check package/base-files/files/etc/init.d/ && chmod +x package/base-files/files/etc/init.d/check
-ls package/base-files/files/etc/init.d/check package/base-files/files/etc/rc.d/S95check
 #刷机脚本
 mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x package/base-files/files/root/update.sh
 #修改版本号
