@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 clear
 sudo df -lh
 lodev=$(sudo losetup -f)

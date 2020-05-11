@@ -27,7 +27,7 @@ git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frp
 git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-diskman
 svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher package/luci-app-r2sflasher
 svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
-svn co https://github.com/suwus/openwrt-feeds-driver-ext/trunk/rtl8821cu package/rtl8821cu
+#svn co https://github.com/suwus/openwrt-feeds-driver-ext/trunk/rtl8821cu package/rtl8821cu
 #更改默認主題及界面语言
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/luci.main.lang=zh_cn/luci.main.lang=auto/g' package/lean/default-settings/files/zzz-default-settings
