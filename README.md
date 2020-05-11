@@ -1,15 +1,15 @@
 ### NanoPi R2S说明
 
-####使用Friendlywrt内核，集成Lean功能插件
-1. 集众大佬的建议改进编译方式，跟风把内核defconfig按自己的理解做了调整，欢迎测试。
-按个人使用重新筛选应用分成2版本，Web管理主题使用清爽的opentomcat。
-2. 精简大幅瘦身，性能优先，仅支持是一些本人必用的SSRP、frpc/frps、ttyd、zerotier，其它广告拦截等通通去掉。<br/>详细见[r2s_slim.config]( ./r2s_slim.config)
-3. 定制版在精简版基础上增加docker、transmission、应用过滤等一般较常用功能等。<br/>详细见:[r2s_opt.config]( ./r2s_opt.config)
+####使用Friendlywrt内核，集成Lean功能插件，集众大佬的建议改进编译方式，欢迎测试。<br> 
+按个人喜好，重新筛选应用分成3版本:
+1. 极简的tiny版，仅包含ssr-plus、ddns
+2. 瘦身的slim版，包括有ssr-plus、frpc/frps、ttyd、zerotier
+3. 定制版在精简版基础上增加docker、transmission、应用过滤等一般较常用功能等。
 4. 默认管理地址:192.168.2.1  用户名:root  密码:password
 5. 下载见[R2S定制](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
 
-####新增Openwrt original实验版本
-6. 实验版本，每日使用openwrt原版最新内核编译，内核及功能配置与精简版一致。<br/>详细见:[r2s_test.config]( ./r2s_test.config)
+####新增实验版本
+6. Original实验版本，内核及功能配置与slim版一致，各种尝新操作，适合测试。
 
 #### R2S刷机方法
 7. 感谢gary lau的在线更新脚本，可选择保存配置升级，或下载固件后通过web管理页的“文件传输”上传到更新，支持多种R2S编译版本互刷，通过web管理页面的TTYD或SSH到R2S后执行下载脚本并执行：<br> 
