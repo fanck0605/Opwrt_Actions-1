@@ -15,8 +15,8 @@ on:
       - master
     paths:
       - '.github/workflows/r2s-origin.yml'
-      - 'r2s_step/06_mod_slim.sh'
-      - 'seed/testseed'
+      - 'test/06_mod_test.sh'
+      - 'seed/test.seed'
   schedule:
     - cron: 35 21 * * *
   watch:
@@ -32,7 +32,7 @@ env:
 
 jobs:
     build:
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
       if: github.event.repository.owner.id == github.event.sender.id
 
       steps:
@@ -43,39 +43,27 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          /bin/bash r2s_step/00_init_env.sh
+          /bin/bash test/00_init_env.sh
 
-      - name: Install friendlywrt source
+      - name: Install fanck0605 source
         run: |
-          /bin/bash r2s_step/01_friendlywrt.sh
-
-      - name: rebase to openwrt
-        run: |
-          /bin/bash r2s_step/02_rebase2openwrt.sh
-
-      - name: Update kernel-rockchip
-        run: |
-          /bin/bash r2s_step/02_rebase5.4.sh
+          /bin/bash test/01_fanck0605.sh
 
       - name: Patch 5.4 Kernel
         run: |
-          /bin/bash r2s_step/03_kernel_patch.sh
+          /bin/bash test/03_kernel_patch.sh
 
       - name: Enable Kernel feature
         run: |
-          /bin/bash r2s_step/04_fullcone_1.5g.sh
+          /bin/bash test/04_fullcone_1.5g.sh
  
-      - name: patch openwrt
-        run: |
-          /bin/bash r2s_step/05_patch_wrt.sh
-
       - name: MOD the OpenWrt
         run: |
-          /bin/bash r2s_step/06_mod_opt.sh
+          /bin/bash test/06_mod_test.sh
 
       - name: Load config
         run: |
-          /bin/bash r2s_step/09_load_config.sh
+          /bin/bash test/09_load_config_test.sh
       
       - name: Build OpenWrt
         run: |
@@ -84,12 +72,12 @@ jobs:
       
       - name: Fix Rootfs Owner and Group
         run: |
-          /bin/bash r2s_step/10_fix_rootfs.sh
+          /bin/bash test/10_fix_rootfs.sh
 
       - name: Organize files
         id: organize
         run: |
-          /bin/bash r2s_step/11_organize_opt.sh
+          /bin/bash test/11_organize_test.sh
         
       - name: Upload artifact
         uses: actions/upload-artifact@master
