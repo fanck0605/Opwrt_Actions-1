@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 #进入friendlywrt目录
-cd friendlywrt-rk3328/friendlywrt/
+cd $RK3328_DIR/friendlywrt/
 #增加防掉线脚本
 mv ../../script/check_inet.sh package/base-files/files/usr/bin/ && chmod +x package/base-files/files/usr/bin/check_inet.sh
 mv ../../script/check package/base-files/files/etc/init.d/ && chmod +x package/base-files/files/etc/init.d/check

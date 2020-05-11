@@ -28,6 +28,7 @@ env:
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_RELEASE: true
+  RK3328_DIR: rk3328
   TZ: Asia/Shanghai
 
 jobs:
@@ -67,7 +68,7 @@ jobs:
       
       - name: Build OpenWrt
         run: |
-          cd friendlywrt-rk3328
+          cd $RK3328_DIR
           ./build.sh nanopi_r2s.mk
       
       - name: Fix Rootfs Owner and Group

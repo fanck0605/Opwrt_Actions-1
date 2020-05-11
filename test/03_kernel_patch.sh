@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-cd friendlywrt-rk3328
+cd $RK3328_DIR
 git clone https://github.com/openwrt/openwrt && cd openwrt/
 cp -a ./target/linux/generic/files/* ../kernel/
 rm target/linux/octeontx/patches-5.4/0004-PCI-add-quirk-for-Gateworks-PLX-PEX860x-switch-with-.patch

@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-cd friendlywrt-rk3328
+cd $RK3328_DIR
 #deconfig
 #wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
 #./merge_config.sh -m kernel/arch/arm64/configs/nanopi-r2_linux_defconfig ../seed/defconfig.override
