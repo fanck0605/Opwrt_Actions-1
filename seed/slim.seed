@@ -1,5 +1,11 @@
 CONFIG_LUCI_LANG_zh-cn=y
 CONFIG_LUCI_LANG_zh-tw=y
+#wireless card support
+CONFIG_PACKAGE_kmod-mmc=y
+CONFIG_PACKAGE_kmod-mt76=y
+CONFIG_PACKAGE_kmod-mt7601u=y
+CONFIG_PACKAGE_kmod-rtl8192cu=y
+CONFIG_PACKAGE_kmod-rtl8821ae=y
 CONFIG_PACKAGE_kmod-rtl8180=y
 CONFIG_PACKAGE_kmod-rtl8187=y
 CONFIG_PACKAGE_kmod-rtl8812au-ct=y
@@ -7,6 +13,7 @@ CONFIG_PACKAGE_kmod-rtl8821ae=y
 CONFIG_PACKAGE_kmod-rtlwifi=y
 CONFIG_PACKAGE_kmod-rtlwifi-btcoexist=y
 CONFIG_PACKAGE_kmod-rtlwifi-usb=y
+CONFIG_PACKAGE_kmod-rtl8821cu=y
 #luci-app
 CONFIG_PACKAGE_luci-app-accesscontrol=y
 CONFIG_PACKAGE_luci-app-arpbind=y
