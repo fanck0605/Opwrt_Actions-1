@@ -58,6 +58,11 @@ jobs:
         run: |
           /bin/bash test/04_fullcone_1.5g.sh
  
+      - name: Unlock some OpenWrt feeds
+        run: |
+          cd $RK3328_DIR/friendlywrt
+          sed -i '$a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
+
       - name: MOD the OpenWrt
         run: |
           /bin/bash test/06_mod_test.sh
@@ -73,12 +78,12 @@ jobs:
       
       - name: Fix Rootfs Owner and Group
         run: |
-          /bin/bash test/10_fix_rootfs.sh
+          . test/10_fix_rootfs.sh
 
       - name: Organize files
         id: organize
         run: |
-          /bin/bash test/11_organize_test.sh
+          . test/11_organize_test.sh
         
       - name: Upload artifact
         uses: actions/upload-artifact@master
