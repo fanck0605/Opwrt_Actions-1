@@ -82,7 +82,21 @@ jobs:
       - name: Organize files
         id: organize
         run: |
-          /bin/sh test/11_organize_test.sh
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          mv $RK3328_DIR/out/*img* ./artifact/
+          cd ./artifact/
+          gzip *.img
+          zip R2S-origin-$(date +%Y-%m-%d).zip *.img.gz
+          rm *.img.gz
+          echo "::set-env name=FIRMWARE::$PWD"
+          echo "::set-output name=status::success"
+          echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+          release_tag="NanoPi-R2S-${{ env.DATE }}-origin"
+          echo "##[set-output name=release_tag;]$release_tag"
+          cd ../$RK3328_DIR/friendlywrt
+          cp .config ../../artifact/config-origin-full
+          ./scripts/diffconfig.sh > ../../artifact/config-origin.seed
         
       - name: Upload artifact
         uses: actions/upload-artifact@master
@@ -104,5 +118,4 @@ jobs:
           token: ${{ secrets.RELEASES_TOKEN }}
           body: |
             最新编译版本: ${{ steps.organize.outputs.release_tag }}
-            源码最近更新时间: ${{ env.VersionDate }}
           artifacts: ${{ env.FIRMWARE }}/*.zip,${{ env.FIRMWARE }}/config*
