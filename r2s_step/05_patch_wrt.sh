@@ -1,4 +1,5 @@
 #!/bin/bash
+export TERM=linux
 clear
 cd friendlywrt-rk3328/friendlywrt/
 rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch

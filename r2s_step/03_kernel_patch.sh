@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+export TERM=linux
 cd friendlywrt-rk3328
 git clone https://github.com/openwrt/openwrt && cd openwrt/
 cp -a ./target/linux/generic/files/* ../kernel/

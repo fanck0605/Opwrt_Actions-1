@@ -1,5 +1,5 @@
 #!/bin/bash
-clear
+export TERM=linux
 git clone https://github.com/friendlyarm/repo
 sudo cp repo/repo /usr/bin/
 rm -rf friendlywrt-rk3328

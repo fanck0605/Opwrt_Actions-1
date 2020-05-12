@@ -1,5 +1,5 @@
 #!/bin/bash
-clear
+export TERM=linux
 cd friendlywrt-rk3328
 #deconfig
 wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
