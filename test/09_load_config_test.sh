@@ -1,5 +1,4 @@
 #!/bin/bash
-clear
 cd $RK3328_DIR
 #deconfig
 #wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
