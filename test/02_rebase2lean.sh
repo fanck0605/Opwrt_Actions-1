@@ -1,6 +1,7 @@
 #!/bin/bash
 clear
-cd friendlywrt-rk3328/friendlywrt/
+export TERM=linux
+cd $RK3328_DIR/friendlywrt/
 git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
 git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
 git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
