@@ -1,5 +1,5 @@
 #!/bin/sh
-clear
+export TERM=linux
 rm -rf ./artifact/
 mkdir -p ./artifact/
 mv $RK3328_DIR/out/*img* ./artifact/

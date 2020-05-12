@@ -1,5 +1,5 @@
-#!/bin/sh
-clear
+#!/bin/bash
+export TERM=linux
 sudo df -lh
 lodev=$(sudo losetup -f)
 echo "found unused loop dev $lodev"

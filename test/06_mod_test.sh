@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+export TERM=linux
 #进入friendlywrt目录
 cd $RK3328_DIR/friendlywrt/
 #增加防掉线脚本
