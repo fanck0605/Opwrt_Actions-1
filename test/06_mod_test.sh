@@ -43,7 +43,7 @@ sed -i 's/luci.main.lang=zh_cn/luci.main.lang=auto/g' package/lean/default-setti
 #sed -i '/uci commit/i\uci delete dhcp.lan.dhcpv6' package/base-files/files/root/setup.sh
 #sed -i '/uci commit/i\uci delete dhcp.lan.ndp' package/base-files/files/root/setup.sh
 #默认dnsmasq-full
-#sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
+sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
 #增加最大连接
 #sed -i 's/16384/65536/g' package/kernel/linux/files/sysctl-nf-conntrack.conf
 #install upx
