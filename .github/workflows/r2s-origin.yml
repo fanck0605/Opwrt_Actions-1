@@ -64,7 +64,6 @@ jobs:
  
       - name: prepare openwrt package
         run: |
-          cd $RK3328_DIR/friendlywrt
           /bin/bash test/05_prepare_package.sh
 
       - name: MOD the OpenWrt
