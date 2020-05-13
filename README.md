@@ -2,11 +2,11 @@
 
 ####使用Friendlywrt内核，集成Lean功能插件，集众大佬的建议改进编译方式，欢迎测试。<br> 
 按个人喜好，重新筛选应用分成3版本:
-1. 极简的tiny版，仅包含ssr-plus、ddns
-2. 瘦身的slim版，包括有ssr-plus、frpc/frps、ttyd、zerotier
-3. 定制版在精简版基础上增加docker、transmission、应用过滤等一般较常用功能等。
+1. 极简的tiny版，仅包含ssr-plus、ddns(不支持任何USB无线网卡，支持U盘)
+2. 瘦身的slim版，包括有ssr-plus、frpc/frps、ttyd、zerotier（支持部分USB无线网卡，只测试过811AC）
+3. 定制版在精简版基础上增加docker、transmission、应用过滤等一般较常用功能等。（支持部分USB无线网卡，只测试过811AC）
 4. 默认管理地址:192.168.2.1  用户名:root  密码:password
-5. 下载见[R2S定制](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
+5. 下载见[R2S发布](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
 
 ####新增实验版本
 6. Original实验版本，内核及功能配置与slim版一致，各种尝新操作，适合测试。
