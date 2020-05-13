@@ -1,6 +1,9 @@
 CONFIG_LUCI_LANG_zh-cn=y
 CONFIG_LUCI_LANG_zh-tw=y
 #wireless card support
+CONFIG_PACKAGE_hostapd=y
+CONFIG_PACKAGE_hostapd-basic=y
+CONFIG_PACKAGE_hostapd-utils=y
 CONFIG_PACKAGE_kmod-mmc=y
 CONFIG_PACKAGE_kmod-mt76=y
 CONFIG_PACKAGE_kmod-mt7601u=y
