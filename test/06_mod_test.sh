@@ -26,3 +26,4 @@ echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
 #默认dnsmasq-full
 #sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' include/target.mk
 ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
+exit 0

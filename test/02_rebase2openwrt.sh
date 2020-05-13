@@ -1,12 +1,13 @@
 #!/bin/bash
 #调整friendlywrt的更新源，#fork 自 QiuSimons
 export TERM=linux
-cd $RK3328_DIR/friendlywrt/
+cd $RK3328_DIR
 latest_feed="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n 1p |sed 's/v//g' |sed 's/.tar.gz//g')"
 sed -i 's,19.07.1,'"${latest_feed}"',g' device/friendlyelec/rk3328/common-files/etc/opkg/distfeeds.conf
 #取消重复的feeds update 
 sed -i 's,./scripts,#./scripts,g' scripts/mk-friendlywrt.sh
 #rebase to openwrt
+cd friendlywrt
 git config --local user.email "action@123.com" && git config --local user.name "GitHub 123"
 git remote add upstream https://github.com/openwrt/openwrt.git && git fetch upstream
 git rebase upstream/openwrt-19.07
