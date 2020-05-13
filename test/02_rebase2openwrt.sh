@@ -30,6 +30,7 @@ rm -f ./feeds.conf.default
 rm -f ./package/base-files/files/etc/banner
 rm -f ./package/base-files/files/bin/config_generate
 wget https://raw.githubusercontent.com/openwrt/openwrt/openwrt-19.07/feeds.conf.default
+cd ..
 #准备openwrt官方源码
 mkdir opofficial
 latest_release="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n 1p)"
