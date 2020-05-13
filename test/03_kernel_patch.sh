@@ -1,5 +1,4 @@
 #!/bin/bash
-clear
 export TERM=linux
 cd $RK3328_DIR/kernel
 #内核变基到linux5.4.y

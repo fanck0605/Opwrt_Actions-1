@@ -1,5 +1,4 @@
 #!/bin/bash
-export TERM=linux
 cd $RK3328_DIR
 #use fanck0605 defconfig
 wget https://github.com/fanck0605/nanopi-r2s/raw/lean/nanopi-r2_linux_defconfig
@@ -13,4 +12,3 @@ rm -f friendlywrt/.config*
 cat configs/config_rk3328 | grep "TARGET" >> ../seed/base_rk3328.seed
 cat ../$CONFIG_FILE >> ../seed/base_rk3328.seed
 cat ../seed/base_rk3328.seed > ./configs/config_rk3328
-exit 0
