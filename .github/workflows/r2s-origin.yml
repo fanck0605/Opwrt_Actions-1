@@ -62,7 +62,7 @@ jobs:
         run: |
           /bin/bash test/04_fullcone_1.5g.sh
  
-      - name: prepare openwrt package
+      - name: Prepare openwrt package
         run: |
           /bin/bash test/05_prepare_package.sh
 
