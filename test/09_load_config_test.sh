@@ -12,4 +12,6 @@ rm -f friendlywrt/.config*
 cat configs/config_rk3328 | grep "TARGET" >> ../seed/base_rk3328.seed
 cat ../$CONFIG_FILE >> ../seed/base_rk3328.seed
 cat ../seed/base_rk3328.seed > ./configs/config_rk3328
+cat ../seed/base_rk3328.seed > ./friendlywrt/.config
+chmod -R 755 ./
 exit 0
