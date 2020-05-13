@@ -52,7 +52,6 @@ jobs:
 
       - name: rebase to OpenWrt
         run: |
-          cd $RK3328_DIR/friendlywrt
           /bin/bash test/02_rebase2openwrt.sh
 
       - name: Patch 5.4 Kernel
