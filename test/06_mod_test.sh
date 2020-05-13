@@ -8,13 +8,14 @@ mv ../../script/check_inet.sh package/base-files/files/usr/bin/ && chmod +x pack
 mv ../../script/check package/base-files/files/etc/init.d/ && chmod +x package/base-files/files/etc/init.d/check
 #刷机脚本
 mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x package/base-files/files/root/update.sh
+#關閉wan外部傳入及轉發
+sed -i '/firewall/d' ../device/friendlyelec/rk3328/default-settings/install.sh
+
 #修改版本号
 #sed -i 's/OpenWrt/Quintus Build @ $(date "+%Y.%m.%d")/g' package/lean/default-settings/files/zzz-default-settings
 #echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
 #生成时间
 echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
-#關閉wan外部傳入及轉發
-#sed -i '/firewall/d' ../device/friendlyelec/rk3328/default-settings/install.sh
 #只允許ssh在lan內部連接
 #sed -i '/uci commit luci/a\uci commit dropbear' package/lean/default-settings/files/zzz-default-settings
 #sed -i '/uci commit luci/a\uci set dropbear.@dropbear[0].Interface='lan'' package/lean/default-settings/files/zzz-default-settings
