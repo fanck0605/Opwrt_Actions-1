@@ -1,6 +1,7 @@
 #!/bin/bash
-export TERM=linux
+#!/bin/bash
 clear
+export TERM=linux
 #增加软件包
 cd $RK3328_DIR/friendlywrt
 #更新feed
