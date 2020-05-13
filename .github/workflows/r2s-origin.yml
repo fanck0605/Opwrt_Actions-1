@@ -50,7 +50,7 @@ jobs:
         run: |
           /bin/bash test/01_friendlywrt.sh
 
-      - name: rebase Lean opwrt
+      - name: rebase to OpenWrt
         run: |
           /bin/bash test/02_rebase2openwrt.sh
 
@@ -62,9 +62,10 @@ jobs:
         run: |
           /bin/bash test/04_fullcone_1.5g.sh
  
-      - name: Unlock some OpenWrt feeds
+      - name: prepare openwrt package
         run: |
           cd $RK3328_DIR/friendlywrt
+          /bin/bash test/05_prepare_package.sh
 
       - name: MOD the OpenWrt
         run: |
