@@ -7,7 +7,7 @@ sed -i 's,19.07.1,'"${latest_feed}"',g' device/friendlyelec/rk3328/common-files/
 #取消重复的feeds update 
 sed -i 's,./scripts,#./scripts,g' scripts/mk-friendlywrt.sh
 #rebase to openwrt
-git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+git config --local user.email "action@123.com" && git config --local user.name "GitHub 123"
 git remote add upstream https://github.com/openwrt/openwrt.git && git fetch upstream
 git rebase upstream/openwrt-19.07
 git rebase --skip
