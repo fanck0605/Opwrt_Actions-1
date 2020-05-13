@@ -79,6 +79,7 @@ jobs:
           cd $RK3328_DIR/friendlywrt
           make defconfig
           ../scripts/build.sh nanopi_r2s.mk
+
       - name: Fix Rootfs Owner and Group
         run: |
           /bin/bash test/10_fix_rootfs.sh
