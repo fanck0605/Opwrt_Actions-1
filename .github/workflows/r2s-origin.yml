@@ -16,14 +16,14 @@ on:
     paths:
       - '.github/workflows/r2s-origin.yml'
       - 'test/06_mod_test.sh'
-      - 'seed/test.seed'
+      - 'seed/tiny.seed'
   schedule:
     - cron: 35 21 * * *
   watch:
     types: started
 
 env:
-  CONFIG_FILE: seed/test.seed
+  CONFIG_FILE: seed/tiny.seed
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
