@@ -3,21 +3,14 @@
 #
 # this script is writing for openwrt
 # this script need the interface named 'lan'
-# to use this script, you must install 'jq' first
-# we need the `jq` to parse `ifstatus`'s result
 
 # usage: `/bin/sh /path/to/check_net4.sh >/dev/null 2>&1 &`
-
-if ! jq --version >/dev/null 2>&1; then
-  logger "Check Net4: Please install 'jq' first!"
-  exit 1
-fi
 
 get_ipv4_address() {
   if ! if_status=$(ifstatus $1); then
     return 1
   fi
-  echo $if_status | jq -r '."ipv4-address"[0]."address"'
+  echo $if_status | jsonfilter -e "@['ipv4-address'][0]['address']"
 }
 
 if ! lan_addr=$(get_ipv4_address lan); then
@@ -62,9 +55,10 @@ while :; do
     if ping -W 1 -c 1 "$lan_addr" >/dev/null 2>&1; then
       continue
     fi
-    echo -e "$(date "+%Y-%m-%d %H:%M:%S"): Network problem! Network reloading..." >> /var/log/check_inet.log
+
     logger 'Check network health: Network problem! Network reloading...'
-    /etc/init.d/network reload >/dev/null 2>&1
+    echo -e "$(date "+%Y-%m-%d %H:%M:%S"): Network problem! Network reloading..." >> /var/log/check_inet.log
+    /etc/init.d/network restart >/dev/null 2>&1
     sleep 2s
   fi
 done
