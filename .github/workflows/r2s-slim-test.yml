@@ -50,7 +50,7 @@ jobs:
         run: |
           /bin/bash r2s_step/01_friendlywrt.sh
 
-      - name: rebase Lean opwrt
+      - name: Install openwrt
         run: |
           /bin/bash r2s_step/02_update_source.sh
 #      - name: Update Chuck Kernel
