@@ -77,7 +77,6 @@ jobs:
       - name: Build OpenWrt
         run: |
           cd $RK3328_DIR/friendlywrt
-          make defconfig
           ../scripts/build.sh nanopi_r2s.mk
 
       - name: Fix Rootfs Owner and Group
