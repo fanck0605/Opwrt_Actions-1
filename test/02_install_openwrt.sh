@@ -5,7 +5,7 @@ cd $RK3328_DIR
 latest_feed="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n 1p |sed 's/v//g' |sed 's/.tar.gz//g')"
 sed -i 's,19.07.1,'"${latest_feed}"',g' device/friendlyelec/rk3328/common-files/etc/opkg/distfeeds.conf
 #取消重复的feeds update 
-sed -i 's,./scripts,#./scripts,g' scripts/mk-friendlywrt.sh
+#sed -i 's,./scripts,#./scripts,g' scripts/mk-friendlywrt.sh
 #rebase to openwrt
 cd friendlywrt
 git config --local user.email "action@123.com" && git config --local user.name "GitHub 123"

@@ -50,13 +50,13 @@ jobs:
         run: |
           /bin/bash test/01_friendlywrt.sh
 
-      - name: rebase to OpenWrt
+      - name: Install openwrt source
         run: |
-          /bin/bash test/02_rebase2openwrt.sh
+          /bin/bash test/02_install_openwrt.sh
 
-      - name: Patch 5.4 Kernel
+      - name: Install Kernel
         run: |
-          /bin/bash test/03_kernel_patch.sh
+          /bin/bash test/03_install_kernel.sh
 
       - name: Enable Kernel feature
         run: |
