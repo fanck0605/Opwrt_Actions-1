@@ -73,7 +73,7 @@ jobs:
       - name: Load config
         run: |
           /bin/bash test/09_load_config_test.sh
-      
+
       - name: Build OpenWrt
         run: |
           cd $RK3328_DIR/friendlywrt
