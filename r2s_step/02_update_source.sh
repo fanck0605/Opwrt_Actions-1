@@ -1,5 +1,5 @@
 #!/bin/bash
-clear
+export TERM=linux
 cd friendlywrt-rk3328/friendlywrt/
 git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
 git remote add lean https://github.com/coolsnowwolf/lede.git
