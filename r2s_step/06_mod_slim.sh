@@ -15,6 +15,8 @@ echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
 VersionDate=$(git show -s --date=short --format="date:%cd")
 echo "::set-env name=VersionDate::$VersionDate"
 echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+#改为Ofast make coremark，跑分
+sed -i 's,-DMULTIT,-Ofast -DMULTIT,g' package/lean/coremark/Makefile
 #更新替换软件包
 rm -rf package/lean/luci-theme-opentomcat
 rm -rf package/lean/luci-app-frpc

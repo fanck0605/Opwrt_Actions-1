@@ -12,6 +12,8 @@ mv ../../script/update.sh package/base-files/files/root/update.sh && chmod +x pa
 VersionDate=$(git show -s --date=short --format="date:%cd")
 echo "::set-env name=VersionDate::$VersionDate"
 echo "::set-env name=DATE::$(date "+%Y-%m-%d %H:%M:%S")"
+#改为Ofast make coremark，跑分
+sed -i 's,-DMULTIT,-Ofast -DMULTIT,g' package/lean/coremark/Makefile
 #修改版本号
 sed -i 's/OpenWrt/Quintus Build @ $(date "+%Y.%m.%d")/g' package/lean/default-settings/files/zzz-default-settings
 echo -e '\nQuintus Build\n'  >> package/base-files/files/etc/banner
