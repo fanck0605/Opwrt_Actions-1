@@ -77,7 +77,7 @@ jobs:
           /bin/bash r2s_step/09_load_config.sh
 
       - name: SSH connection to Actions
-        uses: P3TERX/debugger-action@master
+        uses: R2S_action@master
         if: env.SSH_ACTIONS == 'true'
       
       - name: Build OpenWrt
