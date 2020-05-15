@@ -30,5 +30,6 @@ git rebase --skip
 git rebase --skip
 git rebase --skip
 git rebase --skip
+rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 git checkout upstream/master -- feeds.conf.default
 exit 0
