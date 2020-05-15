@@ -52,7 +52,7 @@ jobs:
 
       - name: Install openwrt
         run: |
-          /bin/bash r2s_step/02_update_source.sh
+          /bin/bash r2s_step/02_rebase2lean.sh
 #      - name: Update Chuck Kernel
 #        run: |
 #          cd friendlywrt-rk3328/
