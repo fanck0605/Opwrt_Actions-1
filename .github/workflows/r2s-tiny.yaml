@@ -52,28 +52,12 @@ jobs:
       - name: Install openwrt source
         run: |
           /bin/bash r2s_step/02_rebase2lean.sh
-          #/bin/bash r2s_step/02_update_source.sh
       - name: install kernel
         run: |
-          cd friendlywrt-rk3328/kernel
-          git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git && git fetch upstream
-          git rebase upstream/linux-5.4.y
-
-#      - name: use Chuck kernel
-#        run: |
-#          cd friendlywrt-rk3328/
-#          rm -rf kernel
-#          git clone --depth=1 https://github.com/fanck0605/friendlywrt-kernel.git kernel
-
-      - name: Patch 5.4 Kernel
-        run: |
-          /bin/bash r2s_step/03_kernel_patch.sh
-
+          /bin/bash r2s_step/03_kernel.sh
       - name: Enable Kernel feature
         run: |
           /bin/bash r2s_step/04_fullcone_1.5g.sh
- 
       - name: Enable cpu autocore
         run: |
           cd friendlywrt-rk3328/friendlywrt/
