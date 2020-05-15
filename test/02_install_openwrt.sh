@@ -30,4 +30,5 @@ git rebase --skip
 git rebase --skip
 git rebase --skip
 git rebase --skip
+git checkout upstream/master -- feeds.conf.default
 exit 0
