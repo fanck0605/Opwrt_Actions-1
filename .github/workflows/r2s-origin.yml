@@ -23,7 +23,7 @@ on:
     types: started
 
 env:
-  CONFIG_FILE: seed/tiny.seed
+  CONFIG_FILE: seed/test.seed
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
