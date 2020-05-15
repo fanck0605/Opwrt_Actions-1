@@ -24,6 +24,8 @@ rm -rf package/lean/luci-app-frps
 rm -rf package/lean/luci-app-diskman
 rm -rf package/lean/luci-app-samba4
 rm -rf package/lean/samba4
+rm -rf package/feeds/packages/ttyd
+rm -rf package/lean/luci-app-ttyd
 #rm -rf package/lean/luci-app-zerotier
 #git clone https://github.com/rufengsuixing/luci-app-zerotier.git package/lean/luci-app-zerotier
 git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/lean/luci-theme-opentomcat
@@ -34,7 +36,9 @@ svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher packa
 svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
 svn co https://github.com/openwrt/luci/trunk/applications/luci-app-samba4 package/lean/luci-app-samba4
 svn co https://github.com/openwrt/packages/trunk/net/samba4 package/lean/samba4
-#svn co https://github.com/suwus/openwrt-feeds-driver-ext/trunk/rtl8821cu package/rtl8821cu
+svn co https://github.com/openwrt/packages/trunk/utils/ttyd package/lean/ttyd
+svn co https://github.com/openwrt/luci/trunk/applications/luci-app-ttyd package/lean/luci-app-ttyd
+
 #更改默認主題及界面语言
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/opentomcat"' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/luci.main.lang=zh_cn/luci.main.lang=auto/g' package/lean/default-settings/files/zzz-default-settings
