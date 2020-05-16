@@ -23,8 +23,10 @@ rm -rf package/lean/luci-app-frpc
 rm -rf package/lean/luci-app-frps
 rm -rf package/lean/luci-app-dockerman
 rm -rf package/lean/luci-app-diskman
-rm -rf package/lean/luci-app-samba4
-rm -rf package/lean/samba4
+#rm -rf package/lean/luci-app-samba4
+#rm -rf package/lean/samba4
+#rm -rf package/feeds/packages/ttyd
+#rm -rf package/lean/luci-app-ttyd
 #rm -rf package/lean/luci-app-zerotier
 #git clone https://github.com/rufengsuixing/luci-app-zerotier.git package/lean/luci-app-zerotier
 git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/lean/luci-theme-opentomcat
@@ -36,8 +38,11 @@ svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher packa
 svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
 svn co https://github.com/Lienol/openwrt-package/trunk/lienol/luci-app-trojan-server package/luci-app-trojan-server
 git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
-svn co https://github.com/openwrt/luci/trunk/applications/luci-app-samba4 package/lean/luci-app-samba4
-svn co https://github.com/openwrt/packages/trunk/net/samba4 package/lean/samba4
+#svn co https://github.com/openwrt/luci/trunk/applications/luci-app-samba4 package/lean/luci-app-samba4
+#svn co https://github.com/openwrt/packages/trunk/net/samba4 package/lean/samba4
+#svn co https://github.com/openwrt/packages/trunk/utils/ttyd package/ttyd
+#svn co https://github.com/openwrt/luci/trunk/applications/luci-app-ttyd package/luci-app-ttyd
+
 #git clone https://github.com/ElonH/Rclone-OpenWrt.git
 #rm -rf lean/rclone
 #rm -rf lean/luci-app-rclone
