@@ -49,6 +49,7 @@ jobs:
       - name: Install friendlywrt source
         run: |
           /bin/bash r2s_step/01_friendlywrt.sh
+          cd friendlywrt-rk3328
           sed -i 's|friendlyarm/rtl8821CU|fanck0605/rtl8821CU|g' ./scripts/sd-fuse/build-kernel.sh
 
       - name: Install openwrt
