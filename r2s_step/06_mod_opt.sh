@@ -37,7 +37,7 @@ git clone https://github.com/lisaac/luci-app-diskman.git package/lean/luci-app-d
 svn co https://github.com/songchenwen/nanopi-r2s/trunk/luci-app-r2sflasher package/luci-app-r2sflasher
 svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
 svn co https://github.com/Lienol/openwrt-package/trunk/lienol/luci-app-trojan-server package/luci-app-trojan-server
-git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
+#git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #svn co https://github.com/openwrt/luci/trunk/applications/luci-app-samba4 package/lean/luci-app-samba4
 #svn co https://github.com/openwrt/packages/trunk/net/samba4 package/lean/samba4
 #svn co https://github.com/openwrt/packages/trunk/utils/ttyd package/ttyd
