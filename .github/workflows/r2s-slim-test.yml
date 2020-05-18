@@ -49,6 +49,7 @@ jobs:
       - name: Install friendlywrt source
         run: |
           /bin/bash r2s_step/01_friendlywrt.sh
+          sed -i 's|friendlyarm/rtl8821CU|fanck0605/rtl8821CU|g' ./scripts/sd-fuse/build-kernel.sh
 
       - name: Install openwrt
         run: |
@@ -73,10 +74,12 @@ jobs:
       - name: MOD the OpenWrt
         run: |
           /bin/bash r2s_step/06_mod_slim.sh
+          svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/rtl8821cu package/rtl8821cu
 
       - name: Load config
         run: |
           /bin/bash r2s_step/09_load_config.sh
+          echo 'CONFIG_PACKAGE_kmod-rtl8821cu=y' >> configs/config_rk3328
 
       - name: SSH connection to Actions
         uses: P3TERX/debugger-action@master
