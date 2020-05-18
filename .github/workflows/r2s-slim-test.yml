@@ -80,6 +80,7 @@ jobs:
       - name: Load config
         run: |
           /bin/bash r2s_step/09_load_config.sh
+          cd friendlywrt-rk3328
           echo 'CONFIG_PACKAGE_kmod-rtl8821cu=y' >> configs/config_rk3328
 
       - name: SSH connection to Actions
