@@ -1,10 +1,10 @@
 ### NanoPi R2S说明
 
 ####使用Friendlywrt源码更新到最新kernel，集成Lean功能插件，自用固件，内置挖矿 :)。<br> 
-按应用筛选分成3版本:
+按应用筛选分成3版本，均不包含任何广告拦截应用。
 1. 极简的tiny版，仅包含ssr-plus、ddns(不支持任何USB无线网卡，支持U盘)
 2. 瘦身的slim版，包括有ssr-plus、frpc/frps、ttyd、zerotier（支持部分USB无线网卡，只测试过811AC）
-3. 定制opt版在精简版基础上增加docker、transmission、应用过滤等一般较常用功能等。（支持部分USB无线网卡，只测试过811AC）
+3. 定制opt版在精简版基础上增加docker、transmission、等较常用功能等。（支持部分USB无线网卡，只测试过811AC）
 4. 默认管理地址:192.168.2.1  用户名:root  密码:password
 5. 下载见[R2S发布](https://github.com/ardanzhu/Opwrt_Actions/releases/tag/R2S)
 
